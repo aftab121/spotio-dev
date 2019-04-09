@@ -17,9 +17,10 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   },
 })
 export class AddpinPage {
-	addpinfrm:any={};
-	checkbox:any={};
-	radio:any={};
+	todo:any=[];
+	addpinfrm:any={};	
+	options:any=[];
+	item:string="";
 	dropdown:boolean = true;
 	ddl = [{
 			"id":0,
@@ -52,7 +53,8 @@ export class AddpinPage {
 	]
 	constructor(public navCtrl: NavController, public navParams: NavParams,private _eref: ElementRef) {
 debugger
-		this.addpinfrm=this.navParams.data.sort((a, b) => a.sort <= b.sort ? -1 : 1);		
+		this.addpinfrm=this.navParams.data.sort((a, b) => a.sort <= b.sort ? -1 : 1);
+		
 	}
 
 	onClick(event) {
@@ -77,5 +79,23 @@ debugger
       console.log(obj);
     } 	
 
+reformat(str: string) {
+  if (str) {
+  	var st=str.replace(/\n/g, ',').replace(/\s/g, '').split(',');
+  	this.options.push(st);
+    return str.replace(/\n/g, ',').replace(/\s/g, '').split(',');
+  }
+return [];
+}
 
+isAvailable(item) {
+
+  if (item && item.indexOf('\n') !== -1) {
+    return true;
+  }
+  return false;
+}
+savePin(){
+ console.log(this.todo);
+}
 }

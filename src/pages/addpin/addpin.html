@@ -33,7 +33,7 @@
 		<ion-col>
 			<ion-item>		
 			<ion-label style="margin-bottom: 0px;">ASSIGNED TO:</ion-label>			
-			<ion-input  type="text" name="assinged"></ion-input>
+			<ion-input [(ngModel)]="todo.assinged" type="text" name="assinged"></ion-input>
 			</ion-item>
 		</ion-col>
 	</ion-row>
@@ -41,7 +41,7 @@
 		<ion-col>
 			<ion-item>		
 			<ion-label style="margin-bottom: 0px;">HOUSE NUMBER</ion-label>			
-			<ion-input  type="text" name="street"></ion-input>
+			<ion-input [(ngModel)]="todo.street" type="text" name="street"></ion-input>
 			</ion-item>
 		</ion-col>
 	</ion-row>
@@ -49,7 +49,7 @@
 		<ion-col>
 			<ion-item>		
 			<ion-label style="margin-bottom: 0px;">HOUSE ADDRESS</ion-label>			
-			<ion-input  type="text" name="streetname"></ion-input>
+			<ion-input [(ngModel)]="todo.streetname" type="text" name="streetname"></ion-input>
 			</ion-item>
 		</ion-col>
 	</ion-row>
@@ -57,7 +57,7 @@
 		<ion-col>
 			<ion-item>		
 			<ion-label style="margin-bottom: 0px;">UNIT #</ion-label>			
-			<ion-input  type="text" name="unit"></ion-input>
+			<ion-input [(ngModel)]="todo.unit" type="text" name="unit"></ion-input>
 			</ion-item>
 		</ion-col>
 	</ion-row>
@@ -65,7 +65,7 @@
 		<ion-col>
 			<ion-item>		
 			<ion-label style="margin-bottom: 0px;">CITY</ion-label>			
-			<ion-input  type="text" name="city"></ion-input>
+			<ion-input [(ngModel)]="todo.city" type="text" name="city"></ion-input>
 			</ion-item>
 		</ion-col>
 	</ion-row>
@@ -73,7 +73,7 @@
 		<ion-col>
 			<ion-item>		
 			<ion-label style="margin-bottom: 0px;">STATE</ion-label>			
-			<ion-input  type="text" name="state"></ion-input>
+			<ion-input [(ngModel)]="todo.state" type="text" name="state"></ion-input>
 			</ion-item>
 		</ion-col>
 	</ion-row>
@@ -81,21 +81,50 @@
 		<ion-col>
 			<ion-item>		
 			<ion-label style="margin-bottom: 0px;">ZIP</ion-label>			
-			<ion-input  type="text" name="zip"></ion-input>
+			<ion-input [(ngModel)]="todo.zip" type="text" name="zip"></ion-input>
 			</ion-item>
 		</ion-col>
 	</ion-row>
 	<div *ngFor="let i of addpinfrm">
+		
 		<ion-row>
 		<ion-col>
-			<ion-item>		
-			<ion-label style="margin-bottom: 0px;">{{i.field_label}}</ion-label>			
-			<ion-input [type]="i.type_name.field_type" [attr.name]="i.field_name"></ion-input>
-			<div *ngFor="let option of i.options; let j = index;">
-					<ion-input [type]="i.type_name.field_type">option</ion-input>		
-				</div>
+			<div *ngIf="!isAvailable(i.options)">
+			<ion-item>	
+				<ion-label style="margin-bottom: 0px;">{{i.field_label}}</ion-label>			
+			<ion-input [(ngModel)]="todo[i.field_name]" [type]="i.type_name.field_type" [attr.name]="i.field_name"></ion-input>
 			</ion-item>
+			</div>	
+			 <div *ngIf="isAvailable(i.options)">
+			 	<ion-label style="margin-bottom: 0px;">{{i.field_label}}</ion-label>
+
+		    <div *ngIf="i.field_type=='8'">	
+		    				 		<div *ngFor="let n of reformat(i.options);let j=index">	
+			<ion-item>
+				     <ion-label>{{n}}</ion-label>		 							
+					 <ion-checkbox [(ngModel)]="todo[i.options[j]]" [attr.name]="i.options[j]" slot="start" [attr.value]="n"></ion-checkbox>
+			</ion-item>
+		</div>
+			</div>
+			 <div *ngIf="i.field_type=='7'">
+			 <ion-list [(ngModel)]="todo[i.options" radio-group  *ngFor="let n of reformat(i.options);let k=index">	
+			 <ion-item>
+				     <ion-label>{{n}}</ion-label>
+                     <ion-radio slot="start" [attr.name]="i.options[k]" [attr.value]="n"></ion-radio>
+			</ion-item>
+			</ion-list>
+			</div>			
+		</div>
 		</ion-col>
 	</ion-row>
 	</div>	
+	<ion-row>
+		<ion-col>
+			<ion-item>		
+			<button class="button" (click)="savePin()">
+			  Save
+			</button>
+			</ion-item>
+		</ion-col>
+	</ion-row>
 </ion-content>
