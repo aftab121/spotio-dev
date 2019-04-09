@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar  color="accent">
+    <button ion-button menuToggle>
+      <ion-icon name="menu" ></ion-icon>
+    </button>
+    <ion-title style="display: flex; justify-content: space-between; font-size: 24px;">
+            
+        <div float-left >
+            Map
+        </div>
+        <div float-right style="display: flex; justify-content: space-between; width: 33%;">
+            <div>
+                <ion-icon (click)="goToList()" name="list-box"></ion-icon>
+            </div>
+            <div>
+                <ion-icon (click)="goToFilter()" name="funnel"></ion-icon>
+            </div>
+            <div >
+                <ion-icon (click)="showOverlay()" name="add"></ion-icon>
+            </div>
+        </div>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+    <div id="map_canvas">
+        <button ion-button (click)="onButtonClick($event)">Demo</button>
+    </div>
+</ion-content>
+<div class="my-overlay" padding [hidden]="overlayHidden">
+    <div style="    width: 80%;
+    background-color: #FFF;
+    margin: 0 auto;
+    min-height: 165px;
+    margin-top: 65%;
+    padding: 20px;">
+        <h2>Select Action</h2>
+        <h5 (click)="AddPin()" >Add Pin</h5>
+        <h5>Select Pins</h5>
+        <span  float-right style="font-size: 18px;color:#358fcd" (click)="hideOverlay()">CANCEL</span>
+    </div>
+</div>

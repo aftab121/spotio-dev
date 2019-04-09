@@ -1,0 +1,53 @@
+page-filter {
+ion-navbar[hidebackbutton] button[menutoggle] {
+  display: block !important;
+}
+
+.toolbar-title{
+	display: flex;
+    align-items: center;
+}
+
+.itemButton{
+	font-size: 14px;line-height: 22px;
+}
+
+.icon {
+ display: inline-block;
+ font-size: 35px;
+ vertical-align: middle;
+ font-size: 35px
+}
+
+.text{
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.active{
+	background-color: #51BAF7;
+}
+.datetime-md {
+    padding: 14px 6px 9px 5px !important;
+}
+/*
+.input-cover{
+    display: none;
+}*/
+.toolbar-background-md {
+    background-color: #F0F0F0;
+}
+ion-header.header.header-md::after {
+    background-image: none !important;
+}
+hr.hr_header{
+        border: none;
+    border-left: 1px solid #b2b2b2;
+    width: 1px;
+    margin-top: -55px;
+    height: 54px;
+    margin-right: 87px;
+    z-index: 999999999999;
+    position: relative;    
+}
+}

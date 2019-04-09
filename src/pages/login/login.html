@@ -1,0 +1,60 @@
+<ion-content padding text-center class="active">
+	<img src="./assets/imgs/logo.jpg" style="width:100%; margin-top: 30px;">
+	<ion-row>
+		<ion-label style="line-height: 24px; color: #c1142c; font-size: 17px; font-weight: 400; }">{{message}}
+		</ion-label> 
+	</ion-row>
+	<ion-row>
+		<ion-col>
+			<ion-item>
+				<ion-label style="font-size: 30px"> <ion-img src="./assets/imgs/email.png"></ion-img></ion-label>
+				
+				<ion-input  type="text" [(ngModel)]="todo.Email" name="Email" placeholder="Email"></ion-input>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+	<ion-row >
+		<ion-col>
+			<ion-item>
+				<ion-label> <ion-img src="./assets/imgs/lock.png" style="width:32px;height:32px"></ion-img></ion-label>
+				
+				<ion-input  type="password" [(ngModel)]="todo.Password" name="Password" placeholder="Password"></ion-input>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+	<ion-row>
+		<ion-col  padding-top style="height: 50px;"  >
+		
+			<ion-checkbox [(ngModel)]="todo.Remember" mode="md"></ion-checkbox>
+			<span style="padding-left:10px">Remember me</span>
+			
+		</ion-col>
+		<ion-col padding-left padding-top style="height: 50px;" (click)="goToForget()" >
+			<span>Forgot Password?</span>
+		</ion-col>
+	</ion-row>
+	<ion-row >
+		<ion-col>
+		</ion-col>
+		<ion-col padding-left padding-top margin-top col-8 style="height: 50px;background-color: #358fcd;color:#fff;border-radius:8px" (click)="goToLogin(this.todo.Password,this.todo.Email)">
+			<span>Sign in</span>
+		</ion-col>
+		<ion-col>
+		</ion-col>
+	</ion-row>
+	<ion-row style="margin-top: 10%;">
+		<ion-col>
+		<ion-label>
+		<ion-img src="./assets/imgs/fingure.png" style="height:60px;width:62px;background:none"></ion-img>
+		</ion-label>
+		
+			
+		</ion-col>
+	</ion-row>
+	<ion-row style="margin-top: 15%;" >
+		<ion-col>
+			<span>The use of this application is subject to Optimus' Service and Privacy Policy. Unauthorized use is prohibited.</span>
+		</ion-col>
+	</ion-row>
+	
+</ion-content>

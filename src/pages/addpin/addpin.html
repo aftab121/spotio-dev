@@ -1,0 +1,101 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title > 
+     <div text-center style="float: left;">
+            New Pin
+        </div>
+        <div text-right style="width: 20%;float: right" (click)="goToMap()">
+            Save
+        </div>
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+	<ion-row>
+		<div style="position: relative;width:100%;">
+			<div class="ddl-item"  [ngStyle]="{'background': ddl[0].color}" (click)="ToggleDropDown()">
+		        <span>{{ddl[0].name}}</span>
+		        <span float-right class="left-icon"> <ion-icon ios="ios-arrow-down-outline" md="md-arrow-down"></ion-icon></span>
+		    </div>
+		    <div style="position:absolute;left:0; width:80%;padding-top: 8px;z-index: 999;" [hidden]="dropdown" >
+		    	<div class="ddl-item" [ngStyle]="{'background': i.color}" (click)=OnChange(i.name) *ngFor="let i of Status">
+			        <span>{{i.name}}</span>
+			    </div>
+		    </div>
+		</div>
+	</ion-row>
+	<ion-row>
+		<ion-col>
+			<ion-item>		
+			<ion-label style="margin-bottom: 0px;">ASSIGNED TO:</ion-label>			
+			<ion-input  type="text" name="assinged"></ion-input>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+	<ion-row>
+		<ion-col>
+			<ion-item>		
+			<ion-label style="margin-bottom: 0px;">HOUSE NUMBER</ion-label>			
+			<ion-input  type="text" name="street"></ion-input>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+	<ion-row>
+		<ion-col>
+			<ion-item>		
+			<ion-label style="margin-bottom: 0px;">HOUSE ADDRESS</ion-label>			
+			<ion-input  type="text" name="streetname"></ion-input>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+	<ion-row>
+		<ion-col>
+			<ion-item>		
+			<ion-label style="margin-bottom: 0px;">UNIT #</ion-label>			
+			<ion-input  type="text" name="unit"></ion-input>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+	<ion-row>
+		<ion-col>
+			<ion-item>		
+			<ion-label style="margin-bottom: 0px;">CITY</ion-label>			
+			<ion-input  type="text" name="city"></ion-input>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+	<ion-row>
+		<ion-col>
+			<ion-item>		
+			<ion-label style="margin-bottom: 0px;">STATE</ion-label>			
+			<ion-input  type="text" name="state"></ion-input>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+	<ion-row>
+		<ion-col>
+			<ion-item>		
+			<ion-label style="margin-bottom: 0px;">ZIP</ion-label>			
+			<ion-input  type="text" name="zip"></ion-input>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+	<div *ngFor="let i of addpinfrm">
+		<ion-row>
+		<ion-col>
+			<ion-item>		
+			<ion-label style="margin-bottom: 0px;">{{i.field_label}}</ion-label>			
+			<ion-input [type]="i.type_name.field_type" [attr.name]="i.field_name"></ion-input>
+			<div *ngFor="let option of i.options; let j = index;">
+					<ion-input [type]="i.type_name.field_type">option</ion-input>		
+				</div>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+	</div>	
+</ion-content>

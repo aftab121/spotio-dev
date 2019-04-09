@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar  color="accent">
+    <button ion-button menuToggle>
+      <ion-icon name="menu" ></ion-icon>
+    </button>
+    <ion-title style="display: flex; justify-content: space-between; font-size: 24px;">
+            
+        <div float-left >
+            Map
+        </div>
+        <div float-right style="display: flex; justify-content: space-between; width: 33%;">
+            <div>
+                <ion-icon (click)="goToMap()" name="map"></ion-icon>
+            </div>
+            <div>
+                <ion-icon (click)="goToFilter()" name="funnel"></ion-icon>
+            </div>
+            <div >
+                <ion-icon (click)="showOverlay()" name="add"></ion-icon>
+            </div>
+        </div>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-searchbar></ion-searchbar>
+  <ion-list>    
+  <ion-list-header class="list_Item_header"> 
+  <ion-row>
+    <div style="width: 46px; line-height: 24px;">Status</div>
+    <ion-col>Address</ion-col>
+    <ion-col style="float: right; margin-left: 54px;">Last Upadted <ion-icon name="arrow-dropdown"></ion-icon></ion-col>
+  </ion-row>
+  </ion-list-header>
+    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
+      <ion-icon [name]="item.icon" item-start></ion-icon>
+      {{item.title}}<br>
+      <p>{{item.address1}}&nbsp;{{item.address2}}</p>
+      <p>{{item.city}},{{item.state}}</p>
+      <div class="item-note" item-end>
+        {{item.date}}<br>
+        <p>{{item.time}}</p>
+      </div>
+    </button>
+  </ion-list>
+  <div *ngIf="selectedItem" padding>
+    You navigated here from <b>{{selectedItem.title}}</b>
+  </div>
+</ion-content>

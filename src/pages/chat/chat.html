@@ -1,0 +1,47 @@
+<!--
+  Generated template for the ChatPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="accent">
+     <button ion-button menuToggle>
+      <ion-icon name="menu" ></ion-icon>
+    </button>
+    <ion-title style="display: flex; justify-content: space-between; font-size: 24px;">
+            
+        <div float-left >
+            Chat
+        </div>
+        <div float-right >
+            
+            <div >
+                <ion-icon name="add"></ion-icon>
+            </div>
+        </div>
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<ion-list>
+    <button ion-item *ngFor="let item of items" >
+      
+        <ion-img src="./assets/imgs/user.png" style="width: 40px;height: 40px;border-radius: 50%"></ion-img>
+        <div style="display: inline-block;"> {{item.title}}<br>
+         {{item.lastMessage}}</div>
+      
+      
+        
+      <!-- <ion-icon [name]="item.icon" item-start></ion-icon> -->
+     
+      <div class="item-note" item-end>
+        {{item.time}}
+      </div>
+    </button>
+  </ion-list>
+</ion-content>

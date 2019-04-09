@@ -1,0 +1,22 @@
+page-login {
+ion-item.item  {
+	border: 1px solid #eee;
+    border-radius: 50px;
+    background-color: #eee;
+}
+.fingerPrint{
+	    font-size: 76px;
+    border: 1px solid #eee;
+    border-radius: 40px;
+    width: 80px;
+    color: #C1142C;
+    background-color: #eee;
+}
+
+.item-input .label-md, .item-select .label-md, .item-datetime .label-md {
+    color: #358fcd;
+}
+ion-item.item.item-block.item-md.item-input.ng-valid.ng-dirty.ng-touched.input-has-focus.item-input-has-focus:focus {
+	border : 0px !important;
+}
+}
