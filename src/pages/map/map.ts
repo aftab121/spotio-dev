@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ToastController  , Platform } from 'ionic-angular';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { IonicPage, NavController, NavParams,ToastController ,LoadingController , Platform } from 'ionic-angular';
 import { ListPage } from '../../pages/list/list';
 import {AddpinProvider} from '../../providers/addpin/addpin';
+import 'rxjs/add/operator/map';
+import { GetPinProvider } from '../../providers/get-pin/get-pin';
+import { Geolocation } from '@ionic-native/geolocation';
+
 import {
   GoogleMaps,
   GoogleMap,
@@ -16,19 +20,86 @@ import {
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+declare var google;
 @IonicPage()
 @Component({
   selector: 'page-map',
   templateUrl: 'map.html',
 })
 export class MapPage {
-  addpinfrm:any={};
-	map: GoogleMap;
-  overlayHidden: boolean = true;
-	constructor(public navCtrl: NavController, public navParams: NavParams,public toastCtrl: ToastController, public plt: Platform, public addpinService:AddpinProvider) {
-	}
 
+    @ViewChild('map') mapElement: ElementRef;
+  map: any;
+  addpinfrm:any={};
+/*    map: GoogleMap;*/
+  overlayHidden: boolean = true;
+    loading:any;
+      responseObj:any;
+    constructor(public navCtrl: NavController,public loadingCtrl: LoadingController, public navParams: NavParams,public toastCtrl: ToastController, public plt: Platform, public addpinService:AddpinProvider , public PinProvider: GetPinProvider,private geolocation: Geolocation) {
+        this.plt.ready().then(() => {
+      this.loadMap2();
+    });
+    }
+
+
+
+
+    loadMap2(){
+
+    let latLng = new google.maps.LatLng('36.114647', '-115.172813');
+
+    let mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: true,
+       mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+            position: google.maps.ControlPosition.TOP_RIGHT
+          },
+      position: latLng
+    }
+
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+
+    /*let marker = new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: latLng
+    });
+
+    let content = "<h4>Heading</h4>";
+
+    this.addInfoWindow(marker, content);*/
+
+  }
+
+  addInfoWindow(marker, content){
+
+    let infoWindow = new google.maps.InfoWindow({
+      content: content
+    });
+
+    google.maps.event.addListener(marker, 'click', () => {
+      infoWindow.open(this.map, marker);
+    });
+
+  }
+
+
+
+//Show UI loader of ionic
+  showLoader(){
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    this.loading.present();
+  }
+  
+  //Hide UI loader of ionic
+  hideLoader(){
+    this.loading.dismiss();
+  }
   public showOverlay() {
     this.overlayHidden = false;
   }
@@ -37,9 +108,32 @@ export class MapPage {
   }
   ionViewDidLoad() {
     var obj = this;
-    this.plt.ready().then((readySource) => {
-      obj.loadMap();
-    })
+    this.PinProvider.GetPinList('1').then((result) => {
+        result.data.data.forEach(function(value){ 
+            console.log(value); 
+             var myString = value.pin_status.color_code;
+            var sillyString = myString.substr(1).slice(0);
+            var iconImage = 'assets/markers/'+sillyString+'.png';
+            var icon = {
+                url: iconImage, // url
+                scaledSize: new google.maps.Size(45, 45), // scaled size
+                //origin: new google.maps.Point(0,0), // origin
+                //anchor: new google.maps.Point(0, 0), // anchor
+                labelOrigin: new google.maps.Point(25,32)
+            };
+           
+
+            let marker = new google.maps.Marker({
+              icon: icon,
+              map: obj.map,
+              animation: google.maps.Animation.DROP,
+              position: new google.maps.LatLng(value.latitude, value.longitude)
+            });
+        });
+     }, (error) => {
+       // console.log(JSON.stringify(error));
+     });
+    
   }
   AddPin(){
     //alert('cliecked add pins'); 
@@ -75,6 +169,15 @@ export class MapPage {
       }
     });
 
+    this.map.on(GoogleMapsEvent.MAP_READY).subscribe(() => {alert('Map is ready!')});
+
+  }
+    onNavingateClick(){
+    this.getGeolocation();
+  }
+
+    public getGeolocation(){
+    
   }
 
   onButtonClick() {

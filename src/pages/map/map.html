@@ -24,8 +24,15 @@
 </ion-header>
 
 <ion-content >
-    <div id="map_canvas">
-        <button ion-button (click)="onButtonClick($event)">Demo</button>
+    <div id="floating-panel">
+        <b>0 Total</b>
+    </div>
+    <div style="position: absolute;top: 45px;z-index: 1;right: 5px;">
+        <div class="layers-icon" (click)="onLayerClick($event)"></div>
+        <div class="navigate-icon" style="margin-top: 5px;" (click)="onNavingateClick($event)"></div>
+    </div>
+    <div #map id="map"  style="background-color: green">
+       <!--  <button ion-button (click)="onButtonClick($event)">Demo</button> -->
     </div>
 </ion-content>
 <div class="my-overlay" padding [hidden]="overlayHidden">
