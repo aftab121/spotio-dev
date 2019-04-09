@@ -3,6 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
 import { Calendar } from '@ionic-native/calendar';
+import { Geolocation } from '@ionic-native/geolocation';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
@@ -22,7 +23,11 @@ import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { ResetpasswordPage } from '../pages/resetpassword/resetpassword';
 import {ChangepasswordPage} from '../pages/changepassword/changepassword'
 import { AddpinProvider } from '../providers/addpin/addpin';
+import { GetPinProvider } from '../providers/get-pin/get-pin';
 
+import {
+  GoogleMaps
+} from '@ionic-native/google-maps';
 
 @NgModule({
   declarations: [
@@ -30,15 +35,15 @@ import { AddpinProvider } from '../providers/addpin/addpin';
     HomePage,
     ListPage,
     LoginPage,
-                LeaderboardPage,
-                SettingsPage,
-                ChatPage,
-                AppointmentsPage,
-                CreateAppointmentPage,
-                PinDetailsPage,
-                ForgetPasswordPage,
-                ResetpasswordPage,
-                ChangepasswordPage
+    LeaderboardPage,
+    SettingsPage,
+    ChatPage,
+    AppointmentsPage,
+    CreateAppointmentPage,
+    PinDetailsPage,
+    ForgetPasswordPage,
+    ResetpasswordPage,
+    ChangepasswordPage
   ],
   imports: [
     BrowserModule,
@@ -52,24 +57,27 @@ import { AddpinProvider } from '../providers/addpin/addpin';
     HomePage,
     ListPage,
     LoginPage,
-                LeaderboardPage,
-                SettingsPage,
-                ChatPage,
-                AppointmentsPage,
-                CreateAppointmentPage,
-                PinDetailsPage,
-                ForgetPasswordPage,
-                ResetpasswordPage,
-                ChangepasswordPage
+    LeaderboardPage,
+    SettingsPage,
+    ChatPage,
+    AppointmentsPage,
+    CreateAppointmentPage,
+    PinDetailsPage,
+    ForgetPasswordPage,
+    ResetpasswordPage,
+    ChangepasswordPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     DatePicker,
     Calendar,
+    Geolocation,
+    GoogleMaps,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginProvider,
-    AddpinProvider
+    AddpinProvider,
+    GetPinProvider
   ]
 })
 export class AppModule {}
