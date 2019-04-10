@@ -107,10 +107,10 @@
 		</div>
 			</div>
 			 <div *ngIf="i.field_type=='7'">
-			 <ion-list [(ngModel)]="todo[i.options" radio-group  *ngFor="let n of reformat(i.options);let k=index">	
+			 <ion-list  radio-group  *ngFor="let n of reformat(i.options);let k=index">	
 			 <ion-item>
 				     <ion-label>{{n}}</ion-label>
-                     <ion-radio slot="start" [attr.name]="i.options[k]" [attr.value]="n"></ion-radio>
+                     <ion-radio [(ngModel)]="todo[i.options[n]]" slot="start" [attr.name]="i.options[n]" [attr.value]="n"></ion-radio>
 			</ion-item>
 			</ion-list>
 			</div>			
