@@ -17,15 +17,13 @@ import { GlobalProvider } from "../providers/global/global";
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  currentUser = JSON.parse(localStorage.getItem('users_data'));
   username:any=[];
   firstcahr:string="";
   rootPage: any = LoginPage;  
   pages: Array<{title: string, component: any , icon: any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public globalService : GlobalProvider) { 
-  // this.rootPage = this.currentUser > 0 ? 'MapPage' : LoginPage;
-    this.initializeApp();
+     this.initializeApp();
     this.profileName();
 
     // used for an example of ngFor and navigation
@@ -87,16 +85,17 @@ export class MyApp {
          this.nav.setRoot(LoginPage);
           }
         break;      
-      default:{
-         this.pages.map( p => {
-      return p['active'] = (page.component === p.component);
-    });
-        this.nav.setRoot(page.component);
-      }
+    default: {
+      this.pages.map(p => {
+        return p['active'] = (page.component === p.component);
+      });
+      this.nav.setRoot(page.component);
+    }
         break;
     }
    
   }
+  
   profileName(){       
         if(localStorage.getItem('username')!=null){
          this.username=localStorage.getItem('username').split(' ');

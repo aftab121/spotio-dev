@@ -18,8 +18,10 @@ import { GlobalProvider } from "../../providers/global/global";
 })
 export class LoginPage {
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams, public LoginService: LoginProvider, public globalService : GlobalProvider) {
+   if(localStorage.getItem('users_data')){
+     this.navCtrl.setRoot('MapPage');
+   }
   }
   todo = {};
   message:any="";

@@ -2,6 +2,8 @@ import { Component,ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AddpinProvider} from '../../providers/addpin/addpin';
 import {FilterProvider} from '../../providers/filter/filter';
+import {MapPage} from '../../pages/map/map';
+
 
 /**
  * Generated class for the AddpinPage page.
@@ -32,6 +34,7 @@ export class AddpinPage {
 	assignedId:string="";
 	array:any=[];
 	newModel:any={};
+	message:any={};
 	assignedTo:Array<{ id: number, full_name: string,color:string, checked: false }> = [];
 
 	ddl = [{
@@ -138,9 +141,9 @@ export class AddpinPage {
 		this.todo.custom_input=this.custum;
 		var json=JSON.stringify(this.todo);
 		 this.addpinService.AddMarker(json).then((result) => {
-          if(result.code == 1){ 
-          	console.log(result.data);
-          console.log("success");          
+          if(result.code == 1){           
+          console.log("success");
+          this.navCtrl.setRoot(MapPage);          
           }
           else if(result.code==2){
             console.log("error");
