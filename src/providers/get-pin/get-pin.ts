@@ -22,12 +22,31 @@ export class GetPinProvider {
 
 
     return new Promise(resolve => {
-  		let headers = new Headers( { 'Content-Type' : 'application/json' }); 
+      let headers = new Headers( { 'Content-Type' : 'application/json' }); 
         let options = new RequestOptions({ headers: headers });
         let credentials = JSON.stringify({
             userid : UserId
         });
       var link = 'https://clients.managedcrmsolution.com/public/Api/GetMarkerList?page='+ current;
+      this.http.post(link , credentials, { headers: headers } ).toPromise()
+        .then((response) =>
+      {
+        resolve(response.json());
+      })
+    });
+  }
+
+
+  GetPinCount(UserId): Promise<any> {
+
+
+    return new Promise(resolve => {
+  		let headers = new Headers( { 'Content-Type' : 'application/json' }); 
+        let options = new RequestOptions({ headers: headers });
+        let credentials = JSON.stringify({
+            userid : UserId
+        });
+      var link = 'https://clients.managedcrmsolution.com/public/Api/displayPinsCount';
       this.http.post(link , credentials, { headers: headers } ).toPromise()
         .then((response) =>
 		  {

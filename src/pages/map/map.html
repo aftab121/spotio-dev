@@ -25,7 +25,7 @@
 
 <ion-content >
     <div id="floating-panel">
-        <b>0 Total</b>
+        <b>{{ totalPins }} Total <span *ngFor="let item of PinsCount">  | <img [src]="'assets/markers/' + item.color_code.substr(1).slice(0) + '.png'" style="height: 20px; width: 16px;" >  {{ item.pin_count_count}}  {{ item.pin_status_name}} </span> </b>
     </div>
     <div style="position: absolute;top: 45px;z-index: 1;right: 5px;">
         <div class="layers-icon" (click)="onLayerClick($event)"></div>
@@ -33,6 +33,26 @@
     </div>
     <div #map id="map"  style="background-color: green">
        <!--  <button ion-button (click)="onButtonClick($event)">Demo</button> -->
+    </div>
+    <div style="    bottom: 0;
+    position: absolute;
+    background: #fff;
+    width: 100%;">
+        <div style="    right: 0;
+    width: 13%;
+    height: 50px;
+    position: absolute;
+    margin-top: -25px;
+    background: red;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%;
+    padding: 13px;
+    font-size: 21px;
+    color: #fff;">
+            <ion-icon name="create"></ion-icon>
+        </div>
+        <h1>hello</h1>    
     </div>
 </ion-content>
 <div class="my-overlay" padding [hidden]="overlayHidden">

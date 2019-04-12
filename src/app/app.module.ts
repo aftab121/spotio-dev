@@ -28,6 +28,7 @@ import { GetPinProvider } from '../providers/get-pin/get-pin';
 import {
   GoogleMaps
 } from '@ionic-native/google-maps';
+import { GetTerritoryProvider } from '../providers/get-territory/get-territory';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginProvider,
     AddpinProvider,
-    GetPinProvider
+    GetPinProvider,
+    GetTerritoryProvider
   ]
 })
 export class AppModule {}

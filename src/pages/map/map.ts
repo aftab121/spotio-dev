@@ -4,6 +4,7 @@ import { ListPage } from '../../pages/list/list';
 import {AddpinProvider} from '../../providers/addpin/addpin';
 import 'rxjs/add/operator/map';
 import { GetPinProvider } from '../../providers/get-pin/get-pin';
+import { GetTerritoryProvider } from '../../providers/get-territory/get-territory';
 import { Geolocation } from '@ionic-native/geolocation';
 
 import {
@@ -29,16 +30,27 @@ declare var google;
 export class MapPage {
 
     @ViewChild('map') mapElement: ElementRef;
-  map: any;
-  addpinfrm:any={};
-/*    map: GoogleMap;*/
-  overlayHidden: boolean = true;
+    map: any;
+    addpinfrm:any={};
+    /*    map: GoogleMap;*/
+    overlayHidden: boolean = true;
     loading:any;
-      responseObj:any;
-    constructor(public navCtrl: NavController,public loadingCtrl: LoadingController, public navParams: NavParams,public toastCtrl: ToastController, public plt: Platform, public addpinService:AddpinProvider , public PinProvider: GetPinProvider,private geolocation: Geolocation) {
-        this.plt.ready().then(() => {
-      this.loadMap2();
-    });
+    responseObj:any;
+    totalPins : number = 0;
+    PinsCount :any;
+    constructor(public navCtrl: NavController,public loadingCtrl: LoadingController, public navParams: NavParams,public toastCtrl: ToastController, public plt: Platform, public addpinService:AddpinProvider , public PinProvider: GetPinProvider, private geolocation: Geolocation, public TerritoryProvider: GetTerritoryProvider) {
+      this.plt.ready().then(() => {
+          this.loadMap2();
+      });
+
+      this.PinProvider.GetPinCount('1').then( (result) => {
+            console.log(JSON.stringify(result))
+            this.PinsCount = result.data;
+          }, (error) =>{
+
+          }
+
+        )
     }
 
 
@@ -49,32 +61,26 @@ export class MapPage {
     let latLng = new google.maps.LatLng('36.114647', '-115.172813');
 
     let mapOptions = {
-      center: latLng,
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      mapTypeControl: true,
-       mapTypeControlOptions: {
+        center: latLng,
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: false,
+        mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
             position: google.maps.ControlPosition.TOP_RIGHT
-          },
-      position: latLng
+        },
+        fullscreenControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        zoomControl: false,
+        position: latLng
     }
 
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
-    /*let marker = new google.maps.Marker({
-      map: this.map,
-      animation: google.maps.Animation.DROP,
-      position: latLng
-    });
+}
 
-    let content = "<h4>Heading</h4>";
-
-    this.addInfoWindow(marker, content);*/
-
-  }
-
-  addInfoWindow(marker, content){
+addInfoWindow(marker, content){
 
     let infoWindow = new google.maps.InfoWindow({
       content: content
@@ -84,7 +90,7 @@ export class MapPage {
       infoWindow.open(this.map, marker);
     });
 
-  }
+}
 
 
 
@@ -109,16 +115,14 @@ export class MapPage {
   ionViewDidLoad() {
     var obj = this;
     this.PinProvider.GetPinList('1').then((result) => {
+       obj.totalPins = result.data.total;
         result.data.data.forEach(function(value){ 
-            console.log(value); 
-             var myString = value.pin_status.color_code;
+            var myString = value.pin_status.color_code;
             var sillyString = myString.substr(1).slice(0);
             var iconImage = 'assets/markers/'+sillyString+'.png';
             var icon = {
                 url: iconImage, // url
-                scaledSize: new google.maps.Size(45, 45), // scaled size
-                //origin: new google.maps.Point(0,0), // origin
-                //anchor: new google.maps.Point(0, 0), // anchor
+                scaledSize: new google.maps.Size(30, 48), // scaled size
                 labelOrigin: new google.maps.Point(25,32)
             };
            
@@ -129,15 +133,75 @@ export class MapPage {
               animation: google.maps.Animation.DROP,
               position: new google.maps.LatLng(value.latitude, value.longitude)
             });
+           
+            google.maps.event.addListener(marker, 'click', (success) => {
+                console.log('pin click'+ success.va.pointerId);
+            });
         });
      }, (error) => {
        // console.log(JSON.stringify(error));
      });
+
+
+    this.TerritoryProvider.GetTerritoryList('1').then( (result)=>{
+        result.data.forEach(function(value){ 
+            var triangleCoords = new Array();
+            var data1 = value;
+            var cord = JSON.parse(data1.cords);
+            var trrname = data1.territory_name;
+            var id = data1.id; 
+
+            for(let j = 0; j < cord.length; j++){
+              var lt = parseFloat(cord[j]['lat']);
+              var ln = parseFloat(cord[j]['lng']);
+              var tmp = { lat: lt, lng: ln};
+             triangleCoords.push(tmp);
+            
+            }
+                
+                google.maps.Polygon.prototype.getBoundingBox = function() {
+                var bounds = new google.maps.LatLngBounds();
+                this.getPath().forEach(function(triangleCoords,index) {
+                  bounds.extend(triangleCoords)
+                });
+                return(bounds);
+              };
+            // Construct the polygon.
+            let bermudaTriangle = new google.maps.Polygon({
+              paths: triangleCoords,
+              strokeColor: data1.color_code,
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: data1.color_code,
+              fillOpacity: 0.35,
+              content: trrname
+            });
+            bermudaTriangle.setMap(obj.map);
+
+            new google.maps.Marker({
+                position: bermudaTriangle.getBoundingBox().getCenter(),
+                map: obj.map,
+                label: {
+                      color: '#FFFFFF',
+                      fontWeight: 'bold',
+                      fontSize:'24px',
+                      text: trrname,
+                    },
+                icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 0
+                    }
+              });
+          
+        });
+      }, (error) =>{
+
+      });
+    
     
   }
   AddPin(){
-    //alert('cliecked add pins'); 
-          var userid=localStorage.getItem('users_data');
+      var userid = localStorage.getItem('users_data');
       this.addpinService.createAddPin(userid).then((result)=>{
         if(result.resCode==1){        
           this.addpinfrm=result.data;

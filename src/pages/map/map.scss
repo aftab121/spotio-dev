@@ -27,6 +27,8 @@ page-map {
 	    font-size: 17px;
 	    line-height: 30px;
 	    padding-left: 10px;
+	     white-space: nowrap;
+	     overflow-x: auto;
 	  }
 	  #map {
 	    height: 100%;
