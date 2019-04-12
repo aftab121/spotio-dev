@@ -98,9 +98,14 @@
 		<ion-row>
 		<ion-col>
 			<div *ngIf="!isAvailable(i.options)">
-			<ion-item>	
+			<ion-item *ngIf="i.field_name!='Note'">	
 				<ion-label style="margin-bottom: 0px;">{{i.field_label}}</ion-label>			
-			<ion-input [(ngModel)]="todo[i.field_name]" [type]="i.type_name.field_type" [attr.name]="i.field_name"></ion-input>
+			<ion-input *ngIf="i.field_name!='phonenumber'" [(ngModel)]="todo[i.field_name]" [type]="i.type_name.field_type" [attr.name]="i.field_name"></ion-input>
+			<ion-input *ngIf="i.field_name=='phonenumber'" [(ngModel)]="todo.phone_number" [type]="i.type_name.field_type" name="phone_number"></ion-input>
+			</ion-item>
+			<ion-item *ngIf="i.field_name=='Note'">	
+				<ion-label style="margin-bottom: 0px;">{{i.field_label}}</ion-label>			
+			<ion-input [(ngModel)]="custum[i.field_name]" [type]="i.type_name.field_type" [attr.name]="i.field_name"></ion-input>
 			</ion-item>
 			</div>	
 			 <div *ngIf="isAvailable(i.options)">

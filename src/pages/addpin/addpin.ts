@@ -1,5 +1,5 @@
 import { Component,ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController  } from 'ionic-angular';
 import {AddpinProvider} from '../../providers/addpin/addpin';
 import {FilterProvider} from '../../providers/filter/filter';
 import {MapPage} from '../../pages/map/map';
@@ -25,11 +25,9 @@ export class AddpinPage {
 	todo: any = {};
 	custum:any={};
 	addpinfrm: any = {};
-	options: any = [];
-	check: boolean = false;
+	options: any = [];	
 	selectedEntry: string = "";
 	dropdown: boolean = true;
-	productname: string = "";
 	statusId:string="";
 	assignedId:string="";
 	array:any=[];
@@ -68,11 +66,10 @@ export class AddpinPage {
 		"color": "green"
 	},
 	]*/
-	constructor(public navCtrl: NavController, public navParams: NavParams, private _eref: ElementRef, public addpinService:AddpinProvider, public filterService:FilterProvider) {
+	constructor(public navCtrl: NavController, public navParams: NavParams, private _eref: ElementRef, public addpinService:AddpinProvider, public filterService:FilterProvider,private alertCtrl: AlertController) {
 		this.userid=localStorage.getItem('users_data');
 		this.addpinfrm = this.navParams.data.sort((a, b) => a.sort <= b.sort ? -1 : 1);
 		this.userData();
-
 	}
 
 	onClick(event) {
@@ -133,11 +130,11 @@ export class AddpinPage {
 		this.todo.userid=localStorage.getItem('users_data');	
 		this.todo.current_status=this.statusId;
 		this.todo.assigned_to=this.assignedId;
-		this.todo.phone_number=this.todo.phonenumber;
+		/*this.todo.phone_number=this.todo.phonenumber;
 		delete this.todo.phonenumber;
 		var note=this.todo.Note;
 		this.custum['Note']=note;
-		delete this.todo.Note;
+		delete this.todo.Note;*/
 		this.todo.custom_input=this.custum;
 		var json=JSON.stringify(this.todo);
 		 this.addpinService.AddMarker(json).then((result) => {
@@ -146,6 +143,8 @@ export class AddpinPage {
           this.navCtrl.setRoot(MapPage);          
           }
           else if(result.code==2){
+          	this.message=result.msg;
+          	 this.presentAlert(this.message);
             console.log("error");
           }
         }, (error) => {
@@ -208,4 +207,12 @@ export class AddpinPage {
     document.getElementById('assigned').innerText=item;
     this.assignedId=id;
   }
+  presentAlert(msg) {
+  let alert = this.alertCtrl.create({
+    title: 'Error',
+    subTitle: msg,
+    buttons: ['OK']
+  });
+  alert.present();
+}
 }
