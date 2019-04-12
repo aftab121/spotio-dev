@@ -24,7 +24,7 @@ export class MyApp {
   pages: Array<{title: string, component: any , icon: any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public globalService : GlobalProvider) { 
-   this.rootPage = this.currentUser > 0 ? 'MapPage' : LoginPage;
+  // this.rootPage = this.currentUser > 0 ? 'MapPage' : LoginPage;
     this.initializeApp();
     this.profileName();
 

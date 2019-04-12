@@ -1,6 +1,7 @@
 import { Component,ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AddpinProvider} from '../../providers/addpin/addpin';
+import {FilterProvider} from '../../providers/filter/filter';
 
 /**
  * Generated class for the AddpinPage page.
@@ -19,21 +20,28 @@ import {AddpinProvider} from '../../providers/addpin/addpin';
 })
 export class AddpinPage {	
 	userid:any;
-	todo: any = [];
+	todo: any = {};
 	custum:any={};
 	addpinfrm: any = {};
 	options: any = [];
-	checkbox: any = {};
-	item: string = "";
+	check: boolean = false;
 	selectedEntry: string = "";
 	dropdown: boolean = true;
-	fieldname: string = "";
+	productname: string = "";
+	statusId:string="";
+	assignedId:string="";
+	array:any=[];
+	newModel:any={};
+	assignedTo:Array<{ id: number, full_name: string,color:string, checked: false }> = [];
+
 	ddl = [{
 		"id": 0,
 		"name": "Select status...",
 		"color": "#e60000"
 	}];
-	Status = [{
+	Status:Array<{ id: number, pin_status_name: string,color_code:string, checked: false }> = [];
+
+	/*Status = [{
 		"id": 1,
 		"name": "Not Contacted",
 		"color": "#0000CD"
@@ -56,23 +64,36 @@ export class AddpinPage {
 		"name": "Sold",
 		"color": "green"
 	},
-	]
-	constructor(public navCtrl: NavController, public navParams: NavParams, private _eref: ElementRef, public addpinService:AddpinProvider) {
-		debugger
+	]*/
+	constructor(public navCtrl: NavController, public navParams: NavParams, private _eref: ElementRef, public addpinService:AddpinProvider, public filterService:FilterProvider) {
 		this.userid=localStorage.getItem('users_data');
 		this.addpinfrm = this.navParams.data.sort((a, b) => a.sort <= b.sort ? -1 : 1);
+		this.userData();
 
 	}
 
 	onClick(event) {
-		if (!this._eref.nativeElement.contains(event.target)) // or some similar check
-			this.closeDdl();
+		// if (!this._eref.nativeElement.contains(event.target)) // or some similar check
+			/*this.closeDdl();*/
+	}
+	userData() {
+		var userid = localStorage.getItem('users_data');
+		this.filterService.getUser(userid).then((result) => {
+			if (result.resCode == 1) {
+				this.assignedTo = result.data;
+			}
+		});
+		this.filterService.getPin(userid).then((result) => {
+			if (result.resCode == 1) {
+				this.Status = result.data;
+			}
+		});
 	}
 
-
-	closeDdl() {
+	/*closeDdl() {
 		alert('c;osied');
-	}
+	}*/
+
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad AddpinPage');
 	}
@@ -80,16 +101,18 @@ export class AddpinPage {
 	ToggleDropDown() {
 		this.dropdown = !this.dropdown;
 	}
-	OnChange(obj) {
-		debugger
+
+	OnChange(obj,id) {		
 		this.ddl[0].name = obj;
+		this.statusId=id;
 		console.log(obj);
+		this.dropdown = !this.dropdown;
 	}
 
 	reformat(str: string) {
 		if (str) {
-			var st = str.replace(/\n/g, ',').replace(/\s/g, '').split(',');			
-			return str.replace(/\n/g, ',').replace(/\s/g, '').split(',');
+			var st = str.replace(/\n/g, ',').split(',');			
+			return str.replace(/\n/g, ',').split(',');
 		}
 		return [];
 	}
@@ -101,13 +124,22 @@ export class AddpinPage {
 		}
 		return false;
 	}
-	savePin() {
-		debugger;		
-		this.todo.current_status=this.ddl[0].name;
+
+	savePin() {		
+		debugger;	
+		this.todo.userid=localStorage.getItem('users_data');	
+		this.todo.current_status=this.statusId;
+		this.todo.assigned_to=this.assignedId;
+		this.todo.phone_number=this.todo.phonenumber;
+		delete this.todo.phonenumber;
+		var note=this.todo.Note;
+		this.custum['Note']=note;
+		delete this.todo.Note;
 		this.todo.custom_input=this.custum;
 		var json=JSON.stringify(this.todo);
 		 this.addpinService.AddMarker(json).then((result) => {
           if(result.code == 1){ 
+          	console.log(result.data);
           console.log("success");          
           }
           else if(result.code==2){
@@ -118,23 +150,59 @@ export class AddpinPage {
       });
 		console.log(this.todo);
 	}
+
 	onSelectionChange(name, entry) {		
 		this.selectedEntry = entry;
 		this.custum[name]=entry;
 	}
 	
-	addCheckbox(event, checkbox : String,name) { 
-    if ( event.checked ) {     
-      this.custum[name]=checkbox;     
-    } else {
-      let index = this.removeCheckedFromArray(checkbox);
-      this.custum.splice(index,1);      
-    }
-  }
-  //Removes checkbox from array when you uncheck it
-  removeCheckedFromArray(checkbox : String) {
-    return this.todo.findIndex((i)=>{
-      return i === checkbox;
-    })
+	addCheckbox(event, val : String,name) { 		
+		var x=this.custum[name];
+		if (event.checked) {
+			if (x != undefined) {				
+				if (val == "BothProduct" || x != val) {
+					/*this.check=!this.check;*/
+					this.custum[name] = "Both Product";
+					this.array.push(val);
+				}
+			}
+			else {
+				this.custum[name] = val;
+				this.array.push(val);
+			}
+
+		}
+		else {			
+			for (var key in this.array) {
+				if (this.array[key] == val) {
+					delete this.array[key];
+				}
+			}
+			let newArr = new Array();
+			for (let k = 0; k < this.array.length; k++) {				
+				if (this.array[k] != undefined) {
+					newArr.push(this.array[k]);
+				}
+			}
+			this.array = new Array();
+			this.array = newArr;
+			if (this.array.length == 1) {
+				for (let i = 0; i < this.array.length; i++) {
+					this.custum[name] = this.array[i];
+				}
+			}
+			else if(this.array.length>1) {
+				delete this.custum[name];
+				this.custum[name] = "Both Product";
+			}
+			else{
+				delete this.custum[name];
+			}
+		}
+  } 
+
+  changeAssignee(id,item){
+    document.getElementById('assigned').innerText=item;
+    this.assignedId=id;
   }
 }
