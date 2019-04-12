@@ -6,7 +6,7 @@
      <div text-center style="float: left;">
             New Pin
         </div>
-        <div text-right style="width: 20%;float: right" (click)="goToMap()">
+        <div text-right style="width: 20%;float: right" (click)="savePin()">
             Save
         </div>
     </ion-title>
@@ -15,25 +15,33 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding>	
 	<ion-row>
 		<div style="position: relative;width:100%;">
 			<div class="ddl-item"  [ngStyle]="{'background': ddl[0].color}" (click)="ToggleDropDown()">
-		        <span>{{ddl[0].name}}</span>
+		        <span name="current_status">{{ddl[0].name}}</span>
 		        <span float-right class="left-icon"> <ion-icon ios="ios-arrow-down-outline" md="md-arrow-down"></ion-icon></span>
 		    </div>
 		    <div style="position:absolute;left:0; width:80%;padding-top: 8px;z-index: 999;" [hidden]="dropdown" >
-		    	<div class="ddl-item" [ngStyle]="{'background': i.color}" (click)=OnChange(i.name) *ngFor="let i of Status">
-			        <span>{{i.name}}</span>
-			    </div>
+		    	<div class="ddl-item" [ngStyle]="{'background': i.color_code}" (click)=OnChange(i.pin_status_name,i.id) *ngFor="let i of Status">
+		    		 
+                        <ion-option value="{{i.id}}">{{i.pin_status_name}}
+                        </ion-option>
+			    </div>			
 		    </div>
+		   
 		</div>
 	</ion-row>
 	<ion-row>
-		<ion-col>
-			<ion-item>		
+		<ion-col>			
+			<ion-item>			
 			<ion-label style="margin-bottom: 0px;">ASSIGNED TO:</ion-label>			
-			<ion-input [(ngModel)]="todo.assinged" type="text" name="assinged"></ion-input>
+			<!-- <ion-input [(ngModel)]="todo.assigned_to" type="text" name="assigned_to"></ion-input> -->
+			<ion-select id="assigned">
+
+		    		 <ion-option *ngFor="let item of assignedTo" (ionSelect)="changeAssignee(item.id,item.full_name)" value="{{item.id}}" >{{item.full_name}}</ion-option>
+			  
+            </ion-select>
 			</ion-item>
 		</ion-col>
 	</ion-row>
@@ -41,7 +49,7 @@
 		<ion-col>
 			<ion-item>		
 			<ion-label style="margin-bottom: 0px;">HOUSE NUMBER</ion-label>			
-			<ion-input [(ngModel)]="todo.street" type="text" name="street"></ion-input>
+			<ion-input [(ngModel)]="todo.house_number" type="text" name="house_number"></ion-input>
 			</ion-item>
 		</ion-col>
 	</ion-row>
@@ -49,7 +57,7 @@
 		<ion-col>
 			<ion-item>		
 			<ion-label style="margin-bottom: 0px;">HOUSE ADDRESS</ion-label>			
-			<ion-input [(ngModel)]="todo.streetname" type="text" name="streetname"></ion-input>
+			<ion-input [(ngModel)]="todo.house_address" type="text" name="house_address"></ion-input>
 			</ion-item>
 		</ion-col>
 	</ion-row>
@@ -81,7 +89,7 @@
 		<ion-col>
 			<ion-item>		
 			<ion-label style="margin-bottom: 0px;">ZIP</ion-label>			
-			<ion-input [(ngModel)]="todo.zip" type="text" name="zip"></ion-input>
+			<ion-input [(ngModel)]="todo.zipcode" type="text" name="zipcode"></ion-input>
 			</ion-item>
 		</ion-col>
 	</ion-row>
@@ -102,29 +110,20 @@
 		    				 		<div *ngFor="let n of reformat(i.options);let j=index">	
 			<ion-item>
 				     <ion-label>{{n}}</ion-label>		 							
-					 <ion-checkbox [(ngModel)]="todo[i.options[j]]" [attr.name]="i.options[j]" slot="start" [attr.value]="n"></ion-checkbox>
+					 <ion-checkbox name="checkbox" checked="false" (ionChange)="addCheckbox($event,n,i.field_name)" id="{{j}}" slot="start" [attr.value]="n"></ion-checkbox>
 			</ion-item>
 		</div>
 			</div>
 			 <div *ngIf="i.field_type=='7'">
-			 <ion-list [(ngModel)]="todo[i.options" radio-group  *ngFor="let n of reformat(i.options);let k=index">	
+			 <ion-list [(ngModel)]="newModel[i.options[n]]" radio-group *ngFor="let n of reformat(i.options);let k=index">	
 			 <ion-item>
 				     <ion-label>{{n}}</ion-label>
-                     <ion-radio slot="start" [attr.name]="i.options[k]" [attr.value]="n"></ion-radio>
+                     <ion-radio slot="start" [attr.name]="newModel[i.options[n]]" (ionSelect)="onSelectionChange(i.field_name,n)"  [attr.value]="n"></ion-radio>
 			</ion-item>
 			</ion-list>
 			</div>			
 		</div>
 		</ion-col>
 	</ion-row>
-	</div>	
-	<ion-row>
-		<ion-col>
-			<ion-item>		
-			<button class="button" (click)="savePin()">
-			  Save
-			</button>
-			</ion-item>
-		</ion-col>
-	</ion-row>
+	</div>		
 </ion-content>

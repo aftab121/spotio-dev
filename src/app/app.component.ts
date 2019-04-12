@@ -10,20 +10,21 @@ import { SettingsPage } from '../pages/settings/settings';
 import { ChatPage } from '../pages/chat/chat';
 import { AppointmentsPage } from '../pages/appointments/appointments';
 import {ChangepasswordPage} from '../pages/changepassword/changepassword'
-
+import { GlobalProvider } from "../providers/global/global";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-
-  rootPage: any = LoginPage;
-
+  username:any=[];
+  firstcahr:string="";
+  rootPage: any = LoginPage;  
   pages: Array<{title: string, component: any , icon: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
-    this.initializeApp();
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,public globalService : GlobalProvider) { 
+     this.initializeApp();
+    this.profileName();
 
     // used for an example of ngFor and navigation
     this.pages = [
@@ -56,6 +57,11 @@ export class MyApp {
                 title: 'CHANGE PASSWORD',
                 component: ChangepasswordPage,
                 icon: 'key'
+            },
+            {
+              title:'LOGOUT',
+              component:LoginPage,
+              icon:'key'
             }
         ];
     }
@@ -70,12 +76,30 @@ export class MyApp {
   }
 
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.pages.map( p => {
-      return p['active'] = (page.component === p.component);
-    });
-    this.nav.setRoot(page.component);
+  openPage(page) {   
+   
+    switch (true) {
+      case ((page.title == 'LOGOUT')):{
+           console.log('Clicked Logout button');
+            window.localStorage.clear();          
+         this.nav.setRoot(LoginPage);
+          }
+        break;      
+    default: {
+      this.pages.map(p => {
+        return p['active'] = (page.component === p.component);
+      });
+      this.nav.setRoot(page.component);
+    }
+        break;
+    }
+   
   }
+  
+  profileName(){       
+        if(localStorage.getItem('username')!=null){
+         this.username=localStorage.getItem('username').split(' ');
+         this.globalService.userNameChar=this.username[0][0]+this.username[1][0];          
+        }        
+    }
 }

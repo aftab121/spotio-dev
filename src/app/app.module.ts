@@ -29,6 +29,8 @@ import {
   GoogleMaps
 } from '@ionic-native/google-maps';
 import { GetTerritoryProvider } from '../providers/get-territory/get-territory';
+import { GlobalProvider } from '../providers/global/global';
+import { FilterProvider } from '../providers/filter/filter';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,10 @@ import { GetTerritoryProvider } from '../providers/get-territory/get-territory';
     LoginProvider,
     AddpinProvider,
     GetPinProvider,
-    GetTerritoryProvider
+    GetTerritoryProvider,
+    GlobalProvider,
+    FilterProvider,
+    FilterProvider
   ]
 })
 export class AppModule {}

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
 import { Calendar } from '@ionic-native/calendar';
+import { FilterProvider } from '../../providers/filter/filter';
+
 /**
  * Generated class for the FilterPage page.
  *
@@ -21,7 +23,8 @@ export class FilterPage {
 	dateFilter = {};
 	Status ={};
 	assignee = {};
-  constructor(public navCtrl: NavController, public navParams: NavParams, private datePicker: DatePicker,private calendar: Calendar) {
+	pindata:any={};
+  constructor(public navCtrl: NavController, public navParams: NavParams, private datePicker: DatePicker,private calendar: Calendar, public filterService : FilterProvider) {
   	this.Status = {
   		isCustom:false,
 		notConnected:false,
@@ -40,7 +43,7 @@ export class FilterPage {
 		thisYear:false,
 		lastYear:false
 	};
-	this.assignee =[
+/*	this.assignee =[
 		{
 			Name : "Avinash singh",
 			id : "avi",
@@ -56,7 +59,7 @@ export class FilterPage {
 			id : "shi",
 			isChecked : false
 		}
-	];
+	];*/
   	/*this.datePicker.show({
 	  date: new Date(),
 	  mode: 'date',
@@ -100,10 +103,26 @@ export class FilterPage {
 			this.clear =true;
 		}
   }
-  changeFilter(val){
+  changeFilter(val){  	
+  	var userid=localStorage.getItem('users_data');
+  	if(val==3){
+  	this.filterService.getUser(userid).then((result)=>{
+  		if(result.resCode==1){
+  			this.assignee=result.data;  			
+  		}
+  	})
+  }
+  if(val==2){
+  	this.filterService.getPin(userid).then((result)=>{
+  		if(result.resCode==1){
+  			this.pindata=result.data;  			
+  		}
+  	})
+  }
   	this.filter = val;
   }
   goToMap(){
   	this.navCtrl.pop();
   }
+
 }
