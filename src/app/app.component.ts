@@ -57,11 +57,6 @@ export class MyApp {
                 title: 'CHANGE PASSWORD',
                 component: ChangepasswordPage,
                 icon: 'key'
-            },
-            {
-              title:'LOGOUT',
-              component:LoginPage,
-              icon:'key'
             }
         ];
     }
@@ -78,24 +73,21 @@ export class MyApp {
 
   openPage(page) {   
    
-    switch (true) {
-      case ((page.title == 'LOGOUT')):{
-           console.log('Clicked Logout button');
-            window.localStorage.clear();          
-         this.nav.setRoot(LoginPage);
-          }
-        break;      
-    default: {
+   
       this.pages.map(p => {
         return p['active'] = (page.component === p.component);
       });
       this.nav.setRoot(page.component);
-    }
-        break;
+  
     }
    
-  }
   
+  logout(){
+     console.log('Clicked Logout button');
+            window.localStorage.clear();          
+         this.nav.setRoot(LoginPage);
+          
+  }
   profileName(){       
         if(localStorage.getItem('username')!=null){
          this.username=localStorage.getItem('username').split(' ');

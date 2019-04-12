@@ -16,6 +16,7 @@ import { LoginProvider } from '../../providers/login/login';
 export class ChangepasswordPage {
   todo={}; 
   message:any="";
+  showMsg:boolean=false;
   constructor(public navCtrl: NavController, public navParams: NavParams, public LoginService: LoginProvider) {
      
   }
@@ -24,15 +25,21 @@ export class ChangepasswordPage {
     console.log('ionViewDidLoad ChangepasswordPage');
   }
 changePassword(newpassword,oldpassword,confirmpassword){
-	if(newpassword!=confirmpassword){
-
+	if (newpassword != confirmpassword) {
+    this.message = "New password and confirm password do not match";
+    this.showMsg = true;
 	}
 	else{
 var userid=localStorage.getItem('users_data');
     this.LoginService.ChangePassword(oldpassword,newpassword,userid).then((result) => {
           if(result.msgCode == 1){
             this.message=result.msgText;
+             this.showMsg=true;
             console.log('success', JSON.stringify(result));
+          }
+          else if(result.msgCode==2){
+             this.message=result.msgText;
+             this.showMsg=true;
           }
         }, (error) => {
           console.log('error', JSON.stringify(error));
