@@ -6,6 +6,8 @@ import 'rxjs/add/operator/map';
 import { GetPinProvider } from '../../providers/get-pin/get-pin';
 import { GetTerritoryProvider } from '../../providers/get-territory/get-territory';
 import { Geolocation } from '@ionic-native/geolocation';
+import {EditpinPage} from '../../pages/editpin/editpin';
+
 
 import {
   GoogleMaps,
@@ -286,6 +288,18 @@ addInfoWindow(marker, content){
     });
 
     toast.present(toast);
+  }
+  editPin(id) {
+    debugger
+    var userid = localStorage.getItem('users_data');
+    this.addpinService.EditPin(userid,id).then((result) => {
+      if (result.resCode == 1) {       
+        this.navCtrl.push('EditpinPage', result.data);
+      }
+    }, (error) => {
+      console.log('error', JSON.stringify(error));
+    });
+    
   }
 
 }

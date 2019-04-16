@@ -83,7 +83,6 @@ import { FilterProvider } from '../providers/filter/filter';
     GetPinProvider,
     GetTerritoryProvider,
     GlobalProvider,
-    FilterProvider,
     FilterProvider
   ]
 })

@@ -68,6 +68,7 @@ export class AddpinPage {
 	]*/
 	constructor(public navCtrl: NavController, public navParams: NavParams, private _eref: ElementRef, public addpinService:AddpinProvider, public filterService:FilterProvider,private alertCtrl: AlertController) {
 		this.userid=localStorage.getItem('users_data');
+		//debugger; 
 		this.addpinfrm = this.navParams.data.sort((a, b) => a.sort <= b.sort ? -1 : 1);
 		this.userData();
 	}

@@ -43,4 +43,19 @@ export class AddpinProvider {
       })
     });
   }
+  EditPin(userid,id): Promise<any> {
+    return new Promise(resolve => {
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers });
+      let credentials = JSON.stringify({
+        userid: userid,
+        pin_id: id
+      });
+      var link = 'https://clients.managedcrmsolution.com/public/Api/GetPinDetail';
+      this.http.post(link, credentials, { headers: headers }).toPromise()
+        .then((response) => {
+          resolve(response.json());
+        });
+    });
+  }
 }
