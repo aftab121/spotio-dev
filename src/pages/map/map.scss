@@ -29,10 +29,10 @@ page-map {
 	    padding-left: 10px;
 	     white-space: nowrap;
 	     overflow-x: auto;
-	  }
-	  #map {
+	}
+	#map {
 	    height: 100%;
-	  }
+	}
 	.layers-icon {
     	background: url(../assets/icon/ios-apps.svg) no-repeat right;
     	width: 45px;
@@ -46,5 +46,27 @@ page-map {
     	height: 50px;
 		background-color: rgba(2, 2, 2, 0.5);
 		border-radius: 6px;
+	}
+
+	.FooterContainer{
+		bottom: 0;
+	    position: absolute;
+	    background: #fff;
+	    width: 100%;
+	    padding:10px
+	}
+	.editPencil{
+		right: 0;
+	    width: 13%;
+	    height: 50px;
+	    position: absolute;
+	    margin-top: -25px;
+	    background: red;
+	    text-align: center;
+	    vertical-align: middle;
+	    border-radius: 50%;
+	    padding: 13px;
+	    font-size: 21px;
+	    color: #fff;box-shadow: 0px 4px 5px #868686;
 	}
 }
