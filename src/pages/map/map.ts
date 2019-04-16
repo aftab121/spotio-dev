@@ -137,7 +137,8 @@ addInfoWindow(marker, content){
             });
            
             google.maps.event.addListener(marker, 'click', (success) => {
-                console.log('pin click'+ success.va.pointerId);
+                console.log('pin click'+ JSON.stringify(success) /*.va.pointerId*/);
+                console.log('pin va'+ success.va.pointerId /*.va.pointerId*/);
             });
         });
      }, (error) => {

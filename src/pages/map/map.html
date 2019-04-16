@@ -34,25 +34,24 @@
     <div #map id="map"  style="background-color: green">
        <!--  <button ion-button (click)="onButtonClick($event)">Demo</button> -->
     </div>
-    <div style="    bottom: 0;
-    position: absolute;
-    background: #fff;
-    width: 100%;">
-        <div style="    right: 0;
-    width: 13%;
-    height: 50px;
-    position: absolute;
-    margin-top: -25px;
-    background: red;
-    text-align: center;
-    vertical-align: middle;
-    border-radius: 50%;
-    padding: 13px;
-    font-size: 21px;
-    color: #fff;">
+
+    <div class="FooterContainer" style="">
+        <div class="editPencil" >
             <ion-icon name="create" (click)="editPin(1)"></ion-icon>
         </div>
-        <h1>hello</h1>    
+        <h1>NOT CONTACTED NEW</h1>
+        <h4>Home Owner</h4>
+        <ion-row>   
+            <ion-col col-9 style="padding-left: 0px">
+              15583 Country Road 1104<br>
+              Flint 75762
+            </ion-col>
+            <ion-col col-3>
+              Mar 18,2019 10:36 PM
+            </ion-col>
+        </ion-row> 
+ 
+          
     </div>
 </ion-content>
 <div class="my-overlay" padding [hidden]="overlayHidden">
