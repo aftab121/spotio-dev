@@ -32,49 +32,49 @@
 			<ion-label >
 				<span class="text">Today</span>
 			</ion-label>
-			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.today" (ionChange)="LoginRemCheck(dateFilter)"></ion-checkbox>
+			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.today" (ionChange)="DateCheck(dateFilter)"></ion-checkbox>
 		</ion-item>
 		<ion-item class="itemButton">
 			<ion-label >
 				<span class="text">Yesterday</span>
 			</ion-label>
-			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.yesterday" (ionChange)="LoginRemCheck(dateFilter)" ></ion-checkbox>
+			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.yesterday" (ionChange)="DateCheck(dateFilter)" ></ion-checkbox>
 		</ion-item>
 		<ion-item class="itemButton">
 			<ion-label >
 				<span class="text">This Week</span>
 			</ion-label>
-			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.thisWeek" (ionChange)="LoginRemCheck(dateFilter)"></ion-checkbox>
+			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.thisWeek" (ionChange)="DateCheck(dateFilter)"></ion-checkbox>
 		</ion-item>
 		<ion-item class="itemButton">
 			<ion-label>
 				<span class="text">Last Week</span>
 			</ion-label>
-			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.lastWeek" (ionChange)="LoginRemCheck(dateFilter)"></ion-checkbox>
+			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.lastWeek" (ionChange)="DateCheck(dateFilter)"></ion-checkbox>
 		</ion-item>
 		<ion-item class="itemButton">
 			<ion-label>
 				<span class="text">This Month</span>
 			</ion-label>
-			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.thisMonth" (ionChange)="LoginRemCheck(dateFilter)"></ion-checkbox>
+			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.thisMonth" (ionChange)="DateCheck(dateFilter)"></ion-checkbox>
 		</ion-item>
 		<ion-item class="itemButton">
 			<ion-label>
 				<span class="text">Last Month</span>
 			</ion-label>
-			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.lastMonth" (ionChange)="LoginRemCheck(dateFilter)"></ion-checkbox>
+			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.lastMonth" (ionChange)="DateCheck(dateFilter)"></ion-checkbox>
 		</ion-item>
 		<ion-item class="itemButton">
 			<ion-label>
 				<span class="text">This Year</span>
 			</ion-label>
-			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.thisYear" (ionChange)="LoginRemCheck(dateFilter)" ></ion-checkbox>
+			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.thisYear" (ionChange)="DateCheck(dateFilter)" ></ion-checkbox>
 		</ion-item>
 		<ion-item class="itemButton">
 			<ion-label>
 				<span class="text">Last Year</span>
 			</ion-label>
-			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.lastYear" (ionChange)="LoginRemCheck(dateFilter)"></ion-checkbox>
+			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.lastYear" (ionChange)="DateCheck(dateFilter)"></ion-checkbox>
 		</ion-item>
 		<ion-row>
 			<ion-col col-3 no-padding text-right>
@@ -89,7 +89,7 @@
 					<ion-datetime *ngIf="dateFilter.isCustom == true" tappable style="border: 2px solid #eee;" displayFormat="MM/DD/YYYY" [(ngModel)]="myDate2"></ion-datetime>
 			</ion-col>
 			<ion-col col-3 text-right padding-right padding-top>
-					<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.isCustom" (ionChange)="LoginRemCheck(dateFilter)"></ion-checkbox>
+					<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.isCustom" (ionChange)="DateCheck(dateFilter)"></ion-checkbox>
 			</ion-col>
 		</ion-row>
 	</ion-col>
