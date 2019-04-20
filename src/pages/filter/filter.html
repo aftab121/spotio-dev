@@ -101,7 +101,7 @@
 				<ion-icon name="pin" class="icon ion-ios-clock-outline" [ngStyle]="{'color': pin.color_code}"></ion-icon>
 				<span class="text">{{pin.pin_status_name}}</span>
 			</ion-label>
-			<ion-checkbox item-right  mode="ios" [(ngModel)]="pin.isChecked" [(ngModel)]="pin.pin_status_name" (ionChange)="LoginRemCheck(pin)"></ion-checkbox>
+			<ion-checkbox item-right  mode="ios" [(ngModel)]="pin.isChecked" (ionChange)="LoginRemCheck(pin)" [attr.value]="pin.id"></ion-checkbox>
 		</ion-item>		
 	</ion-col>
 </ion-row>
@@ -117,7 +117,7 @@
 			<ion-label>
 				<span class="text">{{User.full_name}}</span>
 			</ion-label>
-			<ion-checkbox item-right [(ngModel)]="User.isChecked"  mode="ios" (ionChange)="LoginRemCheck(User)" ></ion-checkbox>
+			<ion-checkbox item-right [(ngModel)]="User.isChecked"  mode="ios" (ionChange)="LoginRemCheck(User)" [attr.value]="User.id"></ion-checkbox>
 		</ion-item>
 	</ion-col>
 </ion-row>

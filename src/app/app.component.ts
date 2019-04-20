@@ -79,15 +79,8 @@ export class MyApp {
       });
       this.nav.setRoot(page.component);
   
-    }
-   
-  
-  logout(){
-     console.log('Clicked Logout button');
-            window.localStorage.clear();          
-         this.nav.setRoot(LoginPage);
-          
-  }
+    }  
+ 
   profileName(){       
         if(localStorage.getItem('username')!=null){
          this.username=localStorage.getItem('username').split(' ');

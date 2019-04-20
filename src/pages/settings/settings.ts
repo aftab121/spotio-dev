@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { LoginPage } from '../../pages/login/login';
 
 /**
  * Generated class for the SettingsPage page.
@@ -20,6 +21,13 @@ export class SettingsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
+  }
+
+  logout(){
+     console.log('Clicked Logout button');
+            window.localStorage.clear();          
+         this.navCtrl.setRoot(LoginPage);
+          
   }
 
 }

@@ -36,18 +36,19 @@
     </div>
 
     <div class="FooterContainer" style="">
-        <div class="editPencil" >
-            <ion-icon name="create" (click)="editPin(1)"></ion-icon>
+        <div class="editPencil">          
+            <ion-icon name="create" (click)="editPin(this.id)"></ion-icon>
         </div>
-        <h1>NOT CONTACTED NEW</h1>
-        <h4>Home Owner</h4>
+        <h1>{{Status}}</h1>
+        <h4>{{OwnerName}}</h4>
         <ion-row>   
             <ion-col col-9 style="padding-left: 0px">
-              15583 Country Road 1104<br>
-              Flint 75762
+              {{address}}<br>
+              {{pincode}} {{city}} {{state}}
             </ion-col>
             <ion-col col-3>
-              Mar 18,2019 10:36 PM
+             <!--  Mar 18,2019 10:36 PM -->
+             {{updateTime}}
             </ion-col>
         </ion-row> 
  
@@ -62,7 +63,7 @@
     margin-top: 65%;
     padding: 20px;">
         <h2>Select Action</h2>
-        <h5 (click)="AddPin()" >Add Pin</h5>
+        <h5 (click)="AddPin()">Add Pin</h5>
         <h5>Select Pins</h5>
         <span  float-right style="font-size: 18px;color:#358fcd" (click)="hideOverlay()">CANCEL</span>
     </div>

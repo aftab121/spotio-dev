@@ -18,21 +18,25 @@ export class GetPinProvider {
     console.log('Hello LoginProvider Provider');
   }
 
-   GetPinList(UserId,current='1'): Promise<any> {
+  GetPinList(UserId, current = '1', pin_status, assigned_to, start_date, custom_date, end_date): Promise<any> {
 
-
+    debugger;
     return new Promise(resolve => {
-      let headers = new Headers( { 'Content-Type' : 'application/json' }); 
-        let options = new RequestOptions({ headers: headers });
-        let credentials = JSON.stringify({
-            userid : UserId
-        });
-      var link = 'https://clients.managedcrmsolution.com/public/Api/GetMarkerList?page='+ current;
-      this.http.post(link , credentials, { headers: headers } ).toPromise()
-        .then((response) =>
-      {
-        resolve(response.json());
-      })
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers });
+      let credentials = JSON.stringify({
+        userid: UserId,
+        assigned_to: assigned_to,
+        status: pin_status,
+        start_date: start_date,
+        end_date: end_date,
+        custom: custom_date
+      });
+      var link = 'https://clients.managedcrmsolution.com/public/Api/GetMarkerList?page=' + current;
+      this.http.post(link, credentials, { headers: headers }).toPromise()
+        .then((response) => {
+          resolve(response.json());
+        })
     });
   }
 

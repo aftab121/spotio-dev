@@ -31,58 +31,82 @@ declare var google;
 })
 export class MapPage {
 
-    @ViewChild('map') mapElement: ElementRef;
-    map: any;
-    addpinfrm:any={};
-    /*    map: GoogleMap;*/
-    overlayHidden: boolean = true;
-    loading:any;
-    responseObj:any;
-    totalPins : number = 0;
-    PinsCount :any;
-    constructor(public navCtrl: NavController,public loadingCtrl: LoadingController, public navParams: NavParams,public toastCtrl: ToastController, public plt: Platform, public addpinService:AddpinProvider , public PinProvider: GetPinProvider, private geolocation: Geolocation, public TerritoryProvider: GetTerritoryProvider) {
-      this.plt.ready().then(() => {
-          this.loadMap2();
-      });
+  @ViewChild('map') mapElement: ElementRef;
+  map: any;
+  addpinfrm: any = {};
+  /*    map: GoogleMap;*/
+  overlayHidden: boolean = true;
+  loading: any;
+  responseObj: any;
+  totalPins: number = 0;
+  PinsCount: any;
+  id: number = 0;
+  Status: string = "";
+  OwnerName: string = "";
+  address: string = "";
+  pincode: string = "";
+  city: string = "";
+  state: string = "";
+  updateTime: string = "";
+  data_filter:any=[];
+   userid: string="";
+   assigned_to: string="";
+   pin_status: string="";
+   start_date: string="";
+   end_date: string="";
+   custom_date: string="";
+  status_filter:any=[];
+  user_filter:any=[];
+  id2:string="";
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public navParams: NavParams, public toastCtrl: ToastController, public plt: Platform, public addpinService: AddpinProvider, public PinProvider: GetPinProvider, private geolocation: Geolocation, public TerritoryProvider: GetTerritoryProvider) {
+    if(navParams.data['filter']!=undefined){
+       //this.data_filter.push(navParams.data['filter']);//      
+       this.assigned_to=navParams.data['filter']['assigned_to']!=undefined?navParams.data['filter']['assigned_to']:'';
+       this.pin_status=navParams.data['filter']['status']!=undefined?navParams.data['filter']['status']:'';
+       this.start_date=navParams.data['filter']['start_date']!=undefined?navParams.data['filter']['start_date']:'';
+       this.end_date=navParams.data['filter']['end_date']!=undefined?navParams.data['filter']['end_date']:'';
+       this.custom_date=navParams.data['filter']['custom_date']!=undefined?navParams.data['filter']['custom_date']:'';
+    }   
+    this.plt.ready().then(() => {
+      this.loadMap2();
+    });
+    this.PinProvider.GetPinCount('1').then((result) => {
+      console.log(JSON.stringify(result))
+      this.PinsCount = result.data;
+    }, (error) => {
 
-      this.PinProvider.GetPinCount('1').then( (result) => {
-            console.log(JSON.stringify(result))
-            this.PinsCount = result.data;
-          }, (error) =>{
+    });
 
-          }
-
-        )
-    }
+  }
 
 
 
 
-    loadMap2(){
+  loadMap2() {
 
     let latLng = new google.maps.LatLng('36.114647', '-115.172813');
 
     let mapOptions = {
-        center: latLng,
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        mapTypeControl: false,
-        mapTypeControlOptions: {
-            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: google.maps.ControlPosition.TOP_RIGHT
-        },
-        fullscreenControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        zoomControl: false,
-        position: latLng
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: false,
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+        position: google.maps.ControlPosition.TOP_RIGHT
+      },
+      fullscreenControl: false,
+      scaleControl: false,
+      streetViewControl: false,
+      zoomControl: false,
+      position: latLng
     }
 
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
-}
+  }
 
-addInfoWindow(marker, content){
+  addInfoWindow(marker, content) {
 
     let infoWindow = new google.maps.InfoWindow({
       content: content
@@ -92,20 +116,20 @@ addInfoWindow(marker, content){
       infoWindow.open(this.map, marker);
     });
 
-}
+  }
 
 
 
-//Show UI loader of ionic
-  showLoader(){
+  //Show UI loader of ionic
+  showLoader() {
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...'
     });
     this.loading.present();
   }
-  
+
   //Hide UI loader of ionic
-  hideLoader(){
+  hideLoader() {
     this.loading.dismiss();
   }
   public showOverlay() {
@@ -115,110 +139,168 @@ addInfoWindow(marker, content){
     this.overlayHidden = true;
   }
   ionViewDidLoad() {
+    let loading = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: '<ion-spinner name="dots"></ion-spinner>',
+      duration: 5000
+    });
+    loading.present();
     var obj = this;
-    this.PinProvider.GetPinList('1').then((result) => {
-       obj.totalPins = result.data.total;
-        result.data.data.forEach(function(value){ 
-            var myString = value.pin_status.color_code;
-            var sillyString = myString.substr(1).slice(0);
-            var iconImage = 'assets/markers/'+sillyString+'.png';
-            var icon = {
-                url: iconImage, // url
-                scaledSize: new google.maps.Size(30, 48), // scaled size
-                labelOrigin: new google.maps.Point(25,32)
-            };
-           
-
-            let marker = new google.maps.Marker({
-              icon: icon,
-              map: obj.map,
-              animation: google.maps.Animation.DROP,
-              position: new google.maps.LatLng(value.latitude, value.longitude)
+    this.userid=localStorage.getItem('users_data');
+    this.PinProvider.GetPinList(this.userid,'1',this.pin_status,this.assigned_to,this.start_date,this.custom_date,this.end_date).then((result) => {
+      //debugger;      
+      let result_data: any = [];
+      let arr: any = this.data_filter[0];
+    /*  if (this.data_filter.length > 0) {
+        if (arr.assigned_to != null) {
+          let assignee = arr.assigned_to.split(',');
+          for (var i in assignee) {
+            result.data.filter(function(item) {
+              if (item.assigned_to === arr.assigned_to[i].toString()) {
+                result_data.push(item);
+              }
             });
-           
-            google.maps.event.addListener(marker, 'click', (success) => {
-                console.log('pin click'+ JSON.stringify(success) /*.va.pointerId*/);
-                console.log('pin va'+ success.va.pointerId /*.va.pointerId*/);
+          }
+        }
+        if (arr.status != null) {
+          let pin_status = arr.status.split(',');
+          for (var i in pin_status) {
+            result.data.filter(function(item) {
+              if (item.current_status === pin_status[i].toString()) {
+                result_data.push(item);
+              }
             });
-        });
-     }, (error) => {
-       // console.log(JSON.stringify(error));
-     });
-
-
-    this.TerritoryProvider.GetTerritoryList('1').then( (result)=>{
-        result.data.forEach(function(value){ 
-            var triangleCoords = new Array();
-            var data1 = value;
-            var cord = JSON.parse(data1.cords);
-            var trrname = data1.territory_name;
-            var id = data1.id; 
-
-            for(let j = 0; j < cord.length; j++){
-              var lt = parseFloat(cord[j]['lat']);
-              var ln = parseFloat(cord[j]['lng']);
-              var tmp = { lat: lt, lng: ln};
-             triangleCoords.push(tmp);
-            
+          }
+        }
+        if (arr.date != null) {
+          result.data.filter(function(item) {
+            if (item.created_at === new Date(arr.date)) {
+              result_data.push(item);
             }
-                
-                google.maps.Polygon.prototype.getBoundingBox = function() {
-                var bounds = new google.maps.LatLngBounds();
-                this.getPath().forEach(function(triangleCoords,index) {
-                  bounds.extend(triangleCoords)
-                });
-                return(bounds);
-              };
-            // Construct the polygon.
-            let bermudaTriangle = new google.maps.Polygon({
-              paths: triangleCoords,
-              strokeColor: data1.color_code,
-              strokeOpacity: 0.8,
-              strokeWeight: 2,
-              fillColor: data1.color_code,
-              fillOpacity: 0.35,
-              content: trrname
-            });
-            bermudaTriangle.setMap(obj.map);
+          });
+        }
+        result.data = result_data;
+      }*/
 
-            new google.maps.Marker({
-                position: bermudaTriangle.getBoundingBox().getCenter(),
-                map: obj.map,
-                label: {
-                      color: '#FFFFFF',
-                      fontWeight: 'bold',
-                      fontSize:'24px',
-                      text: trrname,
-                    },
-                icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        scale: 0
-                    }
-              });
-          
+      obj.totalPins = result.data.length;
+      result.data.forEach(function(value) {
+        var myString = value.pin_status.color_code;
+        var sillyString = myString.substr(1).slice(0);
+        var iconImage = 'assets/markers/' + sillyString + '.png';
+        var icon = {
+          url: iconImage, // url
+          scaledSize: new google.maps.Size(30, 48), // scaled size
+          labelOrigin: new google.maps.Point(25, 32)
+        };
+
+
+        let marker = new google.maps.Marker({
+          icon: icon,
+          map: obj.map,
+          animation: google.maps.Animation.DROP,
+          position: new google.maps.LatLng(value.latitude, value.longitude),
+          pinData: value
         });
-      }, (error) =>{
+
+        /*this.map = new google.maps.Map(mapElemnt.nativeElement, marker);*/
+        /*  let infoWindow = new google.maps.InfoWindow({
+        content: value.name + " " + value.state
+        });*/
+
+        google.maps.event.addListener(marker, 'click', () => {
+          var options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+          var timeoption = { hh: 'numeric', mm: 'numeric' }
+          var date = new Date(marker.pinData.pin_updates[0].updated_at);
+          this.id = marker.pinData.id;
+          this.Status = marker.pinData.pin_status.pin_status_name;
+          this.OwnerName = marker.pinData.name;
+          this.address = marker.pinData.house_number + ' ' + marker.pinData.house_address;
+          this.pincode = marker.pinData.zipcode;
+          this.city = marker.pinData.city;
+          this.state = marker.pinData.state;
+          this.updateTime = date.toLocaleString("en-US", options);
+          /*  var info=infoWindow.get(marker.map,marker);
+          infoWindow.open(marker.map, marker);*/
+        });
+      }, this,);
+    }, (error) => {
+       console.log(JSON.stringify(error));
+    });
+
+
+    this.TerritoryProvider.GetTerritoryList('1').then((result) => {
+      result.data.forEach(function(value) {
+        var triangleCoords = new Array();
+        var data1 = value;
+        var cord = JSON.parse(data1.cords);
+        var trrname = data1.territory_name;
+        var id = data1.id;
+
+        for (let j = 0; j < cord.length; j++) {
+          var lt = parseFloat(cord[j]['lat']);
+          var ln = parseFloat(cord[j]['lng']);
+          var tmp = { lat: lt, lng: ln };
+          triangleCoords.push(tmp);
+
+        }
+
+        google.maps.Polygon.prototype.getBoundingBox = function() {
+          var bounds = new google.maps.LatLngBounds();
+          this.getPath().forEach(function(triangleCoords, index) {
+            bounds.extend(triangleCoords)
+          });
+          return (bounds);
+        };
+        // Construct the polygon.
+        let bermudaTriangle = new google.maps.Polygon({
+          paths: triangleCoords,
+          strokeColor: data1.color_code,
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: data1.color_code,
+          fillOpacity: 0.35,
+          content: trrname
+        });
+        bermudaTriangle.setMap(obj.map);
+
+        new google.maps.Marker({
+          position: bermudaTriangle.getBoundingBox().getCenter(),
+          map: obj.map,
+          label: {
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            fontSize: '24px',
+            text: trrname,
+          },
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 0
+          }
+        });
 
       });
-    
-    
+    }, (error) => {
+
+    });
+
+   
   }
-  AddPin(){
-      var userid = localStorage.getItem('users_data');
-      this.addpinService.createAddPin(userid).then((result)=>{
-        if(result.resCode==1){        
-          this.addpinfrm=result.data;
-             this.overlayHidden = true;
-             this.navCtrl.push('AddpinPage',result.data);
-        }
-      },(error)=>{
-        console.log('error',JSON.stringify(error));
-      }) 
+  AddPin() {
+    var userid = localStorage.getItem('users_data');
+    this.addpinService.createAddPin(userid).then((result) => {
+      if (result.resCode == 1) {
+        this.addpinfrm = result.data;
+        this.overlayHidden = true;
+        this.navCtrl.push('AddpinPage', result.data);
+      }
+    }, (error) => {
+      console.log('error', JSON.stringify(error));
+    })
   }
-  goToFilter(){
+  goToFilter() {
     this.navCtrl.push('FilterPage')
   }
-  goToList(){
+  goToList() {
     this.navCtrl.setRoot(ListPage)
   }
 
@@ -236,15 +318,15 @@ addInfoWindow(marker, content){
       }
     });
 
-    this.map.on(GoogleMapsEvent.MAP_READY).subscribe(() => {alert('Map is ready!')});
+    this.map.on(GoogleMapsEvent.MAP_READY).subscribe(() => { alert('Map is ready!') });
 
   }
-    onNavingateClick(){
+  onNavingateClick() {
     this.getGeolocation();
   }
 
-    public getGeolocation(){
-    
+  public getGeolocation() {
+
   }
 
   onButtonClick() {
@@ -253,7 +335,7 @@ addInfoWindow(marker, content){
     // Get the location of you
     this.map.getMyLocation()
       .then((location: MyLocation) => {
-        console.log(JSON.stringify(location, null ,2));
+        console.log(JSON.stringify(location, null, 2));
 
         // Move the map camera to the location with animation
         this.map.animateCamera({
@@ -261,23 +343,23 @@ addInfoWindow(marker, content){
           zoom: 17,
           tilt: 30
         })
-        .then(() => {
-          // add a marker
-          let marker: Marker = this.map.addMarkerSync({
-            title: '@ionic-native/google-maps plugin!',
-            snippet: 'This plugin is awesome!',
-            position: location.latLng,
-            animation: GoogleMapsAnimation.BOUNCE
-          });
+          .then(() => {
+            // add a marker
+            let marker: Marker = this.map.addMarkerSync({
+              title: '@ionic-native/google-maps plugin!',
+              snippet: 'This plugin is awesome!',
+              position: location.latLng,
+              animation: GoogleMapsAnimation.BOUNCE
+            });
 
-          // show the infoWindow
-          marker.showInfoWindow();
+            // show the infoWindow
+            marker.showInfoWindow();
 
-          // If clicked it, display the alert
-          marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-            this.showToast('clicked!');
+            // If clicked it, display the alert
+            marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+              this.showToast('clicked!');
+            });
           });
-        });
       });
   }
 
@@ -290,17 +372,16 @@ addInfoWindow(marker, content){
 
     toast.present(toast);
   }
-  editPin(id) {
-    debugger
+  editPin(id) {    
     var userid = localStorage.getItem('users_data');
-    this.addpinService.EditPin(userid,id).then((result) => {
-      if (result.resCode == 1) {       
+    this.addpinService.EditPin(userid, id).then((result) => {
+      if (result.resCode == 1) {
         this.navCtrl.push('EditpinPage', result.data);
       }
     }, (error) => {
       console.log('error', JSON.stringify(error));
     });
-    
+
   }
 
 }

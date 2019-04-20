@@ -42,30 +42,6 @@ export class AddpinPage {
 	}];
 	Status:Array<{ id: number, pin_status_name: string,color_code:string, checked: false }> = [];
 
-	/*Status = [{
-		"id": 1,
-		"name": "Not Contacted",
-		"color": "#0000CD"
-	}, {
-		"id": 2,
-		"name": "Not Home",
-		"color": "#e60000"
-	},
-	{
-		"id": 3,
-		"name": "Not Interested",
-		"color": "#FFD700"
-	},
-	{
-		"id": 4,
-		"name": "Lead",
-		"color": "#F19B2B"
-	}, {
-		"id": 5,
-		"name": "Sold",
-		"color": "green"
-	},
-	]*/
 	constructor(public navCtrl: NavController, public navParams: NavParams, private _eref: ElementRef, public addpinService:AddpinProvider, public filterService:FilterProvider,private alertCtrl: AlertController) {
 		this.userid=localStorage.getItem('users_data');
 		//debugger; 
