@@ -19,8 +19,6 @@ export class GetPinProvider {
   }
 
   GetPinList(UserId, current = '1', pin_status, assigned_to, start_date, custom_date, end_date): Promise<any> {
-
-    debugger;
     return new Promise(resolve => {
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let options = new RequestOptions({ headers: headers });
@@ -42,8 +40,6 @@ export class GetPinProvider {
 
 
   GetPinCount(UserId): Promise<any> {
-
-
     return new Promise(resolve => {
   		let headers = new Headers( { 'Content-Type' : 'application/json' }); 
         let options = new RequestOptions({ headers: headers });

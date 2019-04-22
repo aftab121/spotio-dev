@@ -27,10 +27,11 @@ export class FilterPage {
 	data_filter: any = [];
 	date: Array<{ from: string, to: string, isChecked: boolean, day: string }> = [];
 	id: number = 0;
+	newModel:any=[];
 	constructor(public navCtrl: NavController, public navParams: NavParams, private datePicker: DatePicker, private calendar: Calendar, public filterService: FilterProvider) {
 		this.getUserList();
 		this.getStatus();
-		this.dateFilter = {
+		this.dateFilter = ({
 			today: false,
 			yesterday: false,
 			thisWeek: false,
@@ -40,7 +41,7 @@ export class FilterPage {
 			thisYear: false,
 			lastYear: false,
 			custom: false
-		};
+		});
 	}
 	todo = {};
 	filter: number = 1;
@@ -79,20 +80,16 @@ export class FilterPage {
 		}
 	}
 	DateCheck(data) {
-		let i = 0;
-		Object.keys(data).forEach(key => {
+		let i = 0;		
+		Object.keys(data).forEach(key => {		
 			if (data[key] == true) {
 				i++;
 				this.DateConvert(key, true);
-			}
-			else {
 				this.clear = true;
-				//this.DateConvert(key, false);
-			}
+				return true;
+			}					
 		});
-		if (i > 0) {
-			this.clear = true;
-		}
+		
 	}
 	changeFilter(val) {
 		this.filter = val;
@@ -121,13 +118,20 @@ export class FilterPage {
 		}
 		for (var key in this.date) {
 			if (this.date[key].isChecked) {
-				if (key != "today" && key != "yesterday" ) {
+				if(this.date[key].day == "custom"){
+					if (this.date[key].from != '' && this.date[key].to != null) {
+						this.data_filter['start_date'] = this.myDate1;
+						this.data_filter['end_date'] = this.myDate2;
+					}
+					else {
+						this.data_filter['custom_date'] = this.date[key].from != '' ? this.date[key].from : this.date[key].to;
+					}				
+					
+				}
+				else if (this.date[key].day != "today" && this.date[key].day != "yesterday" ) {
 					this.data_filter['start_date'] = this.date[key].from;
 					this.data_filter['end_date'] = this.date[key].to;
-				}
-			/*	else if(key != "custom"){
-					this.data_filter['start_date']=document.getElementsByClassName[0]('datetime-text').innerText;
-				}*/
+				}			   
 				else {
 					this.data_filter['custom_date'] = this.date[key].to;
 				}
@@ -135,7 +139,7 @@ export class FilterPage {
 		}
 		this.navCtrl.setRoot('MapPage', { filter: this.data_filter });
 		//this.navCtrl.pop();
-	}
+	}	
 	getStatus() {
 		var userid = localStorage.getItem('users_data');
 		this.filterService.getPin(userid).then((result) => {
@@ -153,7 +157,6 @@ export class FilterPage {
 		});
 	}
 	getFirstLastDayOfLastWeek(userDate) {
-		debugger;
 		let result = {};
 
 		let curr = new Date(userDate); // get current date
@@ -169,7 +172,6 @@ export class FilterPage {
 		return result;
 	};
 	getFirstLastDayOfthisWeek(userDate) {
-		debugger;
 		let result = {};
 
 		let curr = new Date(userDate); // get current date
@@ -185,7 +187,6 @@ export class FilterPage {
 		return result;
 	};
 	getFirstLastDayOfthisMonth() {
-		debugger;
 		let result = {};
 		var date = new Date(), y = date.getFullYear(), m = date.getMonth();
 		var firstDay = new Date(y, m, 1);
@@ -199,7 +200,6 @@ export class FilterPage {
 		return result;
 	};
 	getFirstLastDayOflastMonth() {
-		debugger;
 		let result = {};
 		var date = new Date(), y = date.getFullYear(), m = date.getMonth() - 1;
 		var firstDay = new Date(y, m, 1);
@@ -212,7 +212,6 @@ export class FilterPage {
 		return result;
 	};
 	getFirstLastDayOfthisYear() {
-		debugger;
 		let result = {};
 		var firstDay = new Date(new Date().getFullYear(), 0, 1)
 		var lastDay = new Date(new Date().getFullYear(), 11, 31)
@@ -224,7 +223,6 @@ export class FilterPage {
 		return result;
 	};
 	getFirstLastDayOflastYear() {
-		debugger;
 		let result = {};
 		var firstDay = new Date(new Date().getFullYear() - 1, 0, 1)
 		var lastDay = new Date(new Date().getFullYear() - 1, 11, 31)
@@ -235,6 +233,10 @@ export class FilterPage {
 		};
 		return result;
 	};
+	customDateTime(){	
+		this.date=[];
+		this.date.push({ from: this.myDate1!=undefined?this.myDate1:'', to: this.myDate2!=undefined?this.myDate2:'', isChecked: true, day: 'custom' });	
+	}
 	DateConvert(type: string, isChecked) {
 		this.date=[];
 		if (isChecked == true) {

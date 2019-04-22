@@ -151,36 +151,6 @@ export class MapPage {
       //debugger;      
       let result_data: any = [];
       let arr: any = this.data_filter[0];
-    /*  if (this.data_filter.length > 0) {
-        if (arr.assigned_to != null) {
-          let assignee = arr.assigned_to.split(',');
-          for (var i in assignee) {
-            result.data.filter(function(item) {
-              if (item.assigned_to === arr.assigned_to[i].toString()) {
-                result_data.push(item);
-              }
-            });
-          }
-        }
-        if (arr.status != null) {
-          let pin_status = arr.status.split(',');
-          for (var i in pin_status) {
-            result.data.filter(function(item) {
-              if (item.current_status === pin_status[i].toString()) {
-                result_data.push(item);
-              }
-            });
-          }
-        }
-        if (arr.date != null) {
-          result.data.filter(function(item) {
-            if (item.created_at === new Date(arr.date)) {
-              result_data.push(item);
-            }
-          });
-        }
-        result.data = result_data;
-      }*/
 
       obj.totalPins = result.data.length;
       result.data.forEach(function(value) {

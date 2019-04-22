@@ -15,7 +15,9 @@ import { Calendar } from '@ionic-native/calendar';
   templateUrl: 'create-appointment.html',
 })
 export class CreateAppointmentPage {
-event = { title: "", location: "", message: "", startDate: "", endDate: "" };
+  myDate;
+  myTime;
+event = { pin_name: "",name:"", location: "", message: "", startDate: "", endDate: "", startTime:"", endTime:"" };
   constructor(public alertCtrl: AlertController,public navCtrl: NavController, public navParams: NavParams,private calendar: Calendar) {
   }
 
@@ -24,7 +26,7 @@ event = { title: "", location: "", message: "", startDate: "", endDate: "" };
   }
 
   save() {
-  this.calendar.createEvent(this.event.title, this.event.location, this.event.message, new Date(this.event.startDate), new Date(this.event.endDate)).then(
+  this.calendar.createEvent(this.event.pin_name, this.event.location, this.event.message, new Date(this.event.startDate), new Date(this.event.endDate)).then(
     (msg) => {
       let alert = this.alertCtrl.create({
         title: 'Success!',
@@ -44,5 +46,10 @@ event = { title: "", location: "", message: "", startDate: "", endDate: "" };
     }
   );
 }
-
+change(datePicker){
+  console.log("date",this.myDate);
+  console.log("datePicker",datePicker);
+ 
+  datePicker.open();
+}
 }

@@ -14,7 +14,7 @@
          <ion-col size="9" size-md styel="text-align: right; font-size: 23px; font-weight: 500;">
          Pin Details
          </ion-col>
-         <ion-col size="3" size-md style="text-align: right; font-size: 17px; font-weight: 500; line-height: 28px;">
+         <ion-col size="3" size-md style="text-align: right; font-size: 17px; font-weight: 500; line-height: 28px;" (click)="editPin(items.id)">
           EDIT
          </ion-col>  
         </ion-row>
@@ -25,28 +25,28 @@
 <ion-content style="background-color: #F0F0F0;">
    <div class="details-title">
        <ion-row>
-           <ion-col class="details-title-content">Not Interseted</ion-col>
+           <ion-col class="details-title-content">{{items.pin_status.pin_status_name}}</ion-col>
        </ion-row>
    </div>
     <div class="details-Content">
         <div class = "list" style="height: 40px; padding: 11px; font-size: 17px;">
             <label class = "item item-input">
-             Name     
+            Name 
             </label>
 
             <label class = "item item-input" style="margin-left: 71px; color: #5f5a5a;">
-               Nextolive
+               {{items.name}}
             </label>
         </div>
         <hr style="margin: 0 11px 1px 11px;height: 2px;">
         <div class = "list" style="height: 40px; padding: 11px; font-size: 17px;">
             <label class = "item item-input">
-              Address   
+             Address  
             </label>
 
             <label class = "item item-input" style="margin-left: 51px; color: #5f5a5a;">
-              Kurshi Road,Kursi Road<br>
-               <p style="margin-top: 2px;float: right;margin-right: 40px;">Lucknow, Uttar Pradesh</p>
+              {{items.address1}},{{items.address2}}<br>
+               <p style="margin-top: 2px;float: right;margin-right: 40px;">{{items.city}}, {{items.state}}</p>
             </label>
         </div>
 </div>
@@ -62,26 +62,26 @@
             </label>
 
             <label class = "item item-input" style="margin-left: 14px; color: #5f5a5a;">
-               Avinash Singh
+               {{items.user.full_name}}
             </label>
         </div>
   </div>
-   <div class="details-Content" style="height: 48px;">
+  <!--  <div class="details-Content" style="height: 48px;">
   
          <div class="item-note docs_img_List">        
         Docs & Images
         <ion-icon name="ios-arrow-forward" style="float: right;"></ion-icon>
       </div>      
     
-   </div>
+   </div> -->
       <div class="details-Content" style="height: 48px;">
   
          <ion-row>
             <ion-col>
-                Status Hostory
+                Status History
             </ion-col>
          </ion-row>   
-          <ion-row style="margin-top: 10px;">
+        <!--   <ion-row style="margin-top: 10px;">
             <ion-icon name="pin" class="icon ion-ios-clock-outline" style="color: #ffC977;line-height: 55px; padding-left: 4px;"></ion-icon>
             <ion-col>              
               <p>Today</p>
@@ -91,7 +91,7 @@
                <p style="float: left;">by</p> 
                <p>Shilpa Choudhary</p>
             </ion-col>
-         </ion-row>     
+         </ion-row>      -->
     
    </div>
 </ion-content>

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import {IonicPage NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MapPage } from '../../pages/map/map';
 import { PinDetailsPage } from '../../pages/pindetails/pindetails';
+import { PinlistProvider } from '../../providers/pinlist/pinlist';
 
 @Component({
   selector: 'page-list',
@@ -10,37 +11,79 @@ import { PinDetailsPage } from '../../pages/pindetails/pindetails';
 export class ListPage {
   selectedItem: any;
   icons: string[];
-  items: Array<{title: string, date: string, time: string, address1:string, address2:string, city:string, state:string, icon: string}>;
+  items: Array<{id:string, title: string, date: string, time: string, address1:string, address2:string, city:string, state:string, pin_status: any[], user:any[]}>=[];
+  //items: any=[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public pinlistService: PinlistProvider) {
     // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('item');
 
     // Let's populate this page with some filler content for funzies
     this.icons = ['pin', 'pin', 'pin'];
-
-    this.items = [];
-    for (let i = 1; i < 3; i++) {
+    this.getPinLIst();
+  /*  for (let i = 1; i < 3; i++) {
       this.items.push({
         title: 'Item ' + i,
-        address1:'Kursi Raod',
-        address2:'Kursi Road',        
-        city:'Lucknow',
-        state:'Uttar Pradesh',
-        date:'Mar 26,2019',
-        time:'3:24 PM',
+        address1: 'Kursi Raod',
+        address2: 'Kursi Road',
+        city: 'Lucknow',
+        state: 'Uttar Pradesh',
+        date: 'Mar 26,2019',
+        time: '3:24 PM',
         icon: this.icons[Math.floor(Math.random() * this.icons.length)]
       });
-    }
+    }*/
   }
 
   itemTapped(event, item) {
     // That's right, we're pushing to ourselves!
-    this.navCtrl.push(PinDetailsPage, {
+   /* this.navCtrl.push(PinDetailsPage, {
       item: item
-    });
+    });*/
+    this.navCtrl.push(PinDetailsPage,{data:item});
   }
   goToMap(){
     this.navCtrl.setRoot(MapPage)
+  }
+  getPinLIst() {
+    var userid = localStorage.getItem("users_data");
+    this.pinlistService.getPinList(userid).then((result) => {
+      if (result.code == 1) {
+        result.data.forEach(function(value) {
+          var options = { year: 'numeric', month: 'short', day: 'numeric'};
+          var time={hour: 'numeric', minute: 'numeric' };
+            var dateTime = new Date(value.created_at);          
+          this.items.push({
+            id:value.id,
+            title: value.name,
+            address1: value.house_number,
+            address2: value.house_address,
+            city: value.city,
+            state: value.state,
+            date: dateTime.toLocaleDateString("en-US", options),
+            time: dateTime.toLocaleTimeString("en-US", time),
+            pin_status:value.pin_status,
+            user:value.user
+            //icon: this.icons[Math.floor(Math.random() * this.icons.length)]
+          });
+        },this);
+      }
+    }, (error) => {
+      console.log("Error", JSON.stringify(error));
+    });
   } 
+   getItems(ev) {
+    // Reset items back to all of the items
+    this. getPinLIst();
+
+    // set val to the value of the ev target
+    var val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.items = this.items.filter((item) => {
+        return (item.title.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
+  }
 }

@@ -30,8 +30,7 @@ export class AddpinProvider {
 		  })
     });
   }
-  AddMarker(credentials): Promise<any> {
-    debugger
+  AddMarker(credentials): Promise<any> {    
     return new Promise(resolve => {
       let headers = new Headers( { 'Content-Type' : 'application/json' }); 
         let options = new RequestOptions({ headers: headers }); 
@@ -59,8 +58,7 @@ export class AddpinProvider {
     });
   }
 
-  updatePin(credentials): Promise<any> {
-    debugger
+  updatePin(credentials): Promise<any> {    
     return new Promise(resolve => {
       let headers = new Headers( { 'Content-Type' : 'application/json' }); 
         let options = new RequestOptions({ headers: headers }); 

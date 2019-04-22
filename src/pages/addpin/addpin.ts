@@ -106,12 +106,7 @@ export class AddpinPage {
 		debugger;	
 		this.todo.userid=localStorage.getItem('users_data');	
 		this.todo.current_status=this.statusId;
-		this.todo.assigned_to=this.assignedId;
-		/*this.todo.phone_number=this.todo.phonenumber;
-		delete this.todo.phonenumber;
-		var note=this.todo.Note;
-		this.custum['Note']=note;
-		delete this.todo.Note;*/
+		this.todo.assigned_to=this.assignedId;		
 		this.todo.custom_input=this.custum;
 		var json=JSON.stringify(this.todo);
 		 this.addpinService.AddMarker(json).then((result) => {
@@ -140,7 +135,6 @@ export class AddpinPage {
 		if (event.checked) {
 			if (x != undefined) {				
 				if (val == "BothProduct" || x != val) {
-					/*this.check=!this.check;*/
 					this.custum[name] = "Both Product";
 					this.array.push(val);
 				}

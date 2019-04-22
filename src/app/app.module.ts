@@ -31,6 +31,7 @@ import {
 import { GetTerritoryProvider } from '../providers/get-territory/get-territory';
 import { GlobalProvider } from '../providers/global/global';
 import { FilterProvider } from '../providers/filter/filter';
+import { PinlistProvider } from '../providers/pinlist/pinlist';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { FilterProvider } from '../providers/filter/filter';
     GetPinProvider,
     GetTerritoryProvider,
     GlobalProvider,
-    FilterProvider
+    FilterProvider,
+    PinlistProvider
   ]
 })
 export class AppModule {}

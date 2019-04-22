@@ -135,12 +135,6 @@ this.currentDate = new Date(this.date.getFullYear()+"-"+(this.date.getMonth()+1)
   var thisDate1 = this.date.getFullYear()+"-"+(this.date.getMonth()+1)+"-"+day+" 00:00:00";
   var thisDate2 = this.date.getFullYear()+"-"+(this.date.getMonth()+1)+"-"+day+" 23:59:59";
   this.eventList.forEach(event => {
-
-
-  
-
-
-   
     if(((event.startTime >= thisDate1) && (event.startTime <= thisDate2)) || ((event.endTime >= thisDate1) && (event.endTime <= thisDate2))) {
       this.isSelected = true;
       this.selectedEvent.push(event);

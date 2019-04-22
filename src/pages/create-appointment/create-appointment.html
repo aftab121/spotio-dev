@@ -17,8 +17,12 @@
 <form (ngSubmit)="save()">
     <ion-list>
       <ion-item>
-        <ion-label floating>Title</ion-label>
-        <ion-input type="text" [(ngModel)]="event.title" name="event.title"></ion-input>
+        <ion-label floating>Pin Name</ion-label>
+        <ion-input type="text" [(ngModel)]="event.pin_name" name="event.pin_name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input type="text" [(ngModel)]="event.name" name="event.name"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Location</ion-label>
@@ -28,13 +32,23 @@
         <ion-label floating>Notes</ion-label>
         <ion-input type="text" [(ngModel)]="event.message" name="event.message"></ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item  [hidden]="!!event.startDate" >
         <ion-label floating>Start Date</ion-label>
-        <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="MM/DD/YYYY" [(ngModel)]="event.startDate" name="event.startDate"></ion-datetime>
+        <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="MM/DD/YYYY" [(ngModel)]="event.startDate" name="event.startDate" (ionChange)="change(datePicker)"></ion-datetime>
       </ion-item>
-      <ion-item>
+      <ion-item [hidden]="!event.startDate" >
+        <ion-label>Start Time</ion-label>
+        <ion-datetime #datePicker
+        (ionCancel)="myDate=undefined" displayFormat="HH:mm" [(ngModel)]="event.startTime" name="event.startTime"></ion-datetime>
+      </ion-item>
+      <ion-item [hidden]="!!event.endDate">
         <ion-label floating>End Date</ion-label>
         <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="MM/DD/YYYY" [(ngModel)]="event.endDate" name="event.endDate"></ion-datetime>
+      </ion-item>
+       <ion-item [hidden]="!event.endDate" >
+        <ion-label>End Time</ion-label>
+        <ion-datetime #datePicker
+        (ionCancel)="myDate=undefined" displayFormat="HH:mm" [(ngModel)]="event.endTime" name="event.endTime"></ion-datetime>
       </ion-item>
       <ion-item>
         <button ion-button type="submit" full round>Save</button>

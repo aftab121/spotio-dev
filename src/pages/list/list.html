@@ -23,7 +23,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-searchbar></ion-searchbar>
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>    
   <ion-list-header class="list_Item_header"> 
   <ion-row>
@@ -33,7 +33,8 @@
   </ion-row>
   </ion-list-header>
     <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon [name]="item.icon" item-start></ion-icon>
+      <!-- <ion-icon [name]="item.icon" item-start></ion-icon> -->
+      <ion-icon name="pin" item-start class="icon ion-ios-clock-outline" [ngStyle]="{'color': item.pin_status.color_code}"></ion-icon>
       {{item.title}}<br>
       <p>{{item.address1}}&nbsp;{{item.address2}}</p>
       <p>{{item.city}},{{item.state}}</p>
