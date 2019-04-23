@@ -141,7 +141,7 @@ export class MapPage {
   ionViewDidLoad() {
     let loading = this.loadingCtrl.create({
       spinner: 'hide',
-      content: '<ion-spinner name="dots"></ion-spinner>',
+      content: 'Please wait...',
       duration: 5000
     });
     loading.present();
