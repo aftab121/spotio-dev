@@ -35,10 +35,11 @@
        <!--  <button ion-button (click)="onButtonClick($event)">Demo</button> -->
     </div>
 
-    <div class="FooterContainer" style="">
+    <div class="FooterContainer" style="" *ngIf="showDiv">
         <div class="editPencil">          
             <ion-icon name="create" (click)="editPin(this.id)"></ion-icon>
         </div>
+        <div (click)="gotoDetails(this.id)">
         <h1>{{Status}}</h1>
         <h4>{{OwnerName}}</h4>
         <ion-row>   
@@ -51,7 +52,7 @@
              {{updateTime}}
             </ion-col>
         </ion-row> 
- 
+ </div>
           
     </div>
 </ion-content>

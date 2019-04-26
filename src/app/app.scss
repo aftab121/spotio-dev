@@ -32,3 +32,15 @@
 	background-color: #C1142C;
 	color:#fff
 }
+.custom-modal {   
+    top: 52px !important;   
+    height: 100% !important;
+    margin-top: 75px !important;
+    ion-backdrop {
+        visibility: visible;
+        opacity: 0 !important;
+    }    
+}
+.custom-modal ion-content.view-class.content.content-md {
+    height: 20%;
+}

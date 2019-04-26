@@ -11,7 +11,7 @@ import { PinlistProvider } from '../../providers/pinlist/pinlist';
 export class ListPage {
   selectedItem: any;
   icons: string[];
-  items: Array<{id:string, title: string, date: string, time: string, address1:string, address2:string, city:string, state:string, pin_status: any[], user:any[]}>=[];
+  items: Array<{id:string, title: string, date: string, time: string, address1:string, address2:string, city:string, state:string, pin_status: any[], user:any[], pindata:any[]}>=[];
   //items: any=[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public pinlistService: PinlistProvider) {
@@ -40,7 +40,7 @@ export class ListPage {
    /* this.navCtrl.push(PinDetailsPage, {
       item: item
     });*/
-    this.navCtrl.push(PinDetailsPage,{data:item});
+    this.navCtrl.push(PinDetailsPage,{data:item.pindata});
   }
   goToMap(){
     this.navCtrl.setRoot(MapPage)
@@ -63,7 +63,8 @@ export class ListPage {
             date: dateTime.toLocaleDateString("en-US", options),
             time: dateTime.toLocaleTimeString("en-US", time),
             pin_status:value.pin_status,
-            user:value.user
+            user:value.user,
+            pindata:value
             //icon: this.icons[Math.floor(Math.random() * this.icons.length)]
           });
         },this);

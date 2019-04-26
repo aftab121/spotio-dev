@@ -40,7 +40,7 @@
 			<ion-label style="margin-bottom: 0px;">ASSIGNED TO:</ion-label>	
 			<ion-select [(ngModel)]="todo.assigned_to" id="assigned">
 
-		    		 <ion-option *ngFor="let item of assignedTo" [selected]="todo.assignedTo" (ionSelect)="changeAssignee(item.id,item.full_name)" value="{{item.id}}" >{{item.full_name}}</ion-option>
+		    		 <ion-option *ngFor="let item of assignedTo" [selected]="todo.assignedTo" value="{{item.id}}" >{{item.full_name}}</ion-option>
 			  
             </ion-select>
 			</ion-item>

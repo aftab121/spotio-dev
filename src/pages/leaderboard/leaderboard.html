@@ -15,7 +15,7 @@
         <div float-left >
             Leaderboard
         </div>
-        <div float-right style="display: flex; justify-content: space-between; width: 33%;">
+       <!--  <div float-right style="display: flex; justify-content: space-between; width: 33%;">
             <div>
                 <ion-icon name="list-box"></ion-icon>
             </div>
@@ -25,13 +25,44 @@
             <div >
                 <ion-icon (click)="showOverlay()" name="add"></ion-icon>
             </div>
-        </div>
+        </div> -->
     </ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content>
+  <ion-row class="toprow">
+    <ion-col>
+     Metric :
+    </ion-col>
+     <ion-col>
+     Lead
+    </ion-col>
+  </ion-row>
+   <ion-row style="height: 41px;">
+    <ion-col>
+     Metric :
+    </ion-col>
+     <ion-col>
+     Lead
+    </ion-col>
+  </ion-row>
+   <ion-row class="toprow">
+    <ion-col>
+     Metric :
+    </ion-col>
+     <ion-col>
+     Lead
+    </ion-col>
+  </ion-row>
+  <ion-list> 
+  <ion-item>
+    <ion-label col-2><img src="assets/imgs/Sports1.png" style="height: 45px; width: 50px;" ></ion-label>
+    <ion-label col-6 style="color:#FFB315;">Ryan Bradbury</ion-label>
+     <ion-label col-2>0</ion-label>
+      <ion-label col-2>1</ion-label>
+  </ion-item>
+</ion-list>
 </ion-content>

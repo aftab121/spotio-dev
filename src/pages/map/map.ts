@@ -7,7 +7,8 @@ import { GetPinProvider } from '../../providers/get-pin/get-pin';
 import { GetTerritoryProvider } from '../../providers/get-territory/get-territory';
 import { Geolocation } from '@ionic-native/geolocation';
 import {EditpinPage} from '../../pages/editpin/editpin';
-
+import { PinDetailsPage } from '../../pages/pindetails/pindetails';
+import { PinlistProvider } from '../../providers/pinlist/pinlist';
 
 import {
   GoogleMaps,
@@ -58,7 +59,9 @@ export class MapPage {
   status_filter:any=[];
   user_filter:any=[];
   id2:string="";
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public navParams: NavParams, public toastCtrl: ToastController, public plt: Platform, public addpinService: AddpinProvider, public PinProvider: GetPinProvider, private geolocation: Geolocation, public TerritoryProvider: GetTerritoryProvider) {
+  showDiv:boolean=false;
+  pin_list:any=[];
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public navParams: NavParams, public toastCtrl: ToastController, public plt: Platform, public addpinService: AddpinProvider, public PinProvider: GetPinProvider, private geolocation: Geolocation, public TerritoryProvider: GetTerritoryProvider,  public pinlistService: PinlistProvider) {
     if(navParams.data['filter']!=undefined){
        //this.data_filter.push(navParams.data['filter']);//      
        this.assigned_to=navParams.data['filter']['assigned_to']!=undefined?navParams.data['filter']['assigned_to']:'';
@@ -113,7 +116,7 @@ export class MapPage {
     });
 
     google.maps.event.addListener(marker, 'click', () => {
-      infoWindow.open(this.map, marker);
+      infoWindow.open(this.map, marker);      
     });
 
   }
@@ -151,7 +154,7 @@ export class MapPage {
       //debugger;      
       let result_data: any = [];
       let arr: any = this.data_filter[0];
-
+      this.pin_list=result.data;
       obj.totalPins = result.data.length;
       result.data.forEach(function(value) {
         var myString = value.pin_status.color_code;
@@ -180,7 +183,7 @@ export class MapPage {
         google.maps.event.addListener(marker, 'click', () => {
           var options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
           var timeoption = { hh: 'numeric', mm: 'numeric' }
-          var date = new Date(marker.pinData.pin_updates[0].updated_at);
+          var date = (marker.pinData.pin_updates.length>0? new Date(marker.pinData.pin_updates[0].updated_at):new Date(marker.pinData.created_at));
           this.id = marker.pinData.id;
           this.Status = marker.pinData.pin_status.pin_status_name;
           this.OwnerName = marker.pinData.name;
@@ -189,6 +192,12 @@ export class MapPage {
           this.city = marker.pinData.city;
           this.state = marker.pinData.state;
           this.updateTime = date.toLocaleString("en-US", options);
+          if(marker!=undefined){
+        this.showDiv=true;
+      }
+      else{
+        this.showDiv=false;
+      }
           /*  var info=infoWindow.get(marker.map,marker);
           infoWindow.open(marker.map, marker);*/
         });
@@ -353,5 +362,12 @@ export class MapPage {
     });
 
   }
+  gotoDetails(pin_id) {
+    var userid = localStorage.getItem("users_data");
+   var data = this.pin_list.filter((item) => {
+          return item.id==pin_id;
+        });
+        this.navCtrl.push(PinDetailsPage, { data: data[0] });
+  } 
 
 }

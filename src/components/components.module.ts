@@ -1,8 +1,13 @@
 import { NgModule } from '@angular/core';
 import { LoadingModalComponent } from './loading-modal/loading-modal';
+import { ContentDrawerComponent } from './content-drawer/content-drawer';
 @NgModule({
-	declarations: [LoadingModalComponent],
+	declarations: [LoadingModalComponent,
+    ContentDrawerComponent,
+    ContentDrawerComponent],
 	imports: [],
-	exports: [LoadingModalComponent]
+	exports: [LoadingModalComponent,
+    ContentDrawerComponent,
+    ContentDrawerComponent]
 })
 export class ComponentsModule {}

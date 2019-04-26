@@ -13,13 +13,23 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import { MapPage } from '../pages/map/map';
+import { LeaderboardPage } from '../pages/leaderboard/leaderboard';
+import { SettingsPage } from '../pages/settings/settings';
+import { ChatPage } from '../pages/chat/chat';
+import { AppointmentsPage } from '../pages/appointments/appointments';
+import { ChangepasswordPage } from '../pages/changepassword/changepassword';
+import { GlobalProvider } from "../providers/global/global";
 var MyApp = /** @class */ (function () {
-    function MyApp(platform, statusBar, splashScreen) {
+    function MyApp(platform, statusBar, splashScreen, globalService) {
         this.platform = platform;
         this.statusBar = statusBar;
         this.splashScreen = splashScreen;
+        this.globalService = globalService;
+        this.username = [];
+        this.firstcahr = "";
         this.rootPage = LoginPage;
         this.initializeApp();
+        this.profileName();
         // used for an example of ngFor and navigation
         this.pages = [
             {
@@ -29,23 +39,28 @@ var MyApp = /** @class */ (function () {
             },
             {
                 title: 'LEADERBOARD',
-                component: MapPage,
+                component: LeaderboardPage,
                 icon: 'trophy',
             },
             {
                 title: 'CHAT',
-                component: MapPage,
+                component: ChatPage,
                 icon: 'chatbubbles',
             },
             {
                 title: 'APPOINTMENTS',
-                component: MapPage,
+                component: AppointmentsPage,
                 icon: 'calendar'
             },
             {
                 title: 'SETTINGS',
-                component: MapPage,
+                component: SettingsPage,
                 icon: 'settings'
+            },
+            {
+                title: 'CHANGE PASSWORD',
+                component: ChangepasswordPage,
+                icon: 'key'
             }
         ];
     }
@@ -54,17 +69,21 @@ var MyApp = /** @class */ (function () {
         this.platform.ready().then(function () {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
-            _this.statusBar.styleDefault();
+            _this.statusBar.styleLightContent();
             _this.splashScreen.hide();
         });
     };
     MyApp.prototype.openPage = function (page) {
-        // Reset the content nav to have just this page
-        // we wouldn't want the back button to show in this scenario
         this.pages.map(function (p) {
             return p['active'] = (page.component === p.component);
         });
         this.nav.setRoot(page.component);
+    };
+    MyApp.prototype.profileName = function () {
+        if (localStorage.getItem('username') != null) {
+            this.username = localStorage.getItem('username').split(' ');
+            this.globalService.userNameChar = this.username[0][0] + this.username[1][0];
+        }
     };
     __decorate([
         ViewChild(Nav),
@@ -74,7 +93,7 @@ var MyApp = /** @class */ (function () {
         Component({
             templateUrl: 'app.html'
         }),
-        __metadata("design:paramtypes", [Platform, StatusBar, SplashScreen])
+        __metadata("design:paramtypes", [Platform, StatusBar, SplashScreen, GlobalProvider])
     ], MyApp);
     return MyApp;
 }());

@@ -2,6 +2,8 @@ import { Component,ViewChild  } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController,Slides  } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
 import { CreateAppointmentPage } from '../../pages/create-appointment/create-appointment';
+import {AppointmentProvider} from '../../providers/appointment/appointment'
+
 
 /**
  * Generated class for the AppointmentsPage page.
@@ -32,10 +34,12 @@ export class AppointmentsPage {
   eventList: any;
   selectedEvent: any;
   isSelected: any;
+    allEvents:any=[];
   firstdate: any = new Date(this.date.getFullYear() + "-" + (this.date.getMonth() + 1) + "-" + (this.date.getDate()) + " 00:00:00");
   seconddate: any = new Date(this.date.getFullYear() + "-" + (this.date.getMonth() + 1) + "-" + (this.date.getDate() + 1) + " 23:59:59");
-  constructor(private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private calendar: Calendar) {
+  constructor(private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private calendar: Calendar, public appointmentService: AppointmentProvider) {
     this.monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    this.getAllEvents();
     /* debugger;
      var element=document.querySelector('.currentDate');
      console.log(element.className);*/
@@ -83,11 +87,11 @@ export class AppointmentsPage {
   }
   getDaysOfMonth(month) {
     console.log(month);
-    this.date = new Date().setMonth(month);
+    this.date = new Date();
     this.daysInThisMonth = new Array();
     this.currentMonth = this.monthNames[month];
     this.currentYear = this.date.getFullYear();
-    if (this.date.getMonth() === new Date().getMonth()) {
+    if (month === new Date().getMonth()) {
       this.currentDate = new Date().getDate();
     } else {
       this.currentDate = 999;
@@ -149,23 +153,26 @@ export class AppointmentsPage {
     return hasEvent;
   }
 
-  selectDate(day,month) {
-    debugger;
-    this.currentDate = new Date(this.date.getFullYear() + "-" + month + "-" + day).getDate();
+  selectDate(day, month, year) {
+    this.currentDate = new Date(year + "-" + (month + 1) + "-" + day).getDate();
     this.isSelected = false;
     this.selectedEvent = new Array();
-    var thisDate1 = this.date.getFullYear() + "-" + month + "-" + day + " 00:00:00";
-    var thisDate2 = this.date.getFullYear() + "-" + (month + 1) + "-" + day + " 23:59:59";
+    var thisDate1 = year + "-" + (month + 1) + "-" + day + " 00:00:00";
+    var thisDate2 = year + "-" + (month + 1) + "-" + day + " 23:59:59";   
+    this.firstdate = thisDate1;
+    this.seconddate = thisDate2;
     debugger;
-    this.firstdate = new Date(thisDate1);
-    this.seconddate = new Date(thisDate2);
-   /* this.eventList.forEach(event => {
-      if (((event.startTime >= thisDate1) && (event.startTime <= thisDate2)) || ((event.endTime >= thisDate1) && (event.endTime <= thisDate2))) {
-        this.isSelected = true;
-        this.selectedEvent.push(event);
-
-      }
-    });*/
+    this.eventList = this.allEvents.filter((item) => {
+      var date=new Date(item.start_date).toISOString();
+      return (date.indexOf(this.firstdate) > -1);
+    });
+    /* this.eventList.forEach(event => {
+       if (((event.startTime >= thisDate1) && (event.startTime <= thisDate2)) || ((event.endTime >= thisDate1) && (event.endTime <= thisDate2))) {
+       this.isSelected = true;
+       this.selectedEvent.push(event);
+   
+       }
+     });*/
   }
 
   deleteEvent(evt) {
@@ -189,7 +196,7 @@ export class AppointmentsPage {
               (msg) => {
                 console.log(msg);
                 this.loadEventThisMonth();
-                this.selectDate(new Date(evt.startDate.replace(/\s/, 'T')).getDate());
+                //this.selectDate(new Date(evt.startDate.replace(/\s/, 'T')).getDate());
               },
               (err) => {
                 console.log(err);
@@ -202,4 +209,18 @@ export class AppointmentsPage {
     alert.present();
   }
 
+getAllEvents(){
+  var userid=localStorage.getItem('users_data');
+  this.appointmentService.appointmentList(userid).then((result)=>{
+    if(result.code==1){
+      this.allEvents=result.data;
+    }
+    else{
+
+    }
+
+  },(error)=>{
+    console.log("Error", JSON.stringify(error));
+  })
+}
 }

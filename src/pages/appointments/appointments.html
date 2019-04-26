@@ -30,13 +30,13 @@
 <ion-content padding>
  
   <ion-slides>
-    <ion-slide #mySlider index=0 (ionSlideDidChange) = "onSlideChanged($event,month)" *ngFor="let month of monthNames; let index=index">
+    <ion-slide *ngFor="let month of monthNames; let index=index">
      <div class="calendar-header">
     <ion-row class="calendar-month">
      <!--  <ion-col col-2 (click)="goToLastMonth()"><ion-icon name="arrow-back"></ion-icon></ion-col> -->
-      <ion-col col-2 (click)="goToCurrentDate()">TODAY</ion-col>
-      <ion-col col-8>{{month}} {{currentYear}}</ion-col>
-      <ion-col col-2 ><ion-img src="./assets/imgs/small-calendar.png"></ion-img></ion-col>
+      <ion-col col-4 style="text-align: left;" (click)="goToCurrentDate()">TODAY</ion-col>
+      <ion-col col-6>{{month}} {{currentYear}}</ion-col>
+      <ion-col col-2 style="text-align: right;"><ion-img src="./assets/imgs/small-calendar.png"></ion-img></ion-col>
     </ion-row>
   </div>
   <div class="calendar-body">
@@ -52,7 +52,7 @@
       </ion-row>
       <ion-row>       
         <ion-col col-1 *ngFor="let lastDay of getDaysInLastMonth(index)" class="last-month" (click)="goToLastMonth()">{{lastDay}}</ion-col>
-        <ion-col col-1 *ngFor="let day of getDaysOfMonth(index)" (click)="selectDate(day)">
+        <ion-col col-1 *ngFor="let day of getDaysOfMonth(index)" (click)="selectDate(day,index, currentYear)">
           <span class="currentDate" *ngIf="currentDate === day; else otherDate">{{day}}</span>
           <ng-template #otherDate class="otherDate">
             {{day}}<br>
@@ -65,7 +65,18 @@
   </div>
     </ion-slide>
 </ion-slides>
-  <div class="selected-event" *ngIf="isSelected">
+  <ion-list style="margin-top: 24px;">
+  <ion-row>
+    <ion-col col-3>
+      5:00 PM
+    </ion-col>
+     <ion-col col-9 style="text-align: left;">
+     NOT HOME
+    </ion-col>
+  </ion-row>
+   <p style="float: right;">APR 23 2019</p>
+</ion-list>
+<!--   <div class="selected-event" *ngIf="isSelected">
     <ion-list>
       <ion-item *ngFor="let se of selectedEvent">
         <ion-buttons end>
@@ -79,5 +90,5 @@
         Start Date: {{se.endDate}}</p>
       </ion-item>
     </ion-list>
-  </div>
+  </div> -->
 </ion-content>

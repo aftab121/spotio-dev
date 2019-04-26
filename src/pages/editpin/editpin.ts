@@ -56,8 +56,8 @@ export class EditpinPage {
 		}
 		
 		this.statusId=this.todo.current_status;		
-		this.custom_options = JSON.parse(this.todo.custom_options);	
-		this.custum['Note']=this.custom_options.custom_input['Note'];
+		this.custom_options = this.todo.custom_options!=null? JSON.parse(this.todo.custom_options):[];	
+		this.custum['Note']= this.custom_options.length>0? this.custom_options.custom_input['Note']:"";
 	}
 
 	ionViewDidLoad() {
@@ -70,8 +70,8 @@ export class EditpinPage {
 		for (var i = 0; i < st.length; i++) {
 			var second_val:string =st[i];
 			if (id == 7) {
-				this.arr_val=this.custom_options.custom_input['Not_Interested'];				
-				if (this.arr_val.trim().toLowerCase() == second_val.trim().toLowerCase()) {
+				this.arr_val=this.custom_options.length>0?this.custom_options.custom_input['Not_Interested']:"";				
+				if (this.arr_val!="" && this.arr_val.trim().toLowerCase() == second_val.trim().toLowerCase()) {
 					this.radio.push({ name: st[i], isChecked: true });
 					this.custum['Not_Interested']=st[i];
 					console.log(this.custum);
@@ -81,8 +81,8 @@ export class EditpinPage {
 				}
 			}
 			if (id == 8) {
-				this.arr_val=this.custom_options.custom_input['Interested'];	
-				if (this.arr_val.trim().toLowerCase() == second_val.trim().toLowerCase()) {
+				this.arr_val=this.custom_options.length>0?this.custom_options.custom_input['Interested']:"";	
+				if (this.arr_val!="" && this.arr_val.trim().toLowerCase() == second_val.trim().toLowerCase()) {
 					this.radio.push({ name: st[i], isChecked: true });	
 					this.custum['Interested']=st[i];
 					console.log(this.custum);				

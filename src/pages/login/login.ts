@@ -36,7 +36,7 @@ export class LoginPage {
   goToLogin(password, email) {
     let loading = this.loadingCtrl.create({
       spinner: 'hide',
-      content: '<ion-spinner name="dots"></ion-spinner>',
+      content: '<div class="custom-spinner-container"><div class="custom-spinner-box"></div>Loading...</div>',
       duration: 5000
     });
     loading.present();

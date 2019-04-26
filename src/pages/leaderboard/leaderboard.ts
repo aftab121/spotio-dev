@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import {LeaderboardProvider} from '../../providers/leaderboard/leaderboard';
 
 /**
  * Generated class for the LeaderboardPage page.
@@ -16,11 +16,24 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LeaderboardPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public leaderboardService: LeaderboardProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LeaderboardPage');
   }
+getLeaderBoardData(){
+	var userid=localStorage.getItem('users_data');
+	this.leaderboardService.getLeaderboardData(userid).then((result)=>{
+		if(result.code==1){
 
+		}
+		else{
+			
+		}
+
+	},(error)=>{
+		console.log("Error", JSON.stringify(error));
+	})
+}
 }

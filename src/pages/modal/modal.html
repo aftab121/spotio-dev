@@ -1,0 +1,7 @@
+  <ion-content class="view-class">
+  <ion-list>  
+    <button ion-item *ngFor="let item of list" (click)="closeModal(item)">     
+      <label>{{item.name}}</label>
+    </button>
+  </ion-list>
+  </ion-content>
