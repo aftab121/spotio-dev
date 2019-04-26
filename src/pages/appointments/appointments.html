@@ -30,7 +30,7 @@
 <ion-content padding>
  
   <ion-slides>
-    <ion-slide *ngFor="let month of monthNames; let index=index">
+    <ion-slide [ngClass]="month==currentMonth?'swiper-slide swiper-slide-active':'swiper-slide'" *ngFor="let month of monthNames; let index=index">
      <div class="calendar-header">
     <ion-row class="calendar-month">
      <!--  <ion-col col-2 (click)="goToLastMonth()"><ion-icon name="arrow-back"></ion-icon></ion-col> -->
@@ -65,17 +65,21 @@
   </div>
     </ion-slide>
 </ion-slides>
-  <ion-list style="margin-top: 24px;">
+ <ion-list>
+      <ion-item *ngFor="let item of eventList" style="margin-top: 24px;">
   <ion-row>
     <ion-col col-3>
-      5:00 PM
+      {{getTime(item.start_date)}}
     </ion-col>
      <ion-col col-9 style="text-align: left;">
-     NOT HOME
+    {{item.pin_status}},{{item.pin_info.name}},{{item.pin_info.phone_number}}<br>
+    {{item.pin_info.city}},{{item.pin_info.state}},{{item.pin_info.zipcode}}
     </ion-col>
   </ion-row>
-   <p style="float: right;">APR 23 2019</p>
-</ion-list>
+   <p style="float: right;">{{getDate(item.start_date)}}</p>
+     </ion-item>
+    </ion-list>
+
 <!--   <div class="selected-event" *ngIf="isSelected">
     <ion-list>
       <ion-item *ngFor="let se of selectedEvent">

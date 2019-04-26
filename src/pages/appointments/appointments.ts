@@ -31,10 +31,10 @@ export class AppointmentsPage {
   currentMonth: any;
   currentYear: any;
   currentDate: any;
-  eventList: any;
+  eventList: any=[];
   selectedEvent: any;
   isSelected: any;
-    allEvents:any=[];
+  allEvents: any = [];
   firstdate: any = new Date(this.date.getFullYear() + "-" + (this.date.getMonth() + 1) + "-" + (this.date.getDate()) + " 00:00:00");
   seconddate: any = new Date(this.date.getFullYear() + "-" + (this.date.getMonth() + 1) + "-" + (this.date.getDate() + 1) + " 23:59:59");
   constructor(private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private calendar: Calendar, public appointmentService: AppointmentProvider) {
@@ -89,10 +89,11 @@ export class AppointmentsPage {
     console.log(month);
     this.date = new Date();
     this.daysInThisMonth = new Array();
-    this.currentMonth = this.monthNames[month];
+   
     this.currentYear = this.date.getFullYear();
     if (month === new Date().getMonth()) {
       this.currentDate = new Date().getDate();
+      this.currentMonth =  new Date().getMonth();
     } else {
       this.currentDate = 999;
     }
@@ -158,19 +159,19 @@ export class AppointmentsPage {
     this.isSelected = false;
     this.selectedEvent = new Array();
     var thisDate1 = year + "-" + (month + 1) + "-" + day + " 00:00:00";
-    var thisDate2 = year + "-" + (month + 1) + "-" + day + " 23:59:59";   
+    var thisDate2 = year + "-" + (month + 1) + "-" + day + " 23:59:59";
     this.firstdate = thisDate1;
     this.seconddate = thisDate2;
     debugger;
     this.eventList = this.allEvents.filter((item) => {
-      var date=new Date(item.start_date).toISOString();
-      return (date.indexOf(this.firstdate) > -1);
+      var date = new Date(item.start_date).toDateString();
+      return (date.indexOf(new Date(this.firstdate).toDateString()) > -1);
     });
     /* this.eventList.forEach(event => {
        if (((event.startTime >= thisDate1) && (event.startTime <= thisDate2)) || ((event.endTime >= thisDate1) && (event.endTime <= thisDate2))) {
        this.isSelected = true;
        this.selectedEvent.push(event);
-   
+     
        }
      });*/
   }
@@ -209,18 +210,29 @@ export class AppointmentsPage {
     alert.present();
   }
 
-getAllEvents(){
-  var userid=localStorage.getItem('users_data');
-  this.appointmentService.appointmentList(userid).then((result)=>{
-    if(result.code==1){
-      this.allEvents=result.data;
-    }
-    else{
+  getAllEvents() {
+    var userid = localStorage.getItem('users_data');
+    this.appointmentService.appointmentList(userid).then((result) => {
+      if (result.code == 1) {
+        this.allEvents = result.data;
+        this.eventList = result.data;
+      }
+      else {
 
-    }
+      }
 
-  },(error)=>{
-    console.log("Error", JSON.stringify(error));
-  })
-}
+    }, (error) => {
+      console.log("Error", JSON.stringify(error));
+    });
+  }
+  getTime(date){
+    var time={hour: 'numeric', minute: 'numeric' };
+    var getTime=new Date(date).toLocaleString("en-US", time);
+    return getTime;
+  }
+    getDate(date){
+        var options = { year: 'numeric', month: 'short', day: 'numeric'};
+    var getdate=new Date(date).toLocaleString("en-US", options);
+    return getdate;
+  }
 }
