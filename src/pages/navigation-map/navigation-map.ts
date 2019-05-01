@@ -28,12 +28,12 @@ import {
 declare var google;
 @IonicPage()
 @Component({
-  selector: 'page-map',
-  templateUrl: 'map.html',
+  selector: 'page-navigation-map',
+  templateUrl: 'navigation-map.html',
 })
-export class MapPage {
+export class NavigationMapPage {
 
-  @ViewChild('map') mapElement: ElementRef;
+  @ViewChild('map12') mapElement: ElementRef;
   @ViewChild('directionsPanel') directionsPanel: ElementRef;
   map: any;
   addpinfrm: any = {};
@@ -64,6 +64,7 @@ export class MapPage {
   showDiv:boolean=false;
   pin_list:any=[];
   latLng:any;
+  current_pinid:any = 0;
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public navParams: NavParams, public toastCtrl: ToastController, public plt: Platform, public addpinService: AddpinProvider, public PinProvider: GetPinProvider, private geolocation: Geolocation, public TerritoryProvider: GetTerritoryProvider,  public pinlistService: PinlistProvider) {
     if(navParams.data['filter']!=undefined){
        //this.data_filter.push(navParams.data['filter']);//      
@@ -73,6 +74,9 @@ export class MapPage {
        this.end_date=navParams.data['filter']['end_date']!=undefined?navParams.data['filter']['end_date']:'';
        this.custom_date=navParams.data['filter']['custom_date']!=undefined?navParams.data['filter']['custom_date']:'';
     }   
+    if(navParams.data['pinid']!=undefined){
+    	this.current_pinid=navParams.data['pinid'];
+    }
     this.plt.ready().then(() => {
       this.loadMap2();
     });
@@ -146,6 +150,9 @@ export class MapPage {
   }
   ionViewDidLoad() {
     debugger;
+   
+
+
     let loading = this.loadingCtrl.create({
       spinner: 'hide',
       content: 'Please wait...',
@@ -154,15 +161,16 @@ export class MapPage {
     loading.present();
     var obj = this;
     this.userid = localStorage.getItem('users_data');
-    this.PinProvider.GetPinList(this.userid, '1', this.pin_status, this.assigned_to, this.start_date, this.custom_date, this.end_date).then((result) => {
-      //debugger;      
+    this.addpinService.EditPin(this.userid, this.current_pinid).then((result) => {
+      debugger;      
       let result_data: any = [];
       let arr: any = this.data_filter[0];
-      this.pin_list = result.data;
-      obj.totalPins = result.data.length;
-      result.data.forEach(function(value) {
-        var myString = value.pin_status.color_code;
-        var sillyString = myString.substr(1).slice(0);
+      this.pin_list = result.data.pinInfo;
+      obj.totalPins = 1;
+       var myString = result.data.pinStatus.filter((item)=>{
+       		return item.id==parseInt(result.data.pinInfo.current_status);
+       })
+        var sillyString = myString[0].color_code.substr(1).slice(0);
         var iconImage = 'assets/markers/' + sillyString + '.png';
         var icon = {
           url: iconImage, // url
@@ -175,8 +183,9 @@ export class MapPage {
           icon: icon,
           map: obj.map,
           animation: google.maps.Animation.DROP,
-          position: new google.maps.LatLng(value.latitude, value.longitude),
-          pinData: value
+          position: new google.maps.LatLng(result.data.pinInfo.latitude, result.data.pinInfo.longitude),
+          pinData: result.data.pinInfo,
+          pinStatus:myString[0]
         });
 
         /*this.map = new google.maps.Map(mapElemnt.nativeElement, marker);*/
@@ -187,9 +196,9 @@ export class MapPage {
         google.maps.event.addListener(marker, 'click', () => {
           var options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
           var timeoption = { hh: 'numeric', mm: 'numeric' }
-          var date = (marker.pinData.pin_updates.length > 0 ? new Date(marker.pinData.pin_updates[0].updated_at) : new Date(marker.pinData.created_at));
+          var date = (marker.pinData.updated_at != null ? new Date(marker.pinData.updated_at) : new Date(marker.pinData.created_at));
           this.id = marker.pinData.id;
-          this.Status = marker.pinData.pin_status.pin_status_name;
+          this.Status = marker.pinStatus.pin_status_name;
           this.OwnerName = marker.pinData.name;
           this.address = marker.pinData.house_number + ' ' + marker.pinData.house_address;
           this.pincode = marker.pinData.zipcode;
@@ -207,7 +216,7 @@ export class MapPage {
           /*  var info=infoWindow.get(marker.map,marker);
           infoWindow.open(marker.map, marker);*/
         });
-      }, this);
+     
     }, (error) => {
       console.log(JSON.stringify(error));
     });

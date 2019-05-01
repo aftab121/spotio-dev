@@ -15,9 +15,11 @@ import 'rxjs/add/operator/map';
 import { GetPinProvider } from '../../providers/get-pin/get-pin';
 import { GetTerritoryProvider } from '../../providers/get-territory/get-territory';
 import { Geolocation } from '@ionic-native/geolocation';
+import { PinDetailsPage } from '../../pages/pindetails/pindetails';
+import { PinlistProvider } from '../../providers/pinlist/pinlist';
 import { GoogleMaps, GoogleMapsEvent, GoogleMapsAnimation } from '@ionic-native/google-maps';
 var MapPage = /** @class */ (function () {
-    function MapPage(navCtrl, loadingCtrl, navParams, toastCtrl, plt, addpinService, PinProvider, geolocation, TerritoryProvider) {
+    function MapPage(navCtrl, loadingCtrl, navParams, toastCtrl, plt, addpinService, PinProvider, geolocation, TerritoryProvider, pinlistService) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.loadingCtrl = loadingCtrl;
@@ -28,6 +30,7 @@ var MapPage = /** @class */ (function () {
         this.PinProvider = PinProvider;
         this.geolocation = geolocation;
         this.TerritoryProvider = TerritoryProvider;
+        this.pinlistService = pinlistService;
         this.addpinfrm = {};
         /*    map: GoogleMap;*/
         this.overlayHidden = true;
@@ -50,6 +53,8 @@ var MapPage = /** @class */ (function () {
         this.status_filter = [];
         this.user_filter = [];
         this.id2 = "";
+        this.showDiv = false;
+        this.pin_list = [];
         if (navParams.data['filter'] != undefined) {
             //this.data_filter.push(navParams.data['filter']);//      
             this.assigned_to = navParams.data['filter']['assigned_to'] != undefined ? navParams.data['filter']['assigned_to'] : '';
@@ -114,6 +119,19 @@ var MapPage = /** @class */ (function () {
     };
     MapPage.prototype.ionViewDidLoad = function () {
         var _this = this;
+        debugger;
+        var locationObj;
+        var marker;
+        this.geolocation.getCurrentPosition({ timeout: 10000, enableHighAccuracy: true }).then(function (position) {
+            locationObj = {
+                lat: position.coords.latitude,
+                lon: position.coords.longitude,
+                timestamp: position.timestamp,
+                accuracy: position.coords.accuracy
+            };
+        }, function (error) {
+            console.log("error", JSON.stringify(error));
+        });
         var loading = this.loadingCtrl.create({
             spinner: 'hide',
             content: 'Please wait...',
@@ -126,6 +144,7 @@ var MapPage = /** @class */ (function () {
             //debugger;      
             var result_data = [];
             var arr = _this.data_filter[0];
+            _this.pin_list = result.data;
             obj.totalPins = result.data.length;
             result.data.forEach(function (value) {
                 var _this = this;
@@ -137,7 +156,7 @@ var MapPage = /** @class */ (function () {
                     scaledSize: new google.maps.Size(30, 48),
                     labelOrigin: new google.maps.Point(25, 32)
                 };
-                var marker = new google.maps.Marker({
+                marker = new google.maps.Marker({
                     icon: icon,
                     map: obj.map,
                     animation: google.maps.Animation.DROP,
@@ -151,7 +170,7 @@ var MapPage = /** @class */ (function () {
                 google.maps.event.addListener(marker, 'click', function () {
                     var options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
                     var timeoption = { hh: 'numeric', mm: 'numeric' };
-                    var date = new Date(marker.pinData.pin_updates[0].updated_at);
+                    var date = (marker.pinData.pin_updates.length > 0 ? new Date(marker.pinData.pin_updates[0].updated_at) : new Date(marker.pinData.created_at));
                     _this.id = marker.pinData.id;
                     _this.Status = marker.pinData.pin_status.pin_status_name;
                     _this.OwnerName = marker.pinData.name;
@@ -160,12 +179,23 @@ var MapPage = /** @class */ (function () {
                     _this.city = marker.pinData.city;
                     _this.state = marker.pinData.state;
                     _this.updateTime = date.toLocaleString("en-US", options);
+                    if (marker != undefined) {
+                        _this.showDiv = true;
+                    }
+                    else {
+                        _this.showDiv = false;
+                    }
                     /*  var info=infoWindow.get(marker.map,marker);
                     infoWindow.open(marker.map, marker);*/
                 });
             }, _this);
         }, function (error) {
             console.log(JSON.stringify(error));
+        });
+        marker = new google.maps.Marker({
+            map: this.map,
+            animation: google.maps.Animation.DROP,
+            position: this.map.getCenter()
         });
         this.TerritoryProvider.GetTerritoryList('1').then(function (result) {
             result.data.forEach(function (value) {
@@ -304,6 +334,13 @@ var MapPage = /** @class */ (function () {
             console.log('error', JSON.stringify(error));
         });
     };
+    MapPage.prototype.gotoDetails = function (pin_id) {
+        var userid = localStorage.getItem("users_data");
+        var data = this.pin_list.filter(function (item) {
+            return item.id == pin_id;
+        });
+        this.navCtrl.push(PinDetailsPage, { data: data[0] });
+    };
     __decorate([
         ViewChild('map'),
         __metadata("design:type", ElementRef)
@@ -314,7 +351,7 @@ var MapPage = /** @class */ (function () {
             selector: 'page-map',
             templateUrl: 'map.html',
         }),
-        __metadata("design:paramtypes", [NavController, LoadingController, NavParams, ToastController, Platform, AddpinProvider, GetPinProvider, Geolocation, GetTerritoryProvider])
+        __metadata("design:paramtypes", [NavController, LoadingController, NavParams, ToastController, Platform, AddpinProvider, GetPinProvider, Geolocation, GetTerritoryProvider, PinlistProvider])
     ], MapPage);
     return MapPage;
 }());

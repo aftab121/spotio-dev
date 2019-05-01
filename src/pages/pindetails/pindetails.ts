@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import {IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatePickerDirective } from 'ion-datepicker';
 import { MapPage } from '../../pages/map/map';
 import {AddpinProvider} from '../../providers/addpin/addpin';
 import {CreateAppointmentPage} from '../../pages/create-appointment/create-appointment';
+import { Geolocation } from '@ionic-native/geolocation';
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { NavigationMapPage } from '../../pages/navigation-map/navigation-map';
 
-
+declare var google;
 @Component({
   selector: 'page-pindetails',
   templateUrl: 'pindetails.html'
@@ -40,6 +43,10 @@ export class PinDetailsPage {
     }
     this.selectedItem = navParams.get('item');
 
+  }
+  getNavigation(id){
+    //var endorgin= new google.maps.LatLng(lat , lng);
+    this.navCtrl.setRoot('NavigationMapPage',{pinid:id});
   }
   back(){
    this.navCtrl.setRoot(MapPage)

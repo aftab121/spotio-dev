@@ -1,8 +1,10 @@
 import { Component,ViewChild  } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController,Slides  } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController  } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
 import { CreateAppointmentPage } from '../../pages/create-appointment/create-appointment';
 import {AppointmentProvider} from '../../providers/appointment/appointment'
+import {EditAppointmentPage} from '../../pages/edit-appointment/edit-appointment'
+
 
 
 /**
@@ -18,10 +20,7 @@ import {AppointmentProvider} from '../../providers/appointment/appointment'
   templateUrl: 'appointments.html',
 })
 export class AppointmentsPage {
-  @ViewChild('mySlider') slider: Slides;
-  slideOpts = {
-    effect: 'flip'
-  };
+slidenum:number=0;
   date: any = new Date();
   monthYears: any;
   daysInThisMonth: any;
@@ -51,11 +50,11 @@ export class AppointmentsPage {
     // this.loadEventThisMonth();
   }
 
-  onSlideChanged(e, m) {
+  /*onSlideChanged(e, m) {
     var month = m;
     let currentIndex = this.slider.getActiveIndex();
     console.log("You are on Slide ", (currentIndex + 1));
-  }
+  }*/
 
 
   getDaysInLastMonth(month) {
@@ -94,6 +93,7 @@ export class AppointmentsPage {
     if (month === new Date().getMonth()) {
       this.currentDate = new Date().getDate();
       this.currentMonth =  new Date().getMonth();
+      this.slidenum=month;
     } else {
       this.currentDate = 999;
     }
@@ -105,8 +105,9 @@ export class AppointmentsPage {
     }
     return this.daysInThisMonth;
   }
-  goToCurrentDate() {
+  goToCurrentDate(m) {
     this.date = new Date();
+    this.slidenum=m;
     this.getDaysOfMonth(this.date.getMonth());
   }
   goToLastMonth() {
@@ -153,7 +154,7 @@ export class AppointmentsPage {
     });
     return hasEvent;
   }
-
+selecteddt:boolean=false;
   selectDate(day, month, year) {
     this.currentDate = new Date(year + "-" + (month + 1) + "-" + day).getDate();
     this.isSelected = false;
@@ -162,7 +163,7 @@ export class AppointmentsPage {
     var thisDate2 = year + "-" + (month + 1) + "-" + day + " 23:59:59";
     this.firstdate = thisDate1;
     this.seconddate = thisDate2;
-    debugger;
+    debugger;   
     this.eventList = this.allEvents.filter((item) => {
       var date = new Date(item.start_date).toDateString();
       return (date.indexOf(new Date(this.firstdate).toDateString()) > -1);
@@ -218,7 +219,6 @@ export class AppointmentsPage {
         this.eventList = result.data;
       }
       else {
-
       }
 
     }, (error) => {
@@ -234,5 +234,8 @@ export class AppointmentsPage {
         var options = { year: 'numeric', month: 'short', day: 'numeric'};
     var getdate=new Date(date).toLocaleString("en-US", options);
     return getdate;
+  }
+  gotoEdit(id){
+    this.navCtrl.setRoot('EditAppointmentPage',{id:id});
   }
 }

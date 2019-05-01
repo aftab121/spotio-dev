@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-navbar  color="accent">
+    <button ion-button menuToggle>
+      <ion-icon name="menu" ></ion-icon>
+    </button>
+    <ion-title style="display: flex; justify-content: space-between; font-size: 24px;">
+            
+        <div float-left >
+            Map
+        </div>
+        <div float-right style="display: flex; justify-content: space-between; width: 33%;">
+            <div>
+                <ion-icon (click)="goToList()" name="list-box"></ion-icon>
+            </div>
+            <div>
+                <ion-icon (click)="goToFilter()" name="funnel"></ion-icon>
+            </div>
+            <div >
+                <ion-icon (click)="showOverlay()" name="add"></ion-icon>
+            </div>
+        </div>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+    <div id="floating-panel">
+        <b>{{ totalPins }} Total <span *ngFor="let item of PinsCount">  | <img [src]="'assets/markers/' + item.color_code.substr(1).slice(0) + '.png'" style="height: 20px; width: 16px;" >  {{ item.pin_count_count}}  {{ item.pin_status_name}} </span> </b>
+    </div>
+    <div style="position: absolute;top: 45px;z-index: 1;right: 5px;">
+        <div class="layers-icon" (click)="onLayerClick($event)"></div>
+        <div class="navigate-icon" style="margin-top: 5px;" (click)="onNavingateClick($event)"></div>
+    </div>
+    <div #map12 id="map"  style="background-color: green">
+       <!--  <button ion-button (click)="onButtonClick($event)">Demo</button> -->
+    </div>
+
+    <div class="FooterContainer" style="" *ngIf="showDiv">
+        <div class="editPencil">          
+            <ion-icon name="create" (click)="editPin(this.id)"></ion-icon>
+        </div>
+        <div (click)="gotoDetails(this.id)">
+        <h1>{{Status}}</h1>
+        <h4>{{OwnerName}}</h4>
+        <ion-row>   
+            <ion-col col-9 style="padding-left: 0px">
+              {{address}}<br>
+              {{pincode}} {{city}} {{state}}
+            </ion-col>
+            <ion-col col-3>
+             <!--  Mar 18,2019 10:36 PM -->
+             {{updateTime}}
+            </ion-col>
+        </ion-row> 
+ </div>
+          
+    </div>
+</ion-content>
+<div class="my-overlay" padding [hidden]="overlayHidden">
+    <div style="    width: 80%;
+    background-color: #FFF;
+    margin: 0 auto;
+    min-height: 165px;
+    margin-top: 65%;
+    padding: 20px;">
+        <h2>Select Action</h2>
+        <h5 (click)="AddPin()">Add Pin</h5>
+        <h5>Select Pins</h5>
+        <span  float-right style="font-size: 18px;color:#358fcd" (click)="hideOverlay()">CANCEL</span>
+    </div>
+</div>

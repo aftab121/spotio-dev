@@ -48,3 +48,16 @@
     You navigated here from <b>{{selectedItem.title}}</b>
   </div>
 </ion-content>
+<div class="my-overlay" padding [hidden]="overlayHidden">
+    <div style="    width: 80%;
+    background-color: #FFF;
+    margin: 0 auto;
+    min-height: 165px;
+    margin-top: 65%;
+    padding: 20px;">
+        <h2>Select Action</h2>
+        <h5 (click)="AddPin()">Add Pin</h5>
+        <h5>Select Pins</h5>
+        <span  float-right style="font-size: 18px;color:#358fcd" (click)="hideOverlay()">CANCEL</span>
+    </div>
+</div>

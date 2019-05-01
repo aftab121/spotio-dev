@@ -126,7 +126,7 @@ export class CreateAppointmentPage {
     }*/
   save() {
     debugger;
-    this.event.userid = localStorage.getItem('users_data');
+    this.event.userid = localStorage.getItem('users_data');   
     var json = JSON.stringify(this.event);
     this.appointmentService.createAppointment(this.event).then((result) => {
       if (result.code == 1) {
@@ -155,7 +155,7 @@ export class CreateAppointmentPage {
   }
   endTimeChange(evt) {
     var enddate = new Date(this.event.startDate);
-    var enddt = enddate.getDate() + "-" + enddate.getFullYear() + "-" + (enddate.getMonth() + 1) + " " + this.event.endTime;
+    var enddt = enddate.getFullYear() + "-" + (enddate.getMonth()+1) + "-" + enddate.getDate() + " " + this.event.endTime;
     this.event.endDate = new Date(enddt).toISOString();
   }
 }

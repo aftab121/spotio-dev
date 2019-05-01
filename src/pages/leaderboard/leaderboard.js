@@ -8,7 +8,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { LeaderboardProvider } from '../../providers/leaderboard/leaderboard';
 /**
  * Generated class for the LeaderboardPage page.
  *
@@ -16,12 +17,35 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  * Ionic pages and navigation.
  */
 var LeaderboardPage = /** @class */ (function () {
-    function LeaderboardPage(navCtrl, navParams) {
+    function LeaderboardPage(navCtrl, navParams, leaderboardService, loadingCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.leaderboardService = leaderboardService;
+        this.loadingCtrl = loadingCtrl;
+        this.items = [];
+        this.getLeaderBoardData();
     }
     LeaderboardPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad LeaderboardPage');
+    };
+    LeaderboardPage.prototype.getLeaderBoardData = function () {
+        var _this = this;
+        var loading = this.loadingCtrl.create({
+            spinner: 'hide',
+            content: 'Please wait...',
+        });
+        loading.present();
+        var userid = localStorage.getItem('users_data');
+        this.leaderboardService.getLeaderboardData(userid).then(function (result) {
+            if (result.code == 1) {
+                _this.items = result.leaderboardData;
+            }
+            else {
+            }
+            loading.dismiss();
+        }, function (error) {
+            console.log("Error", JSON.stringify(error));
+        });
     };
     LeaderboardPage = __decorate([
         IonicPage(),
@@ -29,7 +53,7 @@ var LeaderboardPage = /** @class */ (function () {
             selector: 'page-leaderboard',
             templateUrl: 'leaderboard.html',
         }),
-        __metadata("design:paramtypes", [NavController, NavParams])
+        __metadata("design:paramtypes", [NavController, NavParams, LeaderboardProvider, LoadingController])
     ], LeaderboardPage);
     return LeaderboardPage;
 }());

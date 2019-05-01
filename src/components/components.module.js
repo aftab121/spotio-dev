@@ -6,14 +6,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { NgModule } from '@angular/core';
 import { LoadingModalComponent } from './loading-modal/loading-modal';
+import { ContentDrawerComponent } from './content-drawer/content-drawer';
 var ComponentsModule = /** @class */ (function () {
     function ComponentsModule() {
     }
     ComponentsModule = __decorate([
         NgModule({
-            declarations: [LoadingModalComponent],
+            declarations: [LoadingModalComponent,
+                ContentDrawerComponent,
+                ContentDrawerComponent],
             imports: [],
-            exports: [LoadingModalComponent]
+            exports: [LoadingModalComponent,
+                ContentDrawerComponent,
+                ContentDrawerComponent]
         })
     ], ComponentsModule);
     return ComponentsModule;

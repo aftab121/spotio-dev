@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { MapPage } from '../../pages/map/map';
 import { AddpinProvider } from '../../providers/addpin/addpin';
+import { CreateAppointmentPage } from '../../pages/create-appointment/create-appointment';
 var PinDetailsPage = /** @class */ (function () {
     function PinDetailsPage(navCtrl, navParams, addpinService) {
         this.navCtrl = navCtrl;
@@ -19,19 +20,28 @@ var PinDetailsPage = /** @class */ (function () {
         this.items = [];
         // If we navigated to this page, we will have an item available as a nav param
         if (navParams.data["data"] != undefined) {
-            this.items["id"] = navParams.data["data"]['id'];
-            this.items["title"] = navParams.data["data"]['title'];
-            this.items["date"] = navParams.data["data"]['date'];
-            this.items["time"] = navParams.data["data"]['time'];
-            this.items["address1"] = navParams.data["data"]['address1'];
-            this.items["address2"] = navParams.data["data"]['address2'];
-            this.items["city"] = navParams.data["data"]['city'];
-            this.items["state"] = navParams.data["data"]['state'];
-            this.items["pin_status"] = navParams.data["data"]['pin_status'];
-            this.items["user"] = navParams.data["data"]['user'];
+            this.items = navParams.data["data"];
+            var options = { year: 'numeric', month: 'short', day: 'numeric' };
+            var time = { hour: 'numeric', minute: 'numeric' };
+            var date = new Date(this.items.updated_at);
+            this.updated_date = date.toLocaleDateString("en-US", options);
+            this.updated_time = date.toLocaleTimeString("en-US", time);
+            /*this.items["id"]=navParams.data["data"]['id'];
+            this.items["title"]=navParams.data["data"]['title'];
+            this.items["date"]=navParams.data["data"]['date'];
+            this.items["time"]=navParams.data["data"]['time'];
+            this.items["address1"]=navParams.data["data"]['address1'];
+            this.items["address2"]=navParams.data["data"]['address2'];
+            this.items["city"]=navParams.data["data"]['city'];
+            this.items["state"]=navParams.data["data"]['state'];
+            this.items["pin_status"]=navParams.data["data"]['pin_status'];
+            this.items["user"]=navParams.data["data"]['user'];*/
         }
         this.selectedItem = navParams.get('item');
     }
+    PinDetailsPage.prototype.getNavigation = function (houseNum, houseaddress, city, state) {
+        var endorgin = new Array({});
+    };
     PinDetailsPage.prototype.back = function () {
         this.navCtrl.setRoot(MapPage);
     };
@@ -45,6 +55,9 @@ var PinDetailsPage = /** @class */ (function () {
         }, function (error) {
             console.log('error', JSON.stringify(error));
         });
+    };
+    PinDetailsPage.prototype.gotoAppointment = function (data) {
+        this.navCtrl.push(CreateAppointmentPage, { data: data });
     };
     PinDetailsPage = __decorate([
         Component({

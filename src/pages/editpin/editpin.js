@@ -58,8 +58,8 @@ var EditpinPage = /** @class */ (function () {
             this.assignedTo.push({ id: key, full_name: this.navParams.data.userList[key], checked: false });
         }
         this.statusId = this.todo.current_status;
-        this.custom_options = JSON.parse(this.todo.custom_options);
-        this.custum['Note'] = this.custom_options.custom_input['Note'];
+        this.custom_options = this.todo.custom_options != null ? JSON.parse(this.todo.custom_options) : [];
+        this.custum['Note'] = this.custom_options.length > 0 ? this.custom_options.custom_input['Note'] : "";
     }
     EditpinPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad EditpinPage');
@@ -70,8 +70,8 @@ var EditpinPage = /** @class */ (function () {
         for (var i = 0; i < st.length; i++) {
             var second_val = st[i];
             if (id == 7) {
-                this.arr_val = this.custom_options.custom_input['Not_Interested'];
-                if (this.arr_val.trim().toLowerCase() == second_val.trim().toLowerCase()) {
+                this.arr_val = this.custom_options.length > 0 ? this.custom_options.custom_input['Not_Interested'] : "";
+                if (this.arr_val != "" && this.arr_val.trim().toLowerCase() == second_val.trim().toLowerCase()) {
                     this.radio.push({ name: st[i], isChecked: true });
                     this.custum['Not_Interested'] = st[i];
                     console.log(this.custum);
@@ -81,8 +81,8 @@ var EditpinPage = /** @class */ (function () {
                 }
             }
             if (id == 8) {
-                this.arr_val = this.custom_options.custom_input['Interested'];
-                if (this.arr_val.trim().toLowerCase() == second_val.trim().toLowerCase()) {
+                this.arr_val = this.custom_options.length > 0 ? this.custom_options.custom_input['Interested'] : "";
+                if (this.arr_val != "" && this.arr_val.trim().toLowerCase() == second_val.trim().toLowerCase()) {
                     this.radio.push({ name: st[i], isChecked: true });
                     this.custum['Interested'] = st[i];
                     console.log(this.custum);

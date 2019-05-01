@@ -29,22 +29,26 @@
        </ion-row>
    </div>
     <div class="details-Content">
-        <div class = "list" style="height: 40px; padding: 11px; font-size: 17px;">
+        <div class = "list" style="height: 40px; padding: 11px; font-size: 14px;">
             <label class = "item item-input">
             Name 
             </label>
 
-            <label class = "item item-input" style="margin-left: 71px; color: #5f5a5a;">
+            <label class = "item item-input" style="margin-left: 31px; color: #5f5a5a;padding-right: 21px;">
                {{items.name}}
             </label>
+             <span (click)="getNavigation(items.id)">
+          get root
+        </span>
         </div>
+
         <hr style="margin: 0 11px 1px 11px;height: 2px;">
         <div class = "list" style="height: 40px; padding: 11px; font-size: 17px;">
             <label class = "item item-input">
              Address  
             </label>
 
-            <label class = "item item-input" style="margin-left: 51px; color: #5f5a5a;">
+            <label class = "item item-input" style="margin-left: 5px; color: #5f5a5a;">
               {{items.house_number}},{{items.house_address}}<br>
                <p style="margin-top: 2px;float: right;margin-right: 40px;">{{items.city}}, {{items.state}}</p>
             </label>

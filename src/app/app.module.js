@@ -36,6 +36,7 @@ import { GlobalProvider } from '../providers/global/global';
 import { FilterProvider } from '../providers/filter/filter';
 import { PinlistProvider } from '../providers/pinlist/pinlist';
 import { AppointmentProvider } from '../providers/appointment/appointment';
+import { LeaderboardProvider } from '../providers/leaderboard/leaderboard';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -93,7 +94,8 @@ var AppModule = /** @class */ (function () {
                 GlobalProvider,
                 FilterProvider,
                 PinlistProvider,
-                AppointmentProvider
+                AppointmentProvider,
+                LeaderboardProvider
             ]
         })
     ], AppModule);

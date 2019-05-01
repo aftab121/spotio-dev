@@ -43,6 +43,55 @@ var AppointmentProvider = /** @class */ (function () {
             });
         });
     };
+    AppointmentProvider.prototype.appointmentList = function (userid) {
+        var _this = this;
+        debugger;
+        return new Promise(function (resolve) {
+            var headers = new Headers({ 'Content-Type': 'application/json' });
+            var options = new RequestOptions({ headers: headers });
+            var credentials = JSON.stringify({
+                userid: userid
+            });
+            var link = 'https://clients.managedcrmsolution.com/public/Api/appointmentList';
+            _this.http.post(link, credentials, { headers: headers }).toPromise()
+                .then(function (response) {
+                resolve(response.json());
+            });
+        });
+    };
+    AppointmentProvider.prototype.editAppointment = function (id, userid) {
+        var _this = this;
+        debugger;
+        return new Promise(function (resolve) {
+            var headers = new Headers({ 'Content-Type': 'application/json' });
+            var options = new RequestOptions({ headers: headers });
+            var credentials = JSON.stringify({
+                userid: userid,
+                appointment_id: id
+            });
+            var link = 'https://clients.managedcrmsolution.com/public/Api/getAppointmentDetail';
+            _this.http.post(link, credentials, { headers: headers }).toPromise()
+                .then(function (response) {
+                resolve(response.json());
+            });
+        });
+    };
+    AppointmentProvider.prototype.UpdateAppointment = function (data) {
+        var _this = this;
+        debugger;
+        return new Promise(function (resolve) {
+            var headers = new Headers({ 'Content-Type': 'application/json' });
+            var options = new RequestOptions({ headers: headers });
+            var credentials = JSON.stringify({
+                data: data
+            });
+            var link = 'https://clients.managedcrmsolution.com/public/Api/editAppointmentInfo';
+            _this.http.post(link, credentials, { headers: headers }).toPromise()
+                .then(function (response) {
+                resolve(response.json());
+            });
+        });
+    };
     AppointmentProvider = __decorate([
         Injectable(),
         __metadata("design:paramtypes", [Http])

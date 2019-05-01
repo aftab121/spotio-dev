@@ -51,4 +51,35 @@ export class AppointmentProvider {
 			 })
 	 });
   }
+   editAppointment(id,userid): Promise<any> {
+ 	debugger
+	 return new Promise(resolve => {
+		 let headers = new Headers({ 'Content-Type': 'application/json' });
+		 let options = new RequestOptions({ headers: headers });
+		 let credentials = JSON.stringify({
+			 userid: userid,
+			 appointment_id:id
+		 });
+		 var link = 'https://clients.managedcrmsolution.com/public/Api/getAppointmentDetail';
+		 this.http.post(link, credentials, { headers: headers }).toPromise()
+			 .then((response) => {
+				 resolve(response.json());
+			 })
+	 });
+  }
+    UpdateAppointment(data:any): Promise<any> {
+ 	debugger
+	 return new Promise(resolve => {
+		 let headers = new Headers({ 'Content-Type': 'application/json' });
+		 let options = new RequestOptions({ headers: headers });
+		 let credentials = JSON.stringify({
+			data
+		 });
+		 var link = 'https://clients.managedcrmsolution.com/public/Api/editAppointmentInfo';
+		 this.http.post(link, credentials, { headers: headers }).toPromise()
+			 .then((response) => {
+				 resolve(response.json());
+			 })
+	 });
+  }
 }

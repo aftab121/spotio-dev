@@ -9,7 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Component, Renderer } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-import { PinlistProvider } from '../../providers/pinlist/pinlist';
 /**
  * Generated class for the ModalPage page.
  *
@@ -17,20 +16,14 @@ import { PinlistProvider } from '../../providers/pinlist/pinlist';
  * Ionic pages and navigation.
  */
 var ModalPage = /** @class */ (function () {
-    function ModalPage(navCtrl, navParams, viewCtrl, renderer, pinlistService) {
+    function ModalPage(navCtrl, navParams, viewCtrl, renderer) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.viewCtrl = viewCtrl;
         this.renderer = renderer;
-        this.pinlistService = pinlistService;
-        this.items = [];
-        debugger;
-        this.getPinLIst(this.str);
+        this.list = [];
         /* this.renderer.setElementClass(viewCtrl.pageRef().nativeElement, 'custom-modal', true);*/
-        this.str = navParams.data['data'];
-        /*	if(this.str!=undefined){
-                this.getItems(this.str);
-            }*/
+        this.list = navParams.data['data'];
     }
     ModalPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad ModalPage');
@@ -41,33 +34,13 @@ var ModalPage = /** @class */ (function () {
     ModalPage.prototype.dismiss = function () {
         this.viewCtrl.dismiss();
     };
-    ModalPage.prototype.getPinLIst = function (ev) {
-        var _this = this;
-        var userid = localStorage.getItem("users_data");
-        this.pinlistService.getPinList(userid).then(function (result) {
-            if (result.code == 1) {
-                _this.items = result.data;
-            }
-        }, function (error) {
-            console.log("Error", JSON.stringify(error));
-        });
-    };
-    ModalPage.prototype.getItems = function (ev) {
-        this.getPinLIst();
-        var val = ev.value;
-        if (val && val.trim() != '') {
-            this.items = this.items.filter(function (item) {
-                return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1;
-            });
-        }
-    };
     ModalPage = __decorate([
         IonicPage(),
         Component({
             selector: 'page-modal',
             templateUrl: 'modal.html',
         }),
-        __metadata("design:paramtypes", [NavController, NavParams, ViewController, Renderer, PinlistProvider])
+        __metadata("design:paramtypes", [NavController, NavParams, ViewController, Renderer])
     ], ModalPage);
     return ModalPage;
 }());

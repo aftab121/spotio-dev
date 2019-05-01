@@ -7,10 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Slides } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
 import { CreateAppointmentPage } from '../../pages/create-appointment/create-appointment';
+import { AppointmentProvider } from '../../providers/appointment/appointment';
 /**
  * Generated class for the AppointmentsPage page.
  *
@@ -18,18 +19,21 @@ import { CreateAppointmentPage } from '../../pages/create-appointment/create-app
  * Ionic pages and navigation.
  */
 var AppointmentsPage = /** @class */ (function () {
-    function AppointmentsPage(alertCtrl, navCtrl, navParams, calendar) {
+    function AppointmentsPage(alertCtrl, navCtrl, navParams, calendar, appointmentService) {
         this.alertCtrl = alertCtrl;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.calendar = calendar;
-        this.slideOpts = {
-            effect: 'flip'
-        };
+        this.appointmentService = appointmentService;
+        this.slidenum = 0;
         this.date = new Date();
+        this.eventList = [];
+        this.allEvents = [];
         this.firstdate = new Date(this.date.getFullYear() + "-" + (this.date.getMonth() + 1) + "-" + (this.date.getDate()) + " 00:00:00");
         this.seconddate = new Date(this.date.getFullYear() + "-" + (this.date.getMonth() + 1) + "-" + (this.date.getDate() + 1) + " 23:59:59");
+        this.selecteddt = false;
         this.monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        this.getAllEvents();
         /* debugger;
          var element=document.querySelector('.currentDate');
          console.log(element.className);*/
@@ -39,11 +43,11 @@ var AppointmentsPage = /** @class */ (function () {
         // this.getDaysOfMonth();
         // this.loadEventThisMonth();
     };
-    AppointmentsPage.prototype.onSlideChanged = function (e, m) {
-        var month = m;
-        var currentIndex = this.slider.getActiveIndex();
-        console.log("You are on Slide ", (currentIndex + 1));
-    };
+    /*onSlideChanged(e, m) {
+      var month = m;
+      let currentIndex = this.slider.getActiveIndex();
+      console.log("You are on Slide ", (currentIndex + 1));
+    }*/
     AppointmentsPage.prototype.getDaysInLastMonth = function (month) {
         this.daysInLastMonth = new Array();
         var firstDayThisMonth = new Date(this.date.getFullYear(), month, 1).getDay();
@@ -72,10 +76,11 @@ var AppointmentsPage = /** @class */ (function () {
         console.log(month);
         this.date = new Date();
         this.daysInThisMonth = new Array();
-        this.currentMonth = this.monthNames[month];
         this.currentYear = this.date.getFullYear();
         if (month === new Date().getMonth()) {
             this.currentDate = new Date().getDate();
+            this.currentMonth = new Date().getMonth();
+            this.slidenum = month;
         }
         else {
             this.currentDate = 999;
@@ -87,8 +92,9 @@ var AppointmentsPage = /** @class */ (function () {
         }
         return this.daysInThisMonth;
     };
-    AppointmentsPage.prototype.goToCurrentDate = function () {
+    AppointmentsPage.prototype.goToCurrentDate = function (m) {
         this.date = new Date();
+        this.slidenum = m;
         this.getDaysOfMonth(this.date.getMonth());
     };
     AppointmentsPage.prototype.goToLastMonth = function () {
@@ -128,20 +134,25 @@ var AppointmentsPage = /** @class */ (function () {
         });
         return hasEvent;
     };
-    AppointmentsPage.prototype.selectDate = function (day, month) {
-        this.currentDate = new Date(this.date.getFullYear() + "-" + (month + 1) + "-" + day).getDate();
+    AppointmentsPage.prototype.selectDate = function (day, month, year) {
+        var _this = this;
+        this.currentDate = new Date(year + "-" + (month + 1) + "-" + day).getDate();
         this.isSelected = false;
         this.selectedEvent = new Array();
-        var thisDate1 = this.date.getFullYear() + "-" + (month + 1) + "-" + day + " 00:00:00";
-        var thisDate2 = this.date.getFullYear() + "-" + (month + 1) + "-" + day + " 23:59:59";
-        debugger;
+        var thisDate1 = year + "-" + (month + 1) + "-" + day + " 00:00:00";
+        var thisDate2 = year + "-" + (month + 1) + "-" + day + " 23:59:59";
         this.firstdate = thisDate1;
         this.seconddate = thisDate2;
+        debugger;
+        this.eventList = this.allEvents.filter(function (item) {
+            var date = new Date(item.start_date).toDateString();
+            return (date.indexOf(new Date(_this.firstdate).toDateString()) > -1);
+        });
         /* this.eventList.forEach(event => {
            if (((event.startTime >= thisDate1) && (event.startTime <= thisDate2)) || ((event.endTime >= thisDate1) && (event.endTime <= thisDate2))) {
-             this.isSelected = true;
-             this.selectedEvent.push(event);
-     
+           this.isSelected = true;
+           this.selectedEvent.push(event);
+         
            }
          });*/
     };
@@ -176,17 +187,40 @@ var AppointmentsPage = /** @class */ (function () {
         });
         alert.present();
     };
-    __decorate([
-        ViewChild('mySlider'),
-        __metadata("design:type", Slides)
-    ], AppointmentsPage.prototype, "slider", void 0);
+    AppointmentsPage.prototype.getAllEvents = function () {
+        var _this = this;
+        var userid = localStorage.getItem('users_data');
+        this.appointmentService.appointmentList(userid).then(function (result) {
+            if (result.code == 1) {
+                _this.allEvents = result.data;
+                _this.eventList = result.data;
+            }
+            else {
+            }
+        }, function (error) {
+            console.log("Error", JSON.stringify(error));
+        });
+    };
+    AppointmentsPage.prototype.getTime = function (date) {
+        var time = { hour: 'numeric', minute: 'numeric' };
+        var getTime = new Date(date).toLocaleString("en-US", time);
+        return getTime;
+    };
+    AppointmentsPage.prototype.getDate = function (date) {
+        var options = { year: 'numeric', month: 'short', day: 'numeric' };
+        var getdate = new Date(date).toLocaleString("en-US", options);
+        return getdate;
+    };
+    AppointmentsPage.prototype.gotoEdit = function (id) {
+        this.navCtrl.setRoot('EditAppointmentPage', { id: id });
+    };
     AppointmentsPage = __decorate([
         IonicPage(),
         Component({
             selector: 'page-appointments',
             templateUrl: 'appointments.html',
         }),
-        __metadata("design:paramtypes", [AlertController, NavController, NavParams, Calendar])
+        __metadata("design:paramtypes", [AlertController, NavController, NavParams, Calendar, AppointmentProvider])
     ], AppointmentsPage);
     return AppointmentsPage;
 }());

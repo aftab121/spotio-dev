@@ -1,0 +1,58 @@
+
+<ion-header (onTap)="closeModal()">
+
+  <ion-navbar color="accent">
+    <ion-title><div text-center style="width: 80%;float: left;line-height: 48px;">CreateAppointment</div>
+ <div text-right style="width: 20%;float: left;height: 48px; line-height: 48px;border-left: 1px solid #b2b2b2" (click)="save()">
+            Done
+        </div>
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="view-class">
+<!-- <form (ngSubmit)="save()"> -->   
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Pin Name</ion-label>      
+        <ion-input [(ngModel)]="eventlist.pin_status"></ion-input>
+       <!--  <ion-input type="text" (ionInput)="getItems($event)" name="event.pin_name"></ion-input> -->
+      </ion-item>   
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input type="text" [(ngModel)]="eventlist.pin_name" name="eventlist.pin_name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Location</ion-label>
+        <ion-input type="text" [(ngModel)]="eventlist.location" name="eventlist.location"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Notes</ion-label>
+        <ion-input type="text" [(ngModel)]="eventlist.note" name="eventlist.note"></ion-input>
+      </ion-item>
+      <ion-item [hidden]="eventlist.startDate==''" >
+        <ion-label floating>Start Date</ion-label>
+        <ion-datetime displayFormat="DD MMM YYYY HH:MM" pickerFormat="MM/DD/YYYY" [(ngModel)]="eventlist.startDate" name="eventlist.startDate" (ionChange)="startDateChange(datePicker)"></ion-datetime>
+      </ion-item>
+      <ion-item [hidden]="eventlist.startDate!=''" >
+        <ion-label>Start Time</ion-label>
+        <ion-datetime #datePicker
+        (ionCancel)="myDate=undefined" displayFormat="HH:mm" [(ngModel)]="eventlist.startTime" name="eventlist.startTime" (ionChange)="startTimeChange($evt)"></ion-datetime>
+      </ion-item>
+      <ion-item [hidden]="event.endDate==''">
+        <ion-label floating>End Date</ion-label>
+        <ion-datetime displayFormat="DD MMM YYYY HH:MM" pickerFormat="MM/DD/YYYY" [(ngModel)]="eventlist.endDate" name="eventlist.endDate" (ionChange)="endDateChange(datePicker1)"></ion-datetime>
+      </ion-item>
+       <ion-item [hidden]="eventlist.endDate!=''" >
+        <ion-label>End Time</ion-label>
+        <ion-datetime #datePicker1
+        (ionCancel)="myDate=undefined" displayFormat="HH:mm" (ionChange)="endTimeChange($evt)" [(ngModel)]="eventlist.endTime" name="eventlist.endTime"></ion-datetime>
+      </ion-item>
+     <!--  <ion-item>
+        <button ion-button type="submit" full round (click)="save()">Save</button>
+      </ion-item> -->
+    </ion-list>
+ <!--  </form> -->
+</ion-content>

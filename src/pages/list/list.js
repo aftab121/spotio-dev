@@ -12,12 +12,16 @@ import { NavController, NavParams } from 'ionic-angular';
 import { MapPage } from '../../pages/map/map';
 import { PinDetailsPage } from '../../pages/pindetails/pindetails';
 import { PinlistProvider } from '../../providers/pinlist/pinlist';
+import { AddpinProvider } from '../../providers/addpin/addpin';
 var ListPage = /** @class */ (function () {
     //items: any=[];
-    function ListPage(navCtrl, navParams, pinlistService) {
+    function ListPage(navCtrl, navParams, pinlistService, addpinService) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.pinlistService = pinlistService;
+        this.addpinService = addpinService;
+        this.addpinfrm = {};
+        this.overlayHidden = true;
         this.items = [];
         // If we navigated to this page, we will have an item available as a nav param
         this.selectedItem = navParams.get('item');
@@ -25,24 +29,46 @@ var ListPage = /** @class */ (function () {
         this.icons = ['pin', 'pin', 'pin'];
         this.getPinLIst();
         /*  for (let i = 1; i < 3; i++) {
-            this.items.push({
-              title: 'Item ' + i,
-              address1: 'Kursi Raod',
-              address2: 'Kursi Road',
-              city: 'Lucknow',
-              state: 'Uttar Pradesh',
-              date: 'Mar 26,2019',
-              time: '3:24 PM',
-              icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-            });
+          this.items.push({
+            title: 'Item ' + i,
+            address1: 'Kursi Raod',
+            address2: 'Kursi Road',
+            city: 'Lucknow',
+            state: 'Uttar Pradesh',
+            date: 'Mar 26,2019',
+            time: '3:24 PM',
+            icon: this.icons[Math.floor(Math.random() * this.icons.length)]
+          });
           }*/
     }
+    ListPage.prototype.goToFilter = function () {
+        this.navCtrl.push('FilterPage');
+    };
+    ListPage.prototype.showOverlay = function () {
+        this.overlayHidden = false;
+    };
+    ListPage.prototype.hideOverlay = function () {
+        this.overlayHidden = true;
+    };
+    ListPage.prototype.AddPin = function () {
+        var _this = this;
+        var userid = localStorage.getItem('users_data');
+        this.addpinService.createAddPin(userid).then(function (result) {
+            if (result.resCode == 1) {
+                _this.addpinfrm = result.data;
+                _this.overlayHidden = true;
+                _this.navCtrl.push('AddpinPage', result.data);
+            }
+        }, function (error) {
+            console.log('error', JSON.stringify(error));
+        });
+    };
     ListPage.prototype.itemTapped = function (event, item) {
         // That's right, we're pushing to ourselves!
         /* this.navCtrl.push(PinDetailsPage, {
            item: item
          });*/
-        this.navCtrl.push(PinDetailsPage, { data: item });
+        this.navCtrl.push(PinDetailsPage, { data: item.pindata });
     };
     ListPage.prototype.goToMap = function () {
         this.navCtrl.setRoot(MapPage);
@@ -66,7 +92,8 @@ var ListPage = /** @class */ (function () {
                         date: dateTime.toLocaleDateString("en-US", options),
                         time: dateTime.toLocaleTimeString("en-US", time),
                         pin_status: value.pin_status,
-                        user: value.user
+                        user: value.user,
+                        pindata: value
                         //icon: this.icons[Math.floor(Math.random() * this.icons.length)]
                     });
                 }, _this);
@@ -92,7 +119,7 @@ var ListPage = /** @class */ (function () {
             selector: 'page-list',
             templateUrl: 'list.html'
         }),
-        __metadata("design:paramtypes", [NavController, NavParams, PinlistProvider])
+        __metadata("design:paramtypes", [NavController, NavParams, PinlistProvider, AddpinProvider])
     ], ListPage);
     return ListPage;
 }());

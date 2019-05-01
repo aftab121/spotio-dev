@@ -3,25 +3,29 @@ import {IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MapPage } from '../../pages/map/map';
 import { PinDetailsPage } from '../../pages/pindetails/pindetails';
 import { PinlistProvider } from '../../providers/pinlist/pinlist';
+import { AddpinProvider } from '../../providers/addpin/addpin';
+
 
 @Component({
   selector: 'page-list',
   templateUrl: 'list.html'
 })
 export class ListPage {
+  addpinfrm: any = {};
+  overlayHidden: boolean = true;
   selectedItem: any;
   icons: string[];
-  items: Array<{id:string, title: string, date: string, time: string, address1:string, address2:string, city:string, state:string, pin_status: any[], user:any[], pindata:any[]}>=[];
+  items: Array<{ id: string, title: string, date: string, time: string, address1: string, address2: string, city: string, state: string, pin_status: any[], user: any[], pindata: any[] }> = [];
   //items: any=[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public pinlistService: PinlistProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public pinlistService: PinlistProvider, public addpinService: AddpinProvider) {
     // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('item');
 
     // Let's populate this page with some filler content for funzies
     this.icons = ['pin', 'pin', 'pin'];
     this.getPinLIst();
-  /*  for (let i = 1; i < 3; i++) {
+    /*  for (let i = 1; i < 3; i++) {
       this.items.push({
         title: 'Item ' + i,
         address1: 'Kursi Raod',
@@ -32,17 +36,37 @@ export class ListPage {
         time: '3:24 PM',
         icon: this.icons[Math.floor(Math.random() * this.icons.length)]
       });
-    }*/
+      }*/
   }
-
+  goToFilter() {
+    this.navCtrl.push('FilterPage')
+  }
+  public showOverlay() {
+    this.overlayHidden = false;
+  }
+  public hideOverlay() {
+    this.overlayHidden = true;
+  }
+  AddPin() {
+    var userid = localStorage.getItem('users_data');
+    this.addpinService.createAddPin(userid).then((result) => {
+      if (result.resCode == 1) {
+        this.addpinfrm = result.data;
+        this.overlayHidden = true;
+        this.navCtrl.push('AddpinPage', result.data);
+      }
+    }, (error) => {
+      console.log('error', JSON.stringify(error));
+    })
+  }
   itemTapped(event, item) {
     // That's right, we're pushing to ourselves!
-   /* this.navCtrl.push(PinDetailsPage, {
-      item: item
-    });*/
-    this.navCtrl.push(PinDetailsPage,{data:item.pindata});
+    /* this.navCtrl.push(PinDetailsPage, {
+       item: item
+     });*/
+    this.navCtrl.push(PinDetailsPage, { data: item.pindata });
   }
-  goToMap(){
+  goToMap() {
     this.navCtrl.setRoot(MapPage)
   }
   getPinLIst() {
@@ -50,11 +74,11 @@ export class ListPage {
     this.pinlistService.getPinList(userid).then((result) => {
       if (result.code == 1) {
         result.data.forEach(function(value) {
-          var options = { year: 'numeric', month: 'short', day: 'numeric'};
-          var time={hour: 'numeric', minute: 'numeric' };
-            var dateTime = new Date(value.created_at);          
+          var options = { year: 'numeric', month: 'short', day: 'numeric' };
+          var time = { hour: 'numeric', minute: 'numeric' };
+          var dateTime = new Date(value.created_at);
           this.items.push({
-            id:value.id,
+            id: value.id,
             title: value.name,
             address1: value.house_number,
             address2: value.house_address,
@@ -62,20 +86,20 @@ export class ListPage {
             state: value.state,
             date: dateTime.toLocaleDateString("en-US", options),
             time: dateTime.toLocaleTimeString("en-US", time),
-            pin_status:value.pin_status,
-            user:value.user,
-            pindata:value
+            pin_status: value.pin_status,
+            user: value.user,
+            pindata: value
             //icon: this.icons[Math.floor(Math.random() * this.icons.length)]
           });
-        },this);
+        }, this);
       }
     }, (error) => {
       console.log("Error", JSON.stringify(error));
     });
-  } 
-   getItems(ev) {
+  }
+  getItems(ev) {
     // Reset items back to all of the items
-    this. getPinLIst();
+    this.getPinLIst();
 
     // set val to the value of the ev target
     var val = ev.target.value;
