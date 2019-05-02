@@ -1,0 +1,90 @@
+<!--
+  Generated template for the ChatIndividualPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <!-- <ion-navbar>
+    <ion-title>chat-individual</ion-title>
+  </ion-navbar> -->
+ <ion-navbar class="bar-calm">
+ 	<ion-row>
+ 		<ion-col col-6>
+ 			 <h3 class="title">{{model.id}},{{model.name}}</h3>
+ 		</ion-col>
+ 		<ion-col col-6>
+ 			<img src="assets/imgs/user.png" style="width: 52px; height: 52px; border-radius: 52%;float: right;" />
+ 		</ion-col>
+ 	</ion-row>
+     
+    </ion-navbar>
+</ion-header>
+
+
+ <ion-content class="content-stable">
+
+      <div ng-repeat="message in messages"          
+           class="messages">
+
+        <div class="message slide-right">
+          <span class="rcv">fghfgh</span>         
+        </div>
+        <div style="visibility: hidden;" class="time">3:00</div>
+      </div>
+      <div ng-repeat="message in messages"          
+           class="messages other">
+
+        <div class="message slide-right">
+          <span class="send">fghfgh</span>           
+        </div>
+<div style="visibility: hidden;" class="time">3:00</div>
+        
+      </div>
+       <div ng-repeat="message in messages"          
+           class="messages">
+
+        <div class="message slide-right">
+          <span class="rcv">fghfgh</span>         
+        </div>
+        <div style="visibility: hidden;" class="time">3:00</div>
+      </div>
+      <div ng-repeat="message in messages"          
+           class="messages other">
+
+        <div class="message slide-right">
+          <span class="send">fghfgh</span>           
+        </div>
+<div style="visibility: hidden;" class="time">3:00</div>
+        
+      </div>
+       <div ng-repeat="message in messages"          
+           class="messages">
+
+        <div class="message slide-right">
+          <span class="rcv">fghfgh</span>         
+        </div>
+        <div style="visibility: hidden;" class="time">3:00</div>
+      </div>
+      <div ng-repeat="message in messages"          
+           class="messages other">
+
+        <div class="message slide-right">
+          <span class="send">fghfgh</span>           
+        </div>
+<div style="visibility: hidden;" class="time">3:00</div>
+        
+      </div>
+      <div keyboard-attach style="bottom: 0;position: absolute;width: 100%;border: 1px solid gray; border-radius: 24px; line-height: 50px;" class="bar-stable item-input-inset">
+      <label class="item-input-wrapper">
+        <input style="width: 80%; line-height: 26px; border: none; margin-left: 10px;" type="text" placeholder="Type your message" on-return="sendMessage(); closeKeyboard()" on-focus="inputUp()" on-blur="inputDown()" />
+      </label>
+      <button style="float: right;padding:18px;width: 16%;border-bottom-right-radius: 24px; border-top-right-radius: 24px;" class="button button-clear" ng-click="sendMessage()">
+        Send
+      </button>
+    </div>
+
+    </ion-content>
+ 
+

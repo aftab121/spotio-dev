@@ -36,10 +36,7 @@
 
             <label class = "item item-input" style="margin-left: 31px; color: #5f5a5a;padding-right: 21px;">
                {{items.name}}
-            </label>
-             <span (click)="getNavigation(items.id)">
-          get root
-        </span>
+            </label>            
         </div>
 
         <hr style="margin: 0 11px 1px 11px;height: 2px;">
@@ -52,6 +49,9 @@
               {{items.house_number}},{{items.house_address}}<br>
                <p style="margin-top: 2px;float: right;margin-right: 40px;">{{items.city}}, {{items.state}}</p>
             </label>
+             <span (click)="getNavigation(items.latitude,items.longitude)">
+         <img src="assets/imgs/Map-Location.png" style="height: 20px; width: 16px;" >
+        </span>
         </div>
 </div>
  <div class="details-Content">

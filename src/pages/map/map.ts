@@ -10,6 +10,7 @@ import {EditpinPage} from '../../pages/editpin/editpin';
 import { PinDetailsPage } from '../../pages/pindetails/pindetails';
 import { PinlistProvider } from '../../providers/pinlist/pinlist';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { PusherServiceProvider } from '../../providers/pusher-service/pusher-service';
 
 import {
   GoogleMaps,
@@ -64,7 +65,8 @@ export class MapPage {
   showDiv:boolean=false;
   pin_list:any=[];
   latLng:any;
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public navParams: NavParams, public toastCtrl: ToastController, public plt: Platform, public addpinService: AddpinProvider, public PinProvider: GetPinProvider, private geolocation: Geolocation, public TerritoryProvider: GetTerritoryProvider,  public pinlistService: PinlistProvider) {
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public navParams: NavParams, public toastCtrl: ToastController, public plt: Platform, public addpinService: AddpinProvider, public PinProvider: GetPinProvider, private geolocation: Geolocation, public TerritoryProvider: GetTerritoryProvider,  public pinlistService: PinlistProvider,
+    private pusherService : PusherServiceProvider) {
     if(navParams.data['filter']!=undefined){
        //this.data_filter.push(navParams.data['filter']);//      
        this.assigned_to=navParams.data['filter']['assigned_to']!=undefined?navParams.data['filter']['assigned_to']:'';
@@ -82,7 +84,7 @@ export class MapPage {
     }, (error) => {
 
     });
-
+   
   }
 
 
@@ -171,7 +173,7 @@ export class MapPage {
         };
 
 
-       let marker = new google.maps.Marker({
+        let marker = new google.maps.Marker({
           icon: icon,
           map: obj.map,
           animation: google.maps.Animation.DROP,
@@ -202,8 +204,8 @@ export class MapPage {
           else {
             this.showDiv = false;
           }
-          var endpoint=new google.maps.LatLng(marker.position.lat() , marker.position.lng());
-          this.startNavigating(endpoint);
+          var endpoint = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+          /*this.startNavigating(endpoint);*/
           /*  var info=infoWindow.get(marker.map,marker);
           infoWindow.open(marker.map, marker);*/
         });
@@ -211,33 +213,7 @@ export class MapPage {
     }, (error) => {
       console.log(JSON.stringify(error));
     });
-      let locationObj: any;
-     //let latLng:any;
-     this.geolocation.getCurrentPosition({ timeout: 10000, enableHighAccuracy: true }).then(position => {
-      locationObj = {
-        lat: position.coords.latitude,
-        lon: position.coords.longitude,
-        timestamp: position.timestamp,
-        accuracy: position.coords.accuracy
-      };
-       this.latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      let mapOptions = {
-        icon:'blue',
-        center: this.latLng,
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      }
-      let geocoder = new google.maps.Geocoder;
-      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-   /*   geocoder.geocode({'location': this.latLng}, (results, status) => {
-   console.log(results); // read data from here
-   alert(JSON.stringify(results[0]));
-   console.log(status);
-});*/
 
-    }, (error) => {
-      console.log("error", JSON.stringify(error));
-    });
     this.TerritoryProvider.GetTerritoryList('1').then((result) => {
       result.data.forEach(function(value) {
         var triangleCoords = new Array();
@@ -292,10 +268,22 @@ export class MapPage {
     }, (error) => {
 
     });
-
-
+    this.pusher();
   }
-  startNavigating(endpoint){
+  pusher(){
+     const channel = this.pusherService.init();
+        channel.bind('my-event', (data) => {
+          alert(JSON.stringify(data));
+         /* if(data.score >= 1){
+            this.rating.good = this.rating.good + 1;
+          }
+          else{
+            this.rating.bad = this.rating.bad + 1;
+          }
+          this.comments.push(data);*/
+        });
+    }
+/*  startNavigating(endpoint){
    
         let directionsService = new google.maps.DirectionsService;
         let directionsDisplay = new google.maps.DirectionsRenderer;
@@ -317,7 +305,7 @@ export class MapPage {
 
         });
 
-    }
+    }*/
   AddPin() {
     var userid = localStorage.getItem('users_data');
     this.addpinService.createAddPin(userid).then((result) => {

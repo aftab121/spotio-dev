@@ -34,6 +34,9 @@ import { FilterProvider } from '../providers/filter/filter';
 import { PinlistProvider } from '../providers/pinlist/pinlist';
 import { AppointmentProvider } from '../providers/appointment/appointment';
 import { LeaderboardProvider } from '../providers/leaderboard/leaderboard';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { PusherServiceProvider } from '../providers/pusher-service/pusher-service';
+
 
 @NgModule({
   declarations: [
@@ -89,7 +92,9 @@ import { LeaderboardProvider } from '../providers/leaderboard/leaderboard';
     FilterProvider,
     PinlistProvider,
     AppointmentProvider,
-    LeaderboardProvider
+    LeaderboardProvider,
+    LaunchNavigator,
+    PusherServiceProvider
   ]
 })
 export class AppModule {}

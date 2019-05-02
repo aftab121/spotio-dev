@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ChatIndividualPage } from '../../pages/chat-individual/chat-individual';
 
 /**
  * Generated class for the ChatPage page.
@@ -16,7 +17,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class ChatPage {
  selectedItem: any;
   icons: string[];
-items: Array<{title: string, note: string, icon: string,lastMessage:string,time:string}>;
+items: Array<{id:number,title: string, note: string, icon: string,lastMessage:string,time:string}>;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
    // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('item');
@@ -27,6 +28,7 @@ items: Array<{title: string, note: string, icon: string,lastMessage:string,time:
   this.items = [];
   for (let i = 1; i < 11; i++) {
       this.items.push({
+        id:i,
         title: 'Pooja Rai',
         note: 'This is item #' + i,
         icon: this.icons[Math.floor(Math.random() * this.icons.length)],
@@ -38,6 +40,10 @@ items: Array<{title: string, note: string, icon: string,lastMessage:string,time:
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatPage');
+  }
+
+  gotoChat(id,name){
+    this.navCtrl.push('ChatIndividualPage',{details:{id:id,name:name}});
   }
 
 }

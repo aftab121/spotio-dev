@@ -7,6 +7,7 @@ import {CreateAppointmentPage} from '../../pages/create-appointment/create-appoi
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { NavigationMapPage } from '../../pages/navigation-map/navigation-map';
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 
 declare var google;
 @Component({
@@ -18,9 +19,11 @@ export class PinDetailsPage {
   icons: string[];
   updated_date:any;
   updated_time:any;
+  latitude:number ;
+    longitude:number ;
   items:any /*Array<{id:string,title: string, date: string, time: string, address1:string, address2:string, city:string, state:string, pin_status: any[], user:any[]}>*/=[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public addpinService: AddpinProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public addpinService: AddpinProvider, public geolocation:Geolocation,private launchNavigator:LaunchNavigator) {
     // If we navigated to this page, we will have an item available as a nav param
     if (navParams.data["data"] != undefined) {
       this.items = navParams.data["data"];
@@ -44,9 +47,27 @@ export class PinDetailsPage {
     this.selectedItem = navParams.get('item');
 
   }
-  getNavigation(id){
+  ionViewDidLoad(){
+  this.geolocation.getCurrentPosition().then(position =>{
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+    },error=>{
+        console.log('error',error);
+    });
+}
+  getNavigation(ltd,lng){
+    let options: LaunchNavigatorOptions = {
+    app: this.launchNavigator.APP.GOOGLE_MAPS,
+             start:[this.latitude,this.longitude]
+      };
+      var destination=[ltd,lng];
+  this.launchNavigator.navigate(destination,options).then(success =>{
+    console.log(success);
+  },error=>{
+    console.log(error);
+  })
     //var endorgin= new google.maps.LatLng(lat , lng);
-    this.navCtrl.setRoot('NavigationMapPage',{pinid:id});
+    //this.navCtrl.setRoot('NavigationMapPage',{pinid:id});
   }
   back(){
    this.navCtrl.setRoot(MapPage)
