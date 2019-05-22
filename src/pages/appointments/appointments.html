@@ -11,16 +11,18 @@
       <ion-icon name="menu" ></ion-icon>
     </button>
     <ion-title style="display: flex; justify-content: space-between; font-size: 24px;">
-            
-        <div float-left >
+          <ion-row>
+          <ion-col col-10>  
+        <div  style="float: left;">
             Appointments
         </div>
-        <div float-right >
-          
-            <div >
+      </ion-col>
+      <ion-col col-1>
+      
                 <ion-icon (click)="createAppointment()" name="add"></ion-icon>
-            </div>
-        </div>
+           
+      </ion-col>
+    </ion-row>
     </ion-title>
   </ion-navbar>
 
@@ -65,15 +67,14 @@
   </div>
     </ion-slide>
 </ion-slides>
- <ion-list>
-      <ion-item (click)="gotoEdit(item.id)" *ngFor="let item of eventList" style="margin-top: 24px;">
-  <ion-row>
-    <ion-col col-3>
+ <ion-list style="margin-top: 8px;padding-left: : 0;">
+      <ion-item (click)="gotoEdit(item.id)" *ngFor="let item of eventList" style="padding-left: : 0;">
+  <ion-row wrap text-wrap>
+    <ion-col col-3 style="padding-right: 26px;">
       {{getTime(item.start_date)}}
     </ion-col>
-     <ion-col col-9 style="text-align: left;">
-    {{item.pin_status}},{{item.pin_info.name}},{{item.pin_info.phone_number}}<br>
-    {{item.pin_info.city}},{{item.pin_info.state}},{{item.pin_info.zipcode}}
+     <ion-col col-9 style="text-align: left;" text-wrap>
+    {{item.pin_status}},{{item.pin_info.name}},{{item.pin_info.phone_number}} {{item.pin_info.city}},{{item.pin_info.state}},{{item.pin_info.zipcode}}
     </ion-col>
   </ion-row>
    <p style="float: right;">{{getDate(item.start_date)}}</p>

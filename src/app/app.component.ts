@@ -84,7 +84,7 @@ export class MyApp {
   profileName(){       
         if(localStorage.getItem('username')!=null){
          this.username=localStorage.getItem('username').split(' ');
-         this.globalService.userNameChar=this.username[0][0]+this.username[1][0];          
+         this.globalService.userNameChar=this.username.lenth>1?this.username[0][0]+this.username[1][0]:this.username[0][0];          
         }        
     }
 }

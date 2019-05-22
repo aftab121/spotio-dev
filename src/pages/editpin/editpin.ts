@@ -201,4 +201,7 @@ export class EditpinPage {
 		console.log(this.todo);
 	}
 
+ back(){
+   this.navCtrl.setRoot(MapPage)
+  }
 }

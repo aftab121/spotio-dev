@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { LoginPage } from '../../pages/login/login';
+import { ProfilePage } from '../../pages/profile/profile';
+
 
 /**
  * Generated class for the SettingsPage page.
@@ -28,6 +30,10 @@ export class SettingsPage {
             window.localStorage.clear();          
          this.navCtrl.setRoot(LoginPage);
           
+  }
+  gotoProfile()
+  {
+    this.navCtrl.setRoot(ProfilePage);
   }
 
 }

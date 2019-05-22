@@ -186,4 +186,7 @@ export class AddpinPage {
   });
   alert.present();
 }
+ back(){
+   this.navCtrl.setRoot(MapPage)
+  }
 }

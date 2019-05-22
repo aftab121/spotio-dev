@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, ModalController,M
 import {AppointmentProvider}from '../../providers/appointment/appointment';
 import { PinlistProvider } from '../../providers/pinlist/pinlist';
 import { Calendar } from '@ionic-native/calendar';
+import {MapPage} from '../../pages/map/map';
 
 /**
  * Generated class for the EditAppointmentPage page.
@@ -23,16 +24,11 @@ export class EditAppointmentPage {
 		pin_id: "",
 		pin_name: "",
 		pin_status: "",
-		location: "",
-		start_date: "",
-		end_date: "",
+		location: "",	
 		notes: "",
-		created_at: "",
-		updated_at: "",
-		pin_info: "",
-	    startDate:"",
+	    start_date:"",
 	    startTime:"",
-		endDate:"",
+		end_date:"",
 		endTime:""
 	};
 	constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, private calendar: Calendar, public appointmentService: AppointmentProvider, public pinlistService: PinlistProvider) {
@@ -49,8 +45,8 @@ export class EditAppointmentPage {
 		this.appointmentService.editAppointment(id, userid).then((result) => {
 			if (result.code == 1) {
 				this.eventlist = result.data;
-				this.eventlist.startDate=new Date(result.data.start_date).toDateString();
-				this.eventlist.endDate=new Date(result.data.end_date).toDateString();
+				this.eventlist.start_date=result.data.start_date;
+				this.eventlist.end_date=result.data.end_date;
 			    this.eventlist.startTime=new Date(result.data.start_date).toTimeString();
 				this.eventlist.endTime=new Date(result.data.end_date).toTimeString();
 			}
@@ -69,21 +65,21 @@ export class EditAppointmentPage {
     datePicker1.open();
   }
   startTimeChange(evt) {
-    var startdate = new Date(this.eventlist.startDate);
-    var startdt = startdate.getFullYear() + "-" + (startdate.getMonth() + 1) + "-" + startdate.getDate() + " " + this.eventlist.startTime;
-    this.eventlist.startDate = new Date(startdt).toISOString();
+    var startdate = new Date(this.eventlist.start_date);
+    var startdt = startdate.getFullYear() + "-" + (startdate.getMonth()+1)  + "-" + startdate.getDate() + " " + this.eventlist.startTime;
+    this.eventlist.start_date = new Date(startdt).toISOString();
   }
   endTimeChange(evt) {
-    var enddate = new Date(this.eventlist.startDate);
-    var enddt = enddate.getDate() + "-" + enddate.getFullYear() + "-" + (enddate.getMonth() + 1) + " " + this.eventlist.endTime;
-    this.eventlist.endDate = new Date(enddt).toISOString();
+    var enddate = new Date(this.eventlist.end_date);
+    var enddt = enddate.getFullYear() + "-" + (enddate.getMonth()+1) + "-" + enddate.getDate()+  " " + this.eventlist.endTime;
+    this.eventlist.end_date = new Date(enddt).toISOString();
   }
   update(){  
     var json = JSON.stringify(this.eventlist);    
-    this.appointmentService.createAppointment(this.eventlist).then((result) => {
+    this.appointmentService.UpdateAppointment(json).then((result) => {
       if (result.code == 1) {
-        console.log("success");
-        //this.navCtrl.setRoot(MapPage);          
+        //console.log("success");
+        this.navCtrl.setRoot(MapPage);          
       }
       else if (result.code == 2) {
         /*this.message=result.msg;
@@ -93,5 +89,9 @@ export class EditAppointmentPage {
     }, (error) => {
       console.log('error', JSON.stringify(error));
     });
+  }
+
+ back(){
+   this.navCtrl.setRoot(MapPage)
   }
 }

@@ -14,4 +14,7 @@ ion-list-header.item.item-md.list-header.list-header-md.list_Item_header {
 .item-md ion-icon[item-left] + .item-inner, .item-md ion-icon[item-left] + .item-input, .item-md ion-icon[item-start] + .item-inner, .item-md ion-icon[item-start] + .item-input {
     margin-left: 10px !important;
 }
+.toolbar-ios ion-title {
+    padding: 0 18px 1px 57px !important;
+}
 }

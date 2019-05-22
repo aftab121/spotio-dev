@@ -158,6 +158,7 @@ export class MapPage {
     this.userid = localStorage.getItem('users_data');
     this.PinProvider.GetPinList(this.userid, '1', this.pin_status, this.assigned_to, this.start_date, this.custom_date, this.end_date).then((result) => {
       //debugger;      
+      loading.dismiss();
       let result_data: any = [];
       let arr: any = this.data_filter[0];
       this.pin_list = result.data;
@@ -168,7 +169,7 @@ export class MapPage {
         var iconImage = 'assets/markers/' + sillyString + '.png';
         var icon = {
           url: iconImage, // url
-          scaledSize: new google.maps.Size(30, 48), // scaled size
+          scaledSize: new google.maps.Size(16, 30), // scaled size
           labelOrigin: new google.maps.Point(25, 32)
         };
 
@@ -306,20 +307,24 @@ export class MapPage {
         });
 
     }*/
+    selectPins(){
+      this.hideOverlay();
+      this.showDiv = false;
+    }
   AddPin() {
     var userid = localStorage.getItem('users_data');
     this.addpinService.createAddPin(userid).then((result) => {
       if (result.resCode == 1) {
         this.addpinfrm = result.data;
         this.overlayHidden = true;
-        this.navCtrl.push('AddpinPage', result.data);
+        this.navCtrl.setRoot('AddpinPage', result.data);
       }
     }, (error) => {
       console.log('error', JSON.stringify(error));
     })
   }
   goToFilter() {
-    this.navCtrl.push('FilterPage')
+    this.navCtrl.setRoot('FilterPage')
   }
   goToList() {
     this.navCtrl.setRoot(ListPage)
@@ -397,7 +402,7 @@ export class MapPage {
     var userid = localStorage.getItem('users_data');
     this.addpinService.EditPin(userid, id).then((result) => {
       if (result.resCode == 1) {
-        this.navCtrl.push('EditpinPage', result.data);
+        this.navCtrl.setRoot('EditpinPage', result.data);
       }
     }, (error) => {
       console.log('error', JSON.stringify(error));
@@ -406,10 +411,13 @@ export class MapPage {
   }
   gotoDetails(pin_id) {
     var userid = localStorage.getItem("users_data");
-   var data = this.pin_list.filter((item) => {
-          return item.id==pin_id;
-        });
-        this.navCtrl.push(PinDetailsPage, { data: data[0] });
+     this.addpinService.EditPin(userid, pin_id).then((result) => {
+      if (result.resCode == 1) {
+        this.navCtrl.push(PinDetailsPage, { data: result.data.pinInfo });
+      }
+    }, (error) => {
+      console.log('error', JSON.stringify(error));
+    });
   } 
 
 }

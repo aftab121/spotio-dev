@@ -42,12 +42,13 @@ export class LoginPage {
     loading.present();
     this.LoginService.UserLogin(password, email).then((result) => {
       if (result.code == 1) {
+      /*  alert('success');*/
         //        obj.navCtrl.push(DashboardPage);
-        loading.dismiss();
+       /* loading.dismiss();*/
         window.localStorage.users_data = JSON.stringify(result.userid);
         window.localStorage.username = result.data.full_name;
         var username = result.data.full_name.split(' ');
-        this.globalService.userNameChar = username[0][0] + username[1][0];
+        this.globalService.userNameChar = username.lenth>1? username[0][0] + username[1][0]:window.localStorage.username[0];
         this.navCtrl.setRoot('MapPage');
       }
       else if (result.code == 2) {

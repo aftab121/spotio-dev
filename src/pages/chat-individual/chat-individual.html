@@ -5,86 +5,61 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <!-- <ion-navbar>
-    <ion-title>chat-individual</ion-title>
-  </ion-navbar> -->
- <ion-navbar class="bar-calm">
- 	<ion-row>
- 		<ion-col col-6>
- 			 <h3 class="title">{{model.id}},{{model.name}}</h3>
- 		</ion-col>
- 		<ion-col col-6>
- 			<img src="assets/imgs/user.png" style="width: 52px; height: 52px; border-radius: 52%;float: right;" />
- 		</ion-col>
- 	</ion-row>
-     
-    </ion-navbar>
+  <ion-navbar>
+    <ion-title > 
+      <ion-row>
+        <ion-col col-1 no-padding>
+            <ion-buttons left>
+                <button style="float: left;margin-top: 10px;" ion-button icon-only (click)="back()">
+                    <ion-icon style="color:#ffffff;" name="arrow-back"></ion-icon>
+                </button>
+            </ion-buttons>
+        </ion-col>
+        <ion-col col-9>
+     <div style="float: left;line-height: 43px;">
+          {{model.name}}
+        </div>
+    </ion-col>
+    <ion-col col-2>
+        <img [src]="'https://clients.managedcrmsolution.com/public/user/usericon/'+ model.img" onerror="this.src='assets/imgs/user.png'" style="border-radius: 50px;float: right;background: white; color: white; border: 1px solid white;" />
+    </ion-col>
+</ion-row>
+    </ion-title>
+  </ion-navbar>
 </ion-header>
 
 
- <ion-content class="content-stable">
-
-      <div ng-repeat="message in messages"          
-           class="messages">
-
-        <div class="message slide-right">
-          <span class="rcv">fghfgh</span>         
-        </div>
-        <div style="visibility: hidden;" class="time">3:00</div>
+ <ion-content #Content class="content-stable">
+  <div *ngFor="let m of messages;let i=index">
+<div class="chat_date">{{m.created_date}}</div>
+<div *ngFor="let msg of m.list;let index=index;">
+      <div (click)="itemSelected(i,index,m)" *ngIf="msg.reciever_id!=model.id" class="messages">
+        <div [ngClass]="(msg.selected==true)?'selected' : ''" class="message slide-right">
+          <span class="rcv">{{msg.message}}</span>  
+           <div class="chat_time">{{msg.time}}</div>       
+        </div>        
       </div>
-      <div ng-repeat="message in messages"          
-           class="messages other">
-
-        <div class="message slide-right">
-          <span class="send">fghfgh</span>           
+        <div (click)="itemSelected(i,index,m)" *ngIf="msg.reciever_id==model.id" class="messages other">
+          <div *ngIf="msg.selected" (click)="deleteMessage(msg.id,msg.reciever_id)" class="deleteImg">          
+            <img src="assets/imgs/Trash.png">
         </div>
-<div style="visibility: hidden;" class="time">3:00</div>
-        
-      </div>
-       <div ng-repeat="message in messages"          
-           class="messages">
+        <div [ngClass]="(msg.selected==true)?'selected' : ''" class="message slide-right">
+          <span class="send">{{msg.message}}</span>  
+           <div class="chat_time">{{msg.time}}</div>       
+        </div>  
+      </div> 
+</div>
+      </div>      
+    </ion-content>
 
-        <div class="message slide-right">
-          <span class="rcv">fghfgh</span>         
-        </div>
-        <div style="visibility: hidden;" class="time">3:00</div>
-      </div>
-      <div ng-repeat="message in messages"          
-           class="messages other">
-
-        <div class="message slide-right">
-          <span class="send">fghfgh</span>           
-        </div>
-<div style="visibility: hidden;" class="time">3:00</div>
-        
-      </div>
-       <div ng-repeat="message in messages"          
-           class="messages">
-
-        <div class="message slide-right">
-          <span class="rcv">fghfgh</span>         
-        </div>
-        <div style="visibility: hidden;" class="time">3:00</div>
-      </div>
-      <div ng-repeat="message in messages"          
-           class="messages other">
-
-        <div class="message slide-right">
-          <span class="send">fghfgh</span>           
-        </div>
-<div style="visibility: hidden;" class="time">3:00</div>
-        
-      </div>
-      <div keyboard-attach style="bottom: 0;position: absolute;width: 100%;border: 1px solid gray; border-radius: 24px; line-height: 50px;" class="bar-stable item-input-inset">
+  <ion-footer keyboard-attach style="bottom: 0;position: fixed;width: 100%;border: 1px solid gray; border-radius: 24px; line-height: 50px;" class="bar-stable item-input-inset">
       <label class="item-input-wrapper">
-        <input style="width: 80%; line-height: 26px; border: none; margin-left: 10px;" type="text" placeholder="Type your message" on-return="sendMessage(); closeKeyboard()" on-focus="inputUp()" on-blur="inputDown()" />
+      	 <ion-textarea #msgBox style="width: 84%; line-height: 12px; border: none; border-top-left-radius: 24px; position: absolute; border-bottom-left-radius: 24px; padding-left: 17px;"></ion-textarea>
+       <!--  <input style="width: 80%; line-height: 26px; border: none; margin-left: 10px;" type="text" placeholder="Type your message" on-return="sendMessage(); closeKeyboard()" on-focus="inputUp()" on-blur="inputDown()" /> -->
       </label>
-      <button style="float: right;padding:18px;width: 16%;border-bottom-right-radius: 24px; border-top-right-radius: 24px;" class="button button-clear" ng-click="sendMessage()">
+      <button style="float: right;padding:18px;width: 16%;border-bottom-right-radius: 24px; border-top-right-radius: 24px;" class="button button-clear" (click)="sendMessage(model.id)">
         Send
       </button>
-    </div>
-
-    </ion-content>
+    </ion-footer>
  
 

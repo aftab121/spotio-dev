@@ -7,10 +7,25 @@
 <ion-header (onTap)="closeModal()">
 
   <ion-navbar color="accent">
-    <ion-title><div text-center style="width: 80%;float: left;line-height: 48px;">CreateAppointment</div>
- <div text-right style="width: 20%;float: left;height: 48px; line-height: 48px;border-left: 1px solid #b2b2b2" (click)="save()">
+ 
+    <ion-title>
+      <ion-row>
+           <ion-col col-1 no-padding>
+            <ion-buttons left>
+                <button style="float: left; margin-top: 9px;" ion-button icon-only (click)="back()">
+                    <ion-icon name="arrow-back"></ion-icon>
+                </button>
+            </ion-buttons>
+        </ion-col>
+<ion-col col-9>
+        <div text-center style="float: left;line-height: 38px;">CreateAppointment</div>
+      </ion-col>
+      <ion-col col-2>
+ <div text-right style="line-height: 38px;border-left: 1px solid #b2b2b2" (click)="save()">
             Done
         </div>
+      </ion-col>
+    </ion-row>
     </ion-title>
   </ion-navbar>
 
@@ -22,8 +37,8 @@
     <ion-list>
       <ion-item>
         <ion-label floating>Pin Name</ion-label>
-        <ion-input (ionChange)="getItems($event)" *ngIf="visible_input" [(ngModel)]="event.pin_status"></ion-input>
-        <ion-input *ngIf="visible_input1" [(ngModel)]="event.pin_status"></ion-input>
+        <ion-input (click)="getItems($event)" *ngIf="visible_input" [(ngModel)]="event.pin_name"></ion-input>
+        <ion-input *ngIf="visible_input1" [(ngModel)]="event.pin_name"></ion-input>
        <!--  <ion-input type="text" (ionInput)="getItems($event)" name="event.pin_name"></ion-input> -->
       </ion-item>
       <ion-item *ngIf="show" style="max-height: 300px; overflow-y: scroll;z-index: 100;position: absolute;">
@@ -33,7 +48,7 @@
       </ion-item>
       <ion-item>
         <ion-label floating>Name</ion-label>
-        <ion-input type="text" [(ngModel)]="event.pin_name" name="event.pin_name"></ion-input>
+        <ion-input type="text" [(ngModel)]="event.full_name" name="event.full_name"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Location</ion-label>

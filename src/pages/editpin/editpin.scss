@@ -1,11 +1,26 @@
 page-editpin {
 .ddl-item{
 	color: #FFF;
-    padding: 14px 15px;
+    padding: 8px 15px;
     font-size: 25px;
   }
 .lef-icon{
 	border-left: 1px solid gray;
     padding-left: 31px;
   } 
+  .toolbar-ios ion-title {
+    padding: 0 18px 1px 57px !important;
+}
+button.back-button {
+    color: #ffffff;
+}
+.toolbar-background {
+    background: #C1142C;
+}
+.toolbar-title{
+  color:#ffffff;
+}
+.edit-page-item-md.item-md {
+    padding-left: 0 !important; 
+    }
 }

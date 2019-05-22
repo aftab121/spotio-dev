@@ -21,14 +21,24 @@ export class PinDetailsPage {
   updated_time:any;
   latitude:number ;
     longitude:number ;
+    show_appointment:boolean=false;
+    appointment_time:any=[];
   items:any /*Array<{id:string,title: string, date: string, time: string, address1:string, address2:string, city:string, state:string, pin_status: any[], user:any[]}>*/=[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public addpinService: AddpinProvider, public geolocation:Geolocation,private launchNavigator:LaunchNavigator) {
     // If we navigated to this page, we will have an item available as a nav param
+     var options = { year: 'numeric', month: 'short', day: 'numeric' };
+      var time={hour: 'numeric', minute: 'numeric' };
     if (navParams.data["data"] != undefined) {
       this.items = navParams.data["data"];
-      var options = { year: 'numeric', month: 'short', day: 'numeric' };
-      var time={hour: 'numeric', minute: 'numeric' };
+      if(this.items.appointment.length>0){
+        this.show_appointment=true;   
+        for(var i=0;i<this.items.appointment.length;i++){
+           var event_time= new Date(this.items.appointment[i].start_date).toLocaleDateString("en-US", options)+" "+ new Date(this.items.appointment[i].start_date).toLocaleTimeString("en-US", time) +"-"+new Date(this.items.appointment[i].end_date).toLocaleTimeString();
+          this.appointment_time.push(event_time);
+        }       
+      }
+     
       var date = new Date(this.items.updated_at);
       this.updated_date = date.toLocaleDateString("en-US", options);
       this.updated_time = date.toLocaleTimeString("en-US", time);
@@ -76,7 +86,7 @@ export class PinDetailsPage {
     var userid = localStorage.getItem('users_data');
     this.addpinService.EditPin(userid, id).then((result) => {
       if (result.resCode == 1) {
-        this.navCtrl.push('EditpinPage', result.data);
+        this.navCtrl.setRoot('EditpinPage', result.data);
       }
     }, (error) => {
       console.log('error', JSON.stringify(error));
@@ -84,6 +94,6 @@ export class PinDetailsPage {
 
   }
   gotoAppointment(data){
-    this.navCtrl.push(CreateAppointmentPage, {data:data});
+    this.navCtrl.setRoot(CreateAppointmentPage, {data:data});
   }
 }

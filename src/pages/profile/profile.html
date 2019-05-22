@@ -1,0 +1,56 @@
+<!--
+  Generated template for the ProfilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="accent">
+     <button ion-button menuToggle>
+      <ion-icon name="menu" ></ion-icon>
+    </button>
+    <ion-title style="display: flex; justify-content: space-between; font-size: 24px;">
+            <ion-row>
+            
+        <ion-col col-12>
+           Profile 
+        </ion-col>
+        </ion-row>
+        
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content has-header="true">
+      <div id="profile-bg"></div>
+      <div id="content">
+        <div id="profile-info">
+          <img id="profile-image" [src]="'https://clients.managedcrmsolution.com/public/user/usericon/'+ model.img" onerror="this.src='assets/imgs/user.png'">
+          <h3 id="profile-name">{{model.full_name}}</h3>
+         <!--  <span id="profile-description">Co-creator of <a href="https://twitter.com/ionicframework">@ionicframework</a>, founder of
+            <a href="https://twitter.com/driftyco">@driftyco</a></span> -->
+            <span id="profile-description" *ngIf="model.companyPosition!=null">{{model.companyPosition}}</span><br>
+            <span id="profile-description">{{model.email}}</span><br>
+            <span id="profile-description">{{model.phone_number}}</span>
+        </div>
+      <!--   <ion-list>
+          <ion-item>
+            <img class="post-profile-image" src="./assets/imgs/user.png">
+            test
+            <div class="post-time">jhghjgjhgjhgjgjgjg</div>
+            <div class="post-options">
+              <i class="icon-reply"></i>
+              <i class="icon-shuffle"></i>
+            </div>
+            Total Pins
+            <div class="post-time">392</div>
+          </ion-item>
+          <ion-item>          
+            Rank
+            <div class="post-time">1st</div>
+          </ion-item>
+        </ion-list> -->
+      </div>
+    </ion-content>

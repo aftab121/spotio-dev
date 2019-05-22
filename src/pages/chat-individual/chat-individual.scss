@@ -17,7 +17,7 @@ page-chat-individual {
   -webkit-align-items: center !important;
   -ms-flex-align: center !important;
   align-items: center !important;
-  margin-bottom: 20px !important;
+ /* margin-bottom: 20px !important;*/
   .message {
     -webkit-box-flex: 1 !important;
     -moz-box-flex: 1 !important;
@@ -66,9 +66,7 @@ page-chat-individual {
     text-align: right !important;
   }
   .message.slide-right {
-    -webkit-transform: translate3d(120px, 0, 0) !important;
-    -moz-transform: translate3d(120px, 0, 0) !important;
-    transform: translate3d(120px, 0, 0) !important;
+   
   }
   span.send {
     color: black !important;
@@ -89,5 +87,62 @@ span.rcv {
   text-align: left !important;
   max-width: 240px !important;
 }
+.chat_time{
+      line-height: 28px;
+    width: auto;
+    padding-left: 5px;
+}
+.chat_date {
+    text-align: center;
+    padding: 5px;
+    font-size: 1.4rem;
+    font-size: 1.4 erm;
+}
+.back-button {
+    color: #ffffff;
+}
+.bar-button-default{
+      color: #ffffff;
+}
 
+.toolbar-background {
+    background: #C1142C;
+}
+.toolbar-title{
+  color:#ffffff;
+}
+.toolbar-title.toolbar-title-ios img {
+width: 46px !important;
+    height: 46px !important;
+}
+.toolbar-title.toolbar-title-md img {
+width: 50px !important; 
+height: 44px !important;
+}
+
+.deleteImg {
+       right: 1px;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    margin-top: -34px;
+    background: #007AFF;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%;
+    padding: 13px;
+    font-size: 21px;
+    color: #fff;
+    -webkit-box-shadow: 0px 4px 5px #868686;
+    box-shadow: 0px 4px 5px #868686;
+    z-index: 99;
+}
+.deleteImg img{
+  height: 17px;
+    width: 17px;
+    /* padding: 13px; */
+    position: absolute;
+    right: 4px;
+    margin-top: -9px;
+}
 }

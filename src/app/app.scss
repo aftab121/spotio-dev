@@ -20,7 +20,8 @@
     border: 2px solid red;
     border-radius: 50%;
     display: inline-block;
-    line-height: 100px;margin: 25px;font-size: 30px
+    line-height: 100px;margin: 25px;
+    font-size: 30px;
 	
 }
 
@@ -43,4 +44,16 @@
 }
 .custom-modal ion-content.view-class.content.content-md {
     height: 20%;
+}
+.toolbar-ios ion-title {
+    padding: 7px !important;
+}
+.toolbar-title.toolbar-title-md {
+    font-size: 17px;
+}
+button.listButton.item {
+    padding-left: 0px !important;
+}
+button.listButton.item ion-label {
+    padding-left: 16px !important;
 }

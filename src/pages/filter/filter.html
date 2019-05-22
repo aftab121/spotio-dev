@@ -1,19 +1,33 @@
+
 <ion-header>
-  <ion-navbar hideBackButton >
-    <ion-title class="filter-header">
-            
-        <div  style="width: 20%;float: left" (click)="ClearSelection()">
-            <span *ngIf="clear">Clear</span>
-        </div>
-        <div text-center style="width: 60%;float: left;font-size: 30px">
+
+  <ion-navbar>
+    <ion-title > 
+    	<ion-row>
+    		<ion-col col-1 no-padding>
+            <ion-buttons left>
+                <button style="float: left;margin-top: 9px;" ion-button icon-only (click)="back()">
+                    <ion-icon style="color:#ffffff;" name="arrow-back"></ion-icon>
+                </button>
+            </ion-buttons>
+        </ion-col>
+    		<ion-col col-9>
+     <div style="line-height: 38px;float: left;">
             Filter
-        </div>       
-        <div text-right style="width: 20%;float: left;height: 48px; line-height: 48px;border-left: 1px solid #b2b2b2" (click)="goToMap()">
+        </div>
+    </ion-col>
+    <ion-col col-2>
+         <div text-right style="line-height: 38px;border-left: 1px solid #b2b2b2" (click)="goToMap()">
             Done
         </div>
+    </ion-col>
+</ion-row>
     </ion-title>
   </ion-navbar>
+
 </ion-header>
+
+
 <ion-content >
 <ion-row style="border-bottom: 1px solid #b2b2b2;">
 	<ion-col text-center  [class.active]="filter==1" style="line-height: 30px;font-size: 16px;" (click)="changeFilter(1)">
@@ -32,13 +46,13 @@
 			<ion-label >
 				<span class="text">Today</span>
 			</ion-label>
-			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.today" (ionChange)="DateCheck(dateFilter)"></ion-checkbox>
+			<ion-checkbox checked="false" class="check" item-right  mode="ios" [(ngModel)]="dateFilter.today" (ionChange)="DateCheck(dateFilter)"></ion-checkbox>
 		</ion-item>
 		<ion-item class="itemButton">
 			<ion-label >
 				<span class="text">Yesterday</span>
 			</ion-label>
-			<ion-checkbox item-right  mode="ios" [(ngModel)]="dateFilter.yesterday" (ionChange)="DateCheck(dateFilter)" ></ion-checkbox>
+			<ion-checkbox checked="false" class="check" item-right  mode="ios" [(ngModel)]="dateFilter.yesterday" (ionChange)="DateCheck(dateFilter)" ></ion-checkbox>
 		</ion-item>
 		<ion-item class="itemButton">
 			<ion-label >
@@ -98,7 +112,7 @@
 	<ion-col>
 		<ion-item class="itemButton" *ngFor="let pin of Status">
 			<ion-label >
-				<ion-icon name="pin" class="icon ion-ios-clock-outline" [ngStyle]="{'color': pin.color_code}"></ion-icon>
+				<ion-icon name="pin" class="icon ion-ios-clock-outline" [ngStyle]="{'color': pin.color_code}" style="font-size: 30px; padding-right: 10px;"></ion-icon>
 				<span class="text">{{pin.pin_status_name}}</span>
 			</ion-label>
 			<ion-checkbox item-right  mode="ios" [(ngModel)]="pin.isChecked" (ionChange)="LoginRemCheck(pin)" [attr.value]="pin.id"></ion-checkbox>

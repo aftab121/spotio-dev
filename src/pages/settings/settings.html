@@ -23,7 +23,7 @@
 
 
 <ion-content padding>
-<ion-row>
+<!-- <ion-row>
   <ion-col>
  <ion-item>
         <ion-label>
@@ -50,7 +50,7 @@
 </ion-item>
  
   </ion-col>
-</ion-row>
+</ion-row> -->
 <ion-row>
   <ion-col>
  <ion-item>
@@ -68,37 +68,7 @@ Notifications
 </ion-row>
 <ion-row>
   <ion-col>
- <ion-item>
-        <ion-label>
-  <ion-img src="./assets/imgs/info.png"></ion-img>
-<span style="padding-left:10px">
-Support Forum
-</span>
-<ion-icon name="ios-arrow-forward-outline" float-right></ion-icon>
- </ion-label>
-
-</ion-item>
- 
-  </ion-col>
-</ion-row>
-<ion-row>
-  <ion-col>
- <ion-item>
-        <ion-label>
-  <ion-img src="./assets/imgs/chat.png"></ion-img>
-<span style="padding-left:10px">
-Chat with Us
-</span>
-<ion-icon name="ios-arrow-forward-outline" float-right></ion-icon>
- </ion-label>
-
-</ion-item>
- 
-  </ion-col>
-</ion-row>
-<ion-row>
-  <ion-col>
- <ion-item>
+ <ion-item (click)="gotoProfile()">
         <ion-label>
   <ion-img src="./assets/imgs/smartphone.png"></ion-img>
 <span style="padding-left:10px">

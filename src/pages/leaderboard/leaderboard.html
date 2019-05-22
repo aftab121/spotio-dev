@@ -11,10 +11,13 @@
       <ion-icon name="menu" ></ion-icon>
     </button>
     <ion-title style="display: flex; justify-content: space-between; font-size: 24px;">
-            
+            <ion-row>
+              <ion-col col-12>
         <div float-left >
             Leaderboard
         </div>
+      </ion-col>
+    </ion-row>
        <!--  <div float-right style="display: flex; justify-content: space-between; width: 33%;">
             <div>
                 <ion-icon name="list-box"></ion-icon>
@@ -59,10 +62,11 @@
   </ion-row> -->
   <ion-list> 
   <ion-item *ngFor="let item of items; let i=index" class="leader_list">
-    <ion-label col-2><img *ngIf="i==0" src="assets/imgs/Sports1.png" style="height: 45px; width: 50px;" >
+    <ion-label col-2 style="text-align: center;">
+      <img *ngIf="i==0" src="assets/imgs/Sports1.png" style="height: 45px; width: 50px;" >
       <img *ngIf="i==1" src="assets/imgs/Sports2.png" style="height: 45px; width: 50px;" >
       <img *ngIf="i==2" src="assets/imgs/Sports3.png" style="height: 45px; width: 50px;" >
-      <p *ngIf="i!=0&&i!=1&&i!=2">{{i}}</p>
+      <p style="font-weight: 500; font-size: 17px;line-height: 48px;" text-wrap *ngIf="i!=0&&i!=1&&i!=2">{{i+1}}th</p>
     </ion-label>
     <ion-label col-8 style="color:#FFB315;">{{item.full_name}}</ion-label>
      <ion-label col-2>{{ item.pins_count }}</ion-label>

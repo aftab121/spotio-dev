@@ -6,13 +6,12 @@ page-pindetails{
         height: 92px;
     }
     .details-title-content{
-        margin-top: 14px;
-        background-color: #FFD700;
+        margin-top: 14px;       
         margin-left: 16px;
         margin-right: 16px;
         margin-bottom: 14px;
         padding: 10px;   
-        font-size: 32px;
+        font-size: 26px;
         font-weight: 400;
         color: #ffffff;
     }
@@ -20,11 +19,27 @@ page-pindetails{
 .details-Content {
        background-color: #ffffff;
     margin-bottom: 17px;
-    height: 104px;
+    height: auto;
 }
 .docs_img_List{
 	color: #5f5a5a;
     font-size: 17px;
     padding: 13px;
+}
+.bottom_time{
+    padding-left:8px;
+}
+.back-button {
+    color: #ffffff;
+}
+.bar-button-default{
+      color: #ffffff;
+}
+
+.toolbar-background {
+    background: #C1142C;
+}
+.toolbar-title{
+  color:#ffffff;
 }
 }

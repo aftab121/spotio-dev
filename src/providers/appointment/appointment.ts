@@ -71,12 +71,9 @@ export class AppointmentProvider {
  	debugger
 	 return new Promise(resolve => {
 		 let headers = new Headers({ 'Content-Type': 'application/json' });
-		 let options = new RequestOptions({ headers: headers });
-		 let credentials = JSON.stringify({
-			data
-		 });
+		 let options = new RequestOptions({ headers: headers });		 
 		 var link = 'https://clients.managedcrmsolution.com/public/Api/editAppointmentInfo';
-		 this.http.post(link, credentials, { headers: headers }).toPromise()
+		 this.http.post(link, data, { headers: headers }).toPromise()
 			 .then((response) => {
 				 resolve(response.json());
 			 })

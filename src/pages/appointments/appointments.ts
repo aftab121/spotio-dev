@@ -123,7 +123,7 @@ slidenum:number=0;
     debugger;
     /* this.firstdate=this.currentYear+this.currentMonth+this.currentDate+" 00:00:00";
       this.seconddate=this.currentYear+this.currentMonth+this.currentDate+" 23:59:59";*/
-    this.navCtrl.push(CreateAppointmentPage, { StartDate: this.firstdate, EndDate: this.seconddate });
+    this.navCtrl.setRoot(CreateAppointmentPage, { StartDate: this.firstdate, EndDate: this.seconddate });
   }
 
 
@@ -226,6 +226,11 @@ selecteddt:boolean=false;
     });
   }
   getTime(date){
+    if (date!=null && date.indexOf('\'') >= 0 && date.indexOf('"') >= 0) {
+     var dt=date.replace(/'/g, "");
+    console.log(dt);
+}
+  
     var time={hour: 'numeric', minute: 'numeric' };
     var getTime=new Date(date).toLocaleString("en-US", time);
     return getTime;

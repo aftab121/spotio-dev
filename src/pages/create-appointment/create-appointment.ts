@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, ModalController,M
 import { Calendar } from '@ionic-native/calendar';
 import {AppointmentProvider}from '../../providers/appointment/appointment';
 import { PinlistProvider } from '../../providers/pinlist/pinlist';
+import { MapPage } from '../../pages/map/map';
 /**
  * Generated class for the CreateAppointmentPage page.
  *
@@ -18,7 +19,7 @@ import { PinlistProvider } from '../../providers/pinlist/pinlist';
 export class CreateAppointmentPage {
   items = [];
   list:any=[];
-  event = { userid: "", pin_status: "", pin_name: "", location: "", pin_id: "", startDate: "", endDate: "", startTime: "", endTime: "", note: "", pin_status_id: "" };
+  event = { userid: "",full_name:"", pin_status: "", pin_name: "", location: "", pin_id: "", startDate: "", endDate: "", startTime: "", endTime: "", note: "", pin_status_id: "" };
   show:boolean=false;
   visible_input:boolean=true;
    visible_input1:boolean=false;
@@ -34,7 +35,9 @@ export class CreateAppointmentPage {
       this.visible_input = false;
       this.visible_input1 = true;
       this.event.userid = navParams.data['data'].user.id;
+      this.event.full_name = navParams.data['data'].user.full_name;
       this.event.pin_status = navParams.data['data'].pin_status.pin_status_name;
+       this.event.pin_name = navParams.data['data'].name;
       this.event.pin_status_id = navParams.data['data'].pin_status.id;
       this.event.pin_id = navParams.data['data'].id;
       this.event.location = navParams.data['data'].house_number + "," + navParams.data['data'].house_address
@@ -66,8 +69,8 @@ export class CreateAppointmentPage {
     var modalPage;
 
     this.getPinLIst();
-    var val = ev.value;
-    if (val && val.trim() != '') {
+    var val = ev.target.value;
+    if (val) {
       this.items = this.items.filter((item) => {
         return item.name.toLowerCase().indexOf(val.toLowerCase()) > -1
       });
@@ -88,6 +91,7 @@ export class CreateAppointmentPage {
     this.event.pin_status_id = item.pin_status.id;
     this.event.pin_name = item.name;
     this.event.pin_id = item.id;
+    this.event.full_name=item.user.full_name;
     this.event.location = item.house_number + "," + item.house_address
     this.show = false;
   }
@@ -130,8 +134,8 @@ export class CreateAppointmentPage {
     var json = JSON.stringify(this.event);
     this.appointmentService.createAppointment(this.event).then((result) => {
       if (result.code == 1) {
-        console.log("success");
-        //this.navCtrl.setRoot(MapPage);          
+       /* console.log("success");*/
+        this.navCtrl.setRoot(MapPage);          
       }
       else if (result.code == 2) {
         /*this.message=result.msg;
@@ -157,5 +161,8 @@ export class CreateAppointmentPage {
     var enddate = new Date(this.event.startDate);
     var enddt = enddate.getFullYear() + "-" + (enddate.getMonth()+1) + "-" + enddate.getDate() + " " + this.event.endTime;
     this.event.endDate = new Date(enddt).toISOString();
+  }
+   back(){
+   this.navCtrl.setRoot(MapPage)
   }
 }

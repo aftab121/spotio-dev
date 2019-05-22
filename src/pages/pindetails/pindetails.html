@@ -4,17 +4,17 @@
     <ion-title>            
       <ion-grid>
         <ion-row>
-             <ion-col no-padding>
+             <ion-col col-1 no-padding>
             <ion-buttons left>
-                <button ion-button icon-only (click)="back()">
+                <button style="float: left;" ion-button icon-only (click)="back()">
                     <ion-icon name="arrow-back"></ion-icon>
                 </button>
             </ion-buttons>
         </ion-col>
-         <ion-col size="9" size-md styel="text-align: right; font-size: 23px; font-weight: 500;">
+         <ion-col col-9 size-md style="text-align: left; ">
          Pin Details
          </ion-col>
-         <ion-col size="3" size-md style="text-align: right; font-size: 17px; font-weight: 500; line-height: 28px;" (click)="editPin(items.id)">
+         <ion-col col-2 size-md style="text-align: right;" (click)="editPin(items.id)">
           EDIT
          </ion-col>  
         </ion-row>
@@ -25,38 +25,45 @@
 <ion-content style="background-color: #F0F0F0;">
    <div class="details-title">
        <ion-row>
-           <ion-col class="details-title-content">{{items.pin_status.pin_status_name}}</ion-col>
+           <ion-col [ngStyle]="{'background-color': items.pin_status.color_code}" class="details-title-content">{{items.pin_status.pin_status_name}}</ion-col>
        </ion-row>
    </div>
     <div class="details-Content">
-        <div class = "list" style="height: 40px; padding: 11px; font-size: 14px;">
-            <label class = "item item-input">
-            Name 
-            </label>
-
-            <label class = "item item-input" style="margin-left: 31px; color: #5f5a5a;padding-right: 21px;">
-               {{items.name}}
-            </label>            
-        </div>
-
-        <hr style="margin: 0 11px 1px 11px;height: 2px;">
-        <div class = "list" style="height: 40px; padding: 11px; font-size: 17px;">
-            <label class = "item item-input">
-             Address  
-            </label>
-
-            <label class = "item item-input" style="margin-left: 5px; color: #5f5a5a;">
-              {{items.house_number}},{{items.house_address}}<br>
-               <p style="margin-top: 2px;float: right;margin-right: 40px;">{{items.city}}, {{items.state}}</p>
-            </label>
-             <span (click)="getNavigation(items.latitude,items.longitude)">
-         <img src="assets/imgs/Map-Location.png" style="height: 20px; width: 16px;" >
+      <ion-row style="padding: 11px;">
+        <ion-col col-3>
+          Name
+        </ion-col>
+        <ion-col col-9>
+           {{items.name}}
+        </ion-col>
+      </ion-row>
+      <hr style="margin: 0 11px 1px 11px;height: 2px;">
+  <ion-row style="padding: 11px;">
+        <ion-col col-3>
+          Address
+        </ion-col>
+        <ion-col col-7>
+          {{items.house_number}},{{items.house_address}}<br>
+               <p style="margin-top: 2px;">{{items.city}}, {{items.state}}</p>
+        </ion-col>
+        <ion-col col-2>
+           <span (click)="getNavigation(items.latitude,items.longitude)">
+         <img src="assets/imgs/Map-Location.png" style="height: 40px; width: 50px;" >
         </span>
-        </div>
+
+        </ion-col>
+      </ion-row>
+        
+        
 </div>
- <div class="details-Content">
+ <div *ngIf="show_appointment" class="details-Content">
     <h6 style="padding: 7px 0 0 11px;margin-bottom: 1px;">APPOINTMENT</h6><br>
-    <ion-datepicker class="ScheduleDate"><ion-icon style="font-size: 25px;color:#5f5a5a; padding: 0 0 0 9px;" name="clipboard" item-left ></ion-icon><strong style="color: #5f5a5a;padding-left: 16px; font-size: 17px;font-weight: 300;">March 28, 2019 5:00 PM-1:00}</strong></ion-datepicker>   
+    <ion-list>
+      <ion-item *ngFor="let dates of appointment_time">
+  <ion-datepicker  class="ScheduleDate"><ion-icon style="font-size: 25px;color:#5f5a5a; padding: 0 0 0 9px;" name="clipboard" item-left ></ion-icon><strong style="color: #5f5a5a;padding-left: 16px; font-size: 17px;font-weight: 300;">{{dates}}</strong></ion-datepicker>
+      </ion-item>
+    </ion-list>
+  
     <div style="line-height: 36px; padding-left: 43px; color: #ff8000;" (click)="gotoAppointment(items)" >Add new appointment</div>
  </div>
   <div class="details-Content" style="height: 48px;"> 
@@ -81,21 +88,20 @@
       <div class="details-Content" style="height: 48px;">
   
          <ion-row>
-            <ion-col>
+            <ion-col style="padding: 11px; font-size: 17px;">
                 Status History
             </ion-col>
          </ion-row>   
-          <ion-row style="margin-top: 10px;">
+          <ion-row>
              <ion-col col-1>  
-             <ion-icon name="pin" item-start class="icon ion-ios-clock-outline" [ngStyle]="{'color': items.pin_status.color_code}"></ion-icon>
+             <ion-icon style="font-size: 33px; line-height: 56px;" name="pin" item-start class="icon ion-ios-clock-outline" [ngStyle]="{'color': items.pin_status.color_code}"></ion-icon>
            </ion-col>
-            <ion-col col-5>              
+            <ion-col class="bottom_time" col-5>              
               <p>{{updated_date}}</p>
               <p>at {{updated_time}}</p>
             </ion-col>
-            <ion-col col-6>
-               <p style="float: left;">by : </p> 
-               <p>{{items.user.full_name}}</p>
+            <ion-col col-6>            
+               <p style="float:right; padding-right:8px;">by :{{items.user.full_name}}</p>
             </ion-col>
          </ion-row>     
     

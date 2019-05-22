@@ -10,17 +10,40 @@ declare const Pusher: any;
 */
 @Injectable()
 export class PusherServiceProvider {
-	channel;
+	channel:any="";	
+	key:any="";
+	cluster:any="";
 	constructor(public http: Http) {
-		var pusher = new Pusher("5db1d26190ce2212007b", {
-			cluster: 'us3',
+		var data=this.getPusherCredential().then((result)=>{			
+			this.channel=result["channel"];
+			this.key=result["key"];
+			this.cluster=result["cluster"];
+		});
+		
+		/*this.channel = pusher.subscribe('my-channel');*/
+		
+
+	}
+	public init() {		
+		var pusher = new Pusher(this.key, {
+			cluster: this.cluster,
 			encrypted: true,
 		});
-		this.channel = pusher.subscribe('my-channel')
-		console.log('Hello PusherServiceProvider Provider');
-	}
-	public init() {
-		console.log('Hello PusherServiceProvider Provider inits');
+		this.channel = pusher.subscribe(this.channel);
 		return this.channel;
+	}
+	/*public chat() {
+		return this.channel;
+	}*/
+	getPusherCredential(): Promise<any> {
+		return new Promise(resolve => {
+			let headers = new Headers({ 'Content-Type': 'application/json' });
+			let options = new RequestOptions({ headers: headers });
+			var link = 'http://clients.managedcrmsolution.com/public/GetPusherKey';
+			this.http.get(link, { headers: headers }).toPromise()
+				.then((response) => {
+					resolve(response.json());
+				})
+		});
 	}
 }

@@ -1,3 +1,8 @@
 page-chat {
-
+.toolbar-ios ion-title {
+    padding: 0 18px 1px 57px !important;
+}
+button.item.item-block {
+    padding-left: 0 !important;
+}
 }

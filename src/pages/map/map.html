@@ -8,7 +8,7 @@
         <div float-left >
             Map
         </div>
-        <div float-right style="display: flex; justify-content: space-between; width: 33%;">
+        <div float-right style="display: flex; justify-content: space-between; width: 75px;">
             <div>
                 <ion-icon (click)="goToList()" name="list-box"></ion-icon>
             </div>
@@ -36,7 +36,7 @@
     </div>
 
     <div class="FooterContainer" style="" *ngIf="showDiv">
-        <div class="editPencil">          
+        <div class="editPencil" mode="ios">          
             <ion-icon name="create" (click)="editPin(this.id)"></ion-icon>
         </div>
         <div (click)="gotoDetails(this.id)">
@@ -65,7 +65,7 @@
     padding: 20px;">
         <h2>Select Action</h2>
         <h5 (click)="AddPin()">Add Pin</h5>
-        <h5>Select Pins</h5>
+        <h5 (click)="selectPins()">Select Pins</h5>
         <span  float-right style="font-size: 18px;color:#358fcd" (click)="hideOverlay()">CANCEL</span>
     </div>
 </div>

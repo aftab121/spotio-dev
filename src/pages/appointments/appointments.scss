@@ -16,7 +16,7 @@ page-appointments {
     font-size: 90%;
   }
   .currentDate, .otherDate {
-    padding: 5px;
+   padding: 4px 5px 4px 4px;
   }
   .currentDate {
     font-weight: bold;
@@ -58,6 +58,21 @@ page-appointments {
     
   }
   ion-slides {   
-    height: 50%;
+       height: 266px;
+}
+.list-md .item-block .item-inner {
+    border-bottom: 1px solid #c1142c;
+}
+.item-md {
+  padding-left:0;
+}
+.toolbar-ios ion-title {
+    padding: 0 18px 1px 57px !important;
+}
+.toolbar-background-ios {
+    background: #C1142C;
+}
+.toolbar-title.toolbar-title-ios {
+    color: #ffffff;
 }
 }

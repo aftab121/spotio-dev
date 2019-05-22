@@ -1,0 +1,11 @@
+{
+    "EventKit.framework": 1,
+    "EventKitUI.framework": 1,
+    "CoreLocation.framework": 3,
+    "WebKit.framework": 1,
+    "libz.tbd": 1,
+    "SystemConfiguration.framework": 2,
+    "CoreTelephony.framework": 1,
+    "AudioToolbox.framework": 1,
+    "MapKit.framework": 1
+}

@@ -36,6 +36,12 @@ import { AppointmentProvider } from '../providers/appointment/appointment';
 import { LeaderboardProvider } from '../providers/leaderboard/leaderboard';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { PusherServiceProvider } from '../providers/pusher-service/pusher-service';
+import { ProfilePage } from '../pages/profile/profile';
+import { ChatProvider } from '../providers/chat/chat';
+import { DemoPage } from '../pages/demo/demo';
+import { ProfileProvider } from '../providers/profile/profile';
+
+
 
 
 @NgModule({
@@ -52,7 +58,9 @@ import { PusherServiceProvider } from '../providers/pusher-service/pusher-servic
     PinDetailsPage,
     ForgetPasswordPage,
     ResetpasswordPage,
-    ChangepasswordPage
+    ChangepasswordPage,
+    ProfilePage,
+    DemoPage
   ],
   imports: [
     BrowserModule,
@@ -74,7 +82,9 @@ import { PusherServiceProvider } from '../providers/pusher-service/pusher-servic
     PinDetailsPage,
     ForgetPasswordPage,
     ResetpasswordPage,
-    ChangepasswordPage
+    ChangepasswordPage,
+    ProfilePage,
+    DemoPage
   ],
   providers: [
     StatusBar,
@@ -94,7 +104,9 @@ import { PusherServiceProvider } from '../providers/pusher-service/pusher-servic
     AppointmentProvider,
     LeaderboardProvider,
     LaunchNavigator,
-    PusherServiceProvider
+    PusherServiceProvider,
+    ChatProvider,
+    ProfileProvider
   ]
 })
 export class AppModule {}

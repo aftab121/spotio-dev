@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ElementRef,ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
 import { Calendar } from '@ionic-native/calendar';
@@ -18,6 +18,7 @@ import {MapPage} from '../../pages/map/map';
 	templateUrl: 'filter.html',
 })
 export class FilterPage {
+	@ViewChild('checkbox') checkboxElement: HTMLInputElement;
 	myDate1: any;
 	myDate2: any;
 	clear: boolean = false;
@@ -79,8 +80,11 @@ export class FilterPage {
 
 		}
 	}
+
 	DateCheck(data) {
-		let i = 0;		
+		let i = 0;	
+		var element = document.getElementsByClassName("check");
+		
 		Object.keys(data).forEach(key => {		
 			if (data[key] == true) {
 				i++;
@@ -295,4 +299,7 @@ export class FilterPage {
 			})
 		}*/
 	}
+	 back(){
+   this.navCtrl.setRoot(MapPage)
+  }
 }
